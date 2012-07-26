@@ -1,0 +1,360 @@
+#!/usr/bin/env python
+# encoding: UTF-8
+par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
+
+import schizoidpy
+from psychopy.visual import ImageStim, Rect, Circle
+from random import sample, choice, expovariate
+from sys import argv
+
+o = schizoidpy.Task(button_radius = .1)
+o.save('task_version', par['task_version'])
+
+male_names = ['Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake']
+female_names = ['Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma']
+locations = [
+    ('Pasadena, CA', 'McKinley School'),
+    ('Chicago, IL', 'Jonathan Burr Elementary'),
+    ('Dayton, TN', 'Spring City Middle School'),
+    ('Scranton, PA', 'Dunmore Middle School'),
+    ('Pittsburgh, PA', 'Jefferson Middle School'),
+    ('Ocean City, NJ', 'Ocean City Intermediate'),
+    ('Saint Paul, MN', 'Twin Cities Academy'),
+    ('Euclid, OH', 'Forest Park Middle School'),
+    ('Westbrook, ME', 'Westbrook Middle School'),
+    ('Allen, TX', 'Kerr Elementary School'),
+    ('Saint Louis, MO', 'Rogers Middle'),
+    ('San Jose, CA', 'Holy Family School')]
+interests = [
+    'Pretty much anything, lol.',
+    'Video Games, Soccer',
+    'Reading and writing all kinds of things. But especially poetry.',
+    'baking, snowboarding, dogs',
+    'Ancient Rome, comic books',
+    'jazz band, movies',
+    'football, baseball, juggling',
+    'Horror movies & magic tricks',
+    'um, Hawaii? I really like traveling. I went snorkeling once, too.',
+    'philosophy, video games, my cats',
+    'drama',
+    'Groan-inducing puns.']
+ages = [11, 11, 12, 12, 12, 13]
+ages = (len(locations) / len(ages)) * ages
+rating_distribution = [
+    1, 1,
+    2, 2,
+    3,
+    4,
+    5,
+    6,
+    7, 7, 7, 7, 7,
+    8, 8, 8, 8, 8,
+    9, 9, 9]
+
+# ------------------------------------------------------------
+# Helper functions
+# ------------------------------------------------------------
+
+def shuffled(l): return sample(l, len(l))
+
+def image_path(image):
+    return par['image_dir'] + image
+
+big_canvas = Rect(o.win,
+    width = 1.5, height = 1.8,
+    fillColor = 'white', opacity = .8)
+strip_canvas = Rect(o.win,
+    width = 1.2, height = .3,
+    fillColor = 'white', opacity = .8)
+
+def background(image):
+    return o.showing(
+        ImageStim(o.win,
+            image_path(image),
+            units = 'pix',
+            size = [o.screen_width, o.screen_height]),
+        big_canvas)
+
+def message(duration, string):
+    # Temporarily replace big_canvas with strip_canvas
+    with o.hiding(big_canvas):
+        o.wait_screen(duration,
+            strip_canvas,
+            o.text(0, 0, string))
+
+def lag(duration):
+    message(duration, u'Waiting for all players to finish…')
+
+# ------------------------------------------------------------
+# Preliminaries
+# ------------------------------------------------------------
+
+if par['debug']:
+    o.data['subject'] = 'test';
+    o.save(('profile', 'name'), 'SUBJECTNAME')
+else:
+    o.get_subject_id('Island Getaway')
+
+rounds = 5
+
+# Set up coplayers.
+def alternate_afirst(r): return bool(r % 2)
+def alternate_rfirst(r): return bool((r - 1) % 2)
+
+coplayers = dict(
+# - Expendable coplayers will eventually be kicked off;
+#   non-expendable coplayers won't.
+# - ai takes the number of the current round and returns True
+#   if the coplayer votes to keep the subject and False if they
+#   vote to kick the subject out.
+
+   always_accept = dict(expendable = False,
+       ai = lambda r: True),
+   always_reject = dict(expendable = False,
+       ai = lambda r: False),
+   alternate_afirst = dict(expendable = False,
+       ai = alternate_afirst),
+   alternate_rfirst = dict(expendable = False,
+       ai = alternate_rfirst),
+   halfwise_afirst = dict(expendable = False,
+       ai = lambda r: r <= rounds/2),
+   halfwise_rfirst = dict(expendable = False,
+       ai = lambda r: r > rounds/2),
+
+   xpendable_1 = dict(expendable = True, ai = alternate_afirst),
+   xpendable_2 = dict(expendable = True, ai = alternate_rfirst),
+   xpendable_3 = dict(expendable = True, ai = alternate_afirst),
+   xpendable_4 = dict(expendable = True, ai = alternate_rfirst),
+   xpendable_5 = dict(expendable = True, ai = alternate_afirst),
+   xpendable_6 = dict(expendable = True, ai = alternate_rfirst))
+
+for k, p in coplayers.items():
+    p['id'] = k
+    p['responses'] = (rounds + 1) * [None]
+coplayers = shuffled(coplayers.values())
+
+# Make the coplayers evenly split by gender within the expendable
+# and non-expendable groups.
+for i, p in enumerate(shuffled([p for p in coplayers if p['expendable']])):
+    p['female'] = bool(i % 2)
+for i, p in enumerate(shuffled([p for p in coplayers if not p['expendable']])):
+    p['female'] = bool(i % 2)
+
+def pronoun_nom(p): return 'she' if p['female'] else 'he'
+def pronoun_obj(p): return 'her' if p['female'] else 'him'
+def pronoun_gen(p): return 'her' if p['female'] else 'his'
+
+# Assign names.
+males = shuffled(male_names)
+females = shuffled(female_names)
+for p in coplayers:
+    p['name'] = females.pop() if p['female'] else males.pop()
+
+# Assign fluff.
+for p, age, (hometown, school), interest in zip(
+        coplayers, shuffled(ages), shuffled(locations), shuffled(interests)):
+    p['fluff'] = dict(
+        Age = age, Hometown = hometown, School = school, Interests = interest)
+
+# Test coplayers (particularly AIs)
+if par['debug']:
+    for p in sorted(coplayers, key = lambda p: p['id']):
+        print "--{}--\n{}\n{}".format(
+            p['id'], p, map(p['ai'], range(1, rounds + 1)))
+
+o.save('coplayers', coplayers[:])
+  # We copy the coplayers list because we'll be removing elements
+  # as expendable coplayers are kicked out.
+
+# ------------------------------------------------------------
+# Introduction
+# ------------------------------------------------------------
+
+with background('Hawaje-NoRedLine.jpg'):
+    message(2, 'Aloha!')
+
+    with o.dkey_prefix('introduction'):
+
+        o.instructions('set_the_scene', "You've just landed on the Hawaiian Island of Nihau to begin a summer vacation with a group of other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, you will be able to begin your vacation: relaxing on the beach, swimming in the sparkling water, biking around volcanoes, visiting parks, shopping, and whatever else you'd like to do.")
+
+        o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players you're traveling with. After each round, you'll have the chance to vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to hang out with them as long as possible to continue on the Island Getaway!")
+
+    o.instructions('subject_is_photographed', "First, we'll take a picture of you so the other players can see what you look like.")
+
+    with o.dkey_prefix('profile'):
+
+        o.get_text('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
+
+        o.get_nonneg_int('age', 'How old are you?')
+
+        o.get_text('hometown', 'What is your hometown?')
+
+        o.get_text('school', 'What school do you go to?')
+
+        o.get_text('interests', "What are some things you're interested in?")
+
+    lag(3)
+
+# ------------------------------------------------------------
+# The voting subroutine
+# ------------------------------------------------------------
+
+icon_dim = 200 # Pixels
+icon_thickness = 10 # Pixels
+
+def icon_frame(color):
+    kw = dict(units = 'pix', fillColor = color, lineColor = color)
+    return [
+        Rect(o.win, icon_dim, icon_thickness,
+            pos = (0, icon_dim/2 - icon_thickness/2), **kw),
+        Rect(o.win, icon_dim, icon_thickness,
+            pos = (0, -icon_dim/2 + icon_thickness/2), **kw),
+        Rect(o.win, icon_thickness, icon_dim,
+            pos = (icon_dim/2, 0), **kw),
+        Rect(o.win, icon_thickness, icon_dim,
+            pos = (-icon_dim/2, 0), **kw)]
+
+reject_icon = icon_frame('red') + [
+    Rect(o.win, icon_dim, icon_thickness, ori = 45,
+        units = 'pix', fillColor = 'red', lineColor = 'red'),
+    Rect(o.win, icon_dim, icon_thickness, ori = -45,
+        units = 'pix', fillColor = 'red', lineColor = 'red')]
+
+accept_icon = icon_frame('green') + [
+    Rect(o.win, .75*icon_dim, icon_thickness, ori = -68,
+        pos = (20, 0),
+        units = 'pix', fillColor = 'green', lineColor = 'green'),
+    Rect(o.win, .25*icon_dim, icon_thickness, ori = 45,
+        pos = (-2.2*icon_thickness, -.25*icon_dim),
+        units = 'pix', fillColor = 'green', lineColor = 'green')]
+
+voting_msg_y = -.5
+
+def voting(nround):
+    # Some delays are variable for verisimilitude.
+
+    varwait = .2 + expovariate(1)
+    o.save(('prevote_varwait', p['id']), varwait)
+    lag(varwait)
+
+    # Coplayers vote.
+    for p in coplayers:
+        is_voting = o.text(0, voting_msg_y, u'{name} is voting…'.format(**p))
+        o.wait_screen(1, is_voting, o.fixation_cross)
+        o.wait_screen(2, is_voting, o.text(0, 0, '[TODO: photo goes here]'))
+        varwait = 1 + expovariate(1.0/2)
+        o.save(('coplayers_vote_varwait', p['id']), varwait)
+        o.wait_screen(varwait, is_voting, o.fixation_cross)
+        keep = p['ai'](nround)
+        o.wait_screen(1.5,
+            o.text(0, voting_msg_y, '{} voted to {}.'.format(
+                p['name'],
+                'keep you' if keep else 'kick you out')),
+            *(accept_icon if keep else reject_icon))
+
+    # The subject votes.
+    for p in coplayers:
+        o.button_screen(('subject_votes', p['id']),
+           o.text(0, .5, '[TODO: photo goes here]'),
+           o.text(0, voting_msg_y,
+               'Should we keep {} or kick {} out?'.format(
+                   p['name'], pronoun_obj(p))),
+           o.button(-.25, -.7, 'Kick\nOut'),
+           o.button(.25, -.7, 'Keep'))
+
+    # An expendable coplayer is outsted.
+    loser = sorted([p for p in coplayers if p['expendable']],
+        key = lambda p: p['name'])[0]
+    coplayers.remove(loser)
+    o.instructions('loser',
+        "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. The remaining players will continue on to the next island.".format(
+            loser['name'],
+            len(coplayers)/2 + 2,
+            pronoun_gen(loser).capitalize()))
+
+# ------------------------------------------------------------
+# Round 1
+# ------------------------------------------------------------
+
+round_wait = 2
+
+with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
+
+    message(round_wait, 'Round 1: Nihau')
+
+    o.instructions('read_profiles', 'Take a moment to learn about the other players.')
+
+    for i, p in enumerate(coplayers):
+        o.okay_screen(('fluff', i),
+            o.text(0, .5, '[TODO: photo goes here]'),
+            o.html(0, 0,
+                p['name'] + "<br><br>" + '<br>'.join(
+                '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
+                    ['Age', 'Hometown', 'School', 'Interests'])))
+
+    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island.<br><br>Watch out: votes aren't private. Each player gets to see how every other player voted for them.")
+
+    o.instructions('voting_order', html = True, string =
+        "You'll vote in this order in every round:<br><br>" + '<br>'.join(
+            ['{}. {}'.format(i + 1, name) for i, name in enumerate(
+                [p['name'] for p in coplayers] +
+                [o.data['profile']['name']])]))
+
+    voting(1)
+
+# ------------------------------------------------------------
+# All other rounds
+# ------------------------------------------------------------
+
+round_descriptions = [
+    dict(place = 'Kauai',
+        background = 'Hanalei,_Kauai_HI.jpg',
+        fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round to see who will continue on.",
+        question = 'How good are you at sports?'),
+    dict(place = 'Oahu',
+        background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
+        fluff = "Welcome to Oahu, the third largest of the Hawaiian islands! You are getting closer and closer to the Big Island of Hawaii. Let's play another round to see who will continue on.",
+        question = 'How popular are you?'),
+    dict(place = 'Molokai',
+        background = 'Church_at_the_end_of_the_road.jpg',
+        fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island of Hawaii. Let's play again!",
+        question = 'How well do you do in science classes?'),
+    dict(place = 'Maui',
+        background = 'Kipahulu_coast.jpg',
+        fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will continue on to the Big Island of Hawaii.",
+        question = 'How well do you get along with your peers?')]
+
+for i, r in enumerate(round_descriptions):
+    nround = i + 2
+    with o.dkey_prefix(('round', nround)), background(r['background']):
+
+        message(round_wait, 'Round {}: {}'.format(nround, r['place']))
+        o.instructions('fluff', r['fluff'])
+
+        o.get_rating('poll_question',
+            'Everyone will now answer another question so you can get to know each other better.\n\n' + 
+                r['question'],
+            'not at all', 'extremely')        
+        for p in coplayers:
+            p['responses'][nround] = choice(rating_distribution)
+        o.instructions('poll_results', "Here are your responses:\n\n" + "\n".join(
+            ["{}: {}".format(p['name'], p['responses'][nround]) for p in coplayers] +
+            ["{}: {}".format(
+                o.data['profile']['name'],
+                o.data['round'][nround]['poll_question'])]))
+
+        voting(nround)
+
+# ------------------------------------------------------------
+# Done!
+# ------------------------------------------------------------
+
+with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
+    message(3, 'You made it to the Big Island of Hawaii!\nLet the vacation begin!')
+
+for p in o.data['coplayers']: del p['ai']
+  # We don't want to try serializing the 'ai's.
+o.write_data(par['output_path_fmt'].format(**o.data))
+
+o.wait_screen(1,
+    o.text(0, 0, 'Done!\n\nPlease let the experimenter know you are done.'))
