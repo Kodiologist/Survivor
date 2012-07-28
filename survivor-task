@@ -284,8 +284,6 @@ with background('Hawaje-NoRedLine.jpg'):
 
         o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players you're traveling with. After each round, you'll have the chance to vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to hang out with them as long as possible to continue on the Island Getaway!")
 
-    o.instructions('subject_is_photographed', "First, we'll take a picture of you so the other players can see what you look like.")
-
     with o.dkey_prefix('profile'):
 
         o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
