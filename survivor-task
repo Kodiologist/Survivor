@@ -184,15 +184,15 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('profile'):
 
-        o.get_text('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
+        o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
 
-        o.get_nonneg_int('age', 'How old are you?')
+        o.nonneg_int_entry_screen('age', 'How old are you?')
 
-        o.get_text('hometown', 'What is your hometown?')
+        o.text_entry_screen('hometown', 'What is your hometown?')
 
-        o.get_text('school', 'What school do you go to?')
+        o.text_entry_screen('school', 'What school do you go to?')
 
-        o.get_text('interests', "What are some things you're interested in?")
+        o.text_entry_screen('interests', "What are some things you're interested in?")
 
     lag(3)
 
@@ -332,10 +332,10 @@ for i, r in enumerate(round_descriptions):
         message(round_wait, 'Round {}: {}'.format(nround, r['place']))
         o.instructions('fluff', r['fluff'])
 
-        o.get_rating('poll_question',
+        o.discrete_rating_screen('poll_question',
             'Everyone will now answer another question so you can get to know each other better.\n\n' + 
                 r['question'],
-            'not at all', 'extremely')        
+            anchors = ('not at all', 'extremely'))
         for p in coplayers:
             p['responses'][nround] = choice(rating_distribution)
         o.instructions('poll_results', "Here are your responses:\n\n" + "\n".join(
