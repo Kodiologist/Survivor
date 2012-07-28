@@ -63,20 +63,20 @@ round_descriptions = [
         question = 'How good are you at sports?'),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
-        fluff = "Welcome to Oahu, the third largest of the Hawaiian islands! You are getting closer and closer to the Big Island of Hawaii. Let's play another round to see who will continue on.",
+        fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round to see who will continue on.",
         question = 'How popular are you?'),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
-        fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island of Hawaii. Let's play again!",
+        fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again!",
         question = 'How well do you do in science classes?'),
+    dict(place = 'Lanai',
+        background = 'Full_moon_setting_over_Lanai.jpg',
+        fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
+        question = 'STUB'),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will continue on to the Big Island of Hawaii.",
-        question = 'How well do you get along with your peers?'),
-    dict(place = 'STUB',
-        background = 'Kipahulu_coast.jpg',
-        fluff = 'STUB',
-        question = 'STUB')]
+        question = 'How well do you get along with your peers?')]
 
 round_wait = 2
 
