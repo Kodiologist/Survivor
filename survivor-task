@@ -343,8 +343,13 @@ for i, r in enumerate(round_descriptions):
             'Everyone will now answer another question so you can get to know each other better.\n\n' + 
                 r['question'],
             anchors = ('not at all', 'extremely'))
+
         for p in coplayers:
             p['poll_responses'][nround] = choice(rating_distribution)
+        varwait = max(expovariate(2) for _ in coplayers)
+        o.save('poll_varwait', varwait)
+        lag(varwait)
+
         responses = shuffled(
             [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
             [('SUBJECT', o.data['profile']['name'], o.data['round'][nround]['poll_question'])])
