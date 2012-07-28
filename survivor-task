@@ -153,7 +153,7 @@ for k, p in coplayers.items():
     p['id'] = k
     p['votes'] = [None] + map(bool, p['votes'])
     p['poll_responses'] = len(p['votes']) * [None]
-coplayers = shuffled(coplayers.values())
+coplayers = coplayers.values()
 
 # Make the coplayers evenly split by gender within the expendable
 # and non-expendable groups.
@@ -223,29 +223,11 @@ accept_icon = icon_frame('green') + [
 voting_msg_y = -.5
 
 def voting(nround):
-    # Some delays are variable for verisimilitude.
-
-    varwait = .2 + expovariate(1)
-    o.save('prevote_varwait', varwait)
-    lag(varwait)
-
-    # Coplayers vote.
-    for p in coplayers:
-        is_voting = o.text(0, voting_msg_y, u'{name} is voting…'.format(**p))
-        o.wait_screen(1, is_voting, o.fixation_cross)
-        o.wait_screen(2, is_voting, o.text(0, 0, '[TODO: photo goes here]'))
-        varwait = 1 + expovariate(1.0/2)
-        o.save(('coplayers_vote_varwait', p['id']), varwait)
-        o.wait_screen(varwait, is_voting, o.fixation_cross)
-        keep = p['votes'][nround]
-        o.wait_screen(1.5,
-            o.text(0, voting_msg_y, '{} voted to {}.'.format(
-                p['name'],
-                'keep you' if keep else 'kick you out')),
-            *(accept_icon if keep else reject_icon))
 
     # The subject votes.
-    for p in coplayers:
+    cps = shuffled(coplayers)
+    o.save('subject_votes_order', [p['id'] for p in cps])
+    for p in cps:
         o.button_screen(('subject_votes', p['id']),
            o.text(0, .5, '[TODO: photo goes here]'),
            o.text(0, voting_msg_y,
@@ -253,6 +235,27 @@ def voting(nround):
                    p['name'], pronoun_obj(p))),
            o.button(-.25, -.7, 'Kick\nOut'),
            o.button(.25, -.7, 'Keep'))
+
+    # Use a variable delay for verisimilitude.
+    varwait = .5 + max(expovariate(1) for _ in coplayers)
+    o.save('voting_varwait', varwait)
+    lag(varwait)
+
+    # Coplayers' votes are shown.
+    cps = shuffled(coplayers)
+    o.save('coplayer_votes_shown_order', [p['id'] for p in cps])
+    for p in cps:
+        o.wait_screen(1, o.fixation_cross)
+        o.wait_screen(2,
+            o.text(0, voting_msg_y, u'{name} voted…'.format(**p)),
+            o.text(0, 0, '[TODO: photo goes here]'))
+        o.wait_screen(1, o.fixation_cross)
+        keep = p['votes'][nround]
+        o.wait_screen(1.5,
+            o.text(0, voting_msg_y, '{} voted to {}.'.format(
+                p['name'],
+                'keep you' if keep else 'kick you out')),
+            *(accept_icon if keep else reject_icon))
 
     # An expendable coplayer is outsted.
     loser = choice([p for p in coplayers if p['expendable']])
@@ -311,7 +314,9 @@ with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
 
     o.instructions('read_profiles', 'Take a moment to learn about the other players.')
 
-    for i, p in enumerate(coplayers):
+    cps = shuffled(coplayers)
+    o.save('profile_order', [p['id'] for p in cps])
+    for i, p in enumerate(cps):
         o.okay_screen(('fluff', i),
             o.text(0, .5, '[TODO: photo goes here]'),
             o.html(0, 0,
@@ -320,12 +325,6 @@ with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
                     ['Age', 'Hometown', 'School', 'Interests'])))
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island.<br><br>Watch out: votes aren't private. Each player gets to see how every other player voted for them.")
-
-    o.instructions('voting_order', html = True, string =
-        "You'll vote in this order in every round:<br><br>" + '<br>'.join(
-            ['{}. {}'.format(i + 1, name) for i, name in enumerate(
-                [p['name'] for p in coplayers] +
-                [o.data['profile']['name']])]))
 
     voting(1)
 
@@ -346,11 +345,12 @@ for i, r in enumerate(round_descriptions):
             anchors = ('not at all', 'extremely'))
         for p in coplayers:
             p['poll_responses'][nround] = choice(rating_distribution)
+        responses = shuffled(
+            [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
+            [('SUBJECT', o.data['profile']['name'], o.data['round'][nround]['poll_question'])])
+        o.save('poll_response_order', [responses[0] for r in responses])
         o.instructions('poll_results', "Here are your responses:\n\n" + "\n".join(
-            ["{}: {}".format(p['name'], p['poll_responses'][nround]) for p in coplayers] +
-            ["{}: {}".format(
-                o.data['profile']['name'],
-                o.data['round'][nround]['poll_question'])]))
+            ["{}: {}".format(r[1], r[2]) for r in responses]))
 
         voting(nround)
 
