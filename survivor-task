@@ -16,7 +16,9 @@ o.save('task_version', par['task_version'])
 # ------------------------------------------------------------
 
 male_names = ['Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake']
+extra_male_name = 'Austin'
 female_names = ['Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma']
+extra_female_name = 'Faith'
 locations = [
     ('Pasadena, CA', 'McKinley School'),
     ('Chicago, IL', 'Jonathan Burr Elementary'),
@@ -289,10 +291,11 @@ def voting(nround):
 # ------------------------------------------------------------
 
 if par['debug']:
-    o.data['subject'] = 'test';
-    o.save(('profile', 'name'), 'SUBJECTNAME')
+    o.data['subject'] = 'test'
 else:
     o.get_subject_id('Island Getaway')
+
+subject_name = '???'
 
 # ------------------------------------------------------------
 # Introduction
@@ -310,6 +313,21 @@ with background('Hawaje-NoRedLine.jpg'):
     with o.dkey_prefix('profile'):
 
         o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
+        subject_name = o.data['profile']['name']
+        # Try to normalize capitalization.
+        if subject_name.isalpha() and (
+                subject_name.islower() or
+                    (len(subject_name) > 2 and subject_name.isupper())):
+                      # Don't downcase "AJ".
+            subject_name = subject_name.lower().capitalize()
+        # If the subject's name exactly matches the name of a
+        # coplayer (case-insensitively), rename the coplayer.
+        try:
+            p = next(p for p in coplayers if
+                p['name'].lower() == subject_name.lower())
+            p['name'] = extra_female_name if p['female'] else extra_male_name
+        except StopIteration:
+            pass
 
         o.nonneg_int_entry_screen('age', 'How old are you?')
 
@@ -369,7 +387,7 @@ for i, r in enumerate(round_descriptions):
 
         responses = shuffled(
             [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
-            [('SUBJECT', o.data['profile']['name'], o.data['round'][nround]['poll_question'])])
+            [('SUBJECT', subject_name, o.data['round'][nround]['poll_question'])])
         o.save('poll_response_order', [responses[0] for r in responses])
         o.instructions('poll_results', "Here are your responses:\n\n" + "\n".join(
             ["{}: {}".format(r[1], r[2]) for r in responses]))
