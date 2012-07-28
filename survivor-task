@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # encoding: UTF-8
-par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
 import schizoidpy
 from psychopy.visual import ImageStim, Rect, Circle
 from random import sample, choice, expovariate
 from sys import argv
+
+par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
 o = schizoidpy.Task(button_radius = .1)
 o.save('task_version', par['task_version'])
@@ -234,7 +235,7 @@ def voting(nround):
     # Some delays are variable for verisimilitude.
 
     varwait = .2 + expovariate(1)
-    o.save(('prevote_varwait', p['id']), varwait)
+    o.save('prevote_varwait', varwait)
     lag(varwait)
 
     # Coplayers vote.
