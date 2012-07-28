@@ -255,8 +255,8 @@ def voting(nround):
            o.button(.25, -.7, 'Keep'))
 
     # An expendable coplayer is outsted.
-    loser = sorted([p for p in coplayers if p['expendable']],
-        key = lambda p: p['name'])[0]
+    loser = choice([p for p in coplayers if p['expendable']])
+    o.save('loser', loser['id'])
     coplayers.remove(loser)
     o.instructions('loser',
         "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. The remaining players will continue on to the next island.".format(
