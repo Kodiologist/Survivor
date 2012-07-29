@@ -3,12 +3,13 @@
 
 import schizoidpy
 from psychopy.visual import ImageStim, Rect, Circle
-from random import sample, choice, expovariate
+from random import sample, expovariate
 from sys import argv
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
 o = schizoidpy.Task(
+    button_radius = .12,
     okay_button_pos = (0, -.7))
 o.save('task_version', par['task_version'])
 
@@ -16,11 +17,11 @@ o.save('task_version', par['task_version'])
 # Data
 # ------------------------------------------------------------
 
-male_names = ['Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake']
+male_names = {'Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake'}
 extra_male_name = 'Austin'
-female_names = ['Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma']
+female_names = {'Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma'}
 extra_female_name = 'Faith'
-locations = [
+locations = {
     ('Pasadena, CA', 'McKinley School'),
     ('Chicago, IL', 'Jonathan Burr Elementary'),
     ('Dayton, TN', 'Spring City Middle School'),
@@ -31,9 +32,8 @@ locations = [
     ('Euclid, OH', 'Forest Park Middle School'),
     ('Westbrook, ME', 'Westbrook Middle School'),
     ('Allen, TX', 'Kerr Elementary School'),
-    ('Saint Louis, MO', 'Rogers Middle'),
-    ('San Jose, CA', 'Holy Family School')]
-interests = [
+    ('San Jose, CA', 'Holy Family School')}
+interests = {
     'Pretty much anything, lol.',
     'Video Games, Soccer',
     'Reading and writing all kinds of things. But especially poetry.',
@@ -44,10 +44,11 @@ interests = [
     'Horror movies & magic tricks',
     'um, Hawaii? I really like traveling. I went snorkeling once, too.',
     'philosophy, video games, my cats',
-    'drama',
-    'Groan-inducing puns.']
-ages = [11, 11, 12, 12, 12, 13]
-ages = (len(locations) / len(ages)) * ages
+    'drama'}
+ages = [
+    11, 11, 11, 11,
+    12, 12, 12, 12, 12,
+    13, 13]
 
 round_descriptions = [
     dict(place = 'Kauai',
@@ -82,7 +83,9 @@ round_wait = 2
 # Helper functions
 # ------------------------------------------------------------
 
-def shuffled(l): return sample(l, len(l))
+def shuffled(x): return sample(x, len(x))
+def choice(x): return shuffled(x)[0]
+  # random.choice doesn't work on sets.
 
 def image_path(image):
     return par['image_dir'] + image
@@ -161,6 +164,10 @@ for i, p in enumerate(shuffled([p for p in coplayers if p['expendable']])):
     p['female'] = bool(i % 2)
 for i, p in enumerate(shuffled([p for p in coplayers if not p['expendable']])):
     p['female'] = bool(i % 2)
+  # Because there's an odd number of non-expendable coplayers,
+  # we're left with one more male than we have females. Later,
+  # if we learn that the subject is male, we'll make one of
+  # the male non-expendables female.
 
 def pronoun_nom(p): return 'she' if p['female'] else 'he'
 def pronoun_obj(p): return 'her' if p['female'] else 'him'
@@ -308,6 +315,17 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('profile'):
 
+        o.button_screen('gender',
+           o.text(0, .8, 'Are you male or female?', vAlign = 'top'),
+           o.button(-.25, -.7, 'Male'),
+           o.button(.25, -.7, 'Female'))
+        if o.data['profile']['gender'] == 'Male':
+            # Make a male non-expendable female so that there's
+            # of equal number of male and female players.
+            transgal = choice([p for p in coplayers if not p['female']])
+            transgal['female'] = True
+            transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
+
         o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
         subject_name = o.data['profile']['name']
         # Try to normalize capitalization.
@@ -351,9 +369,11 @@ with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
         o.okay_screen(('fluff', i),
             o.text(0, .5, '[TODO: photo goes here]'),
             o.html(0, 0,
-                p['name'] + "<br><br>" + '<br>'.join(
-                '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
-                    ['Age', 'Hometown', 'School', 'Interests'])))
+                p['name'] + "<br><br>" +
+                '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+                '<br>'.join(
+                    '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
+                        ['Age', 'Hometown', 'School', 'Interests'])))
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island.<br><br>Watch out: votes aren't private. Each player gets to see how every other player voted for them.")
 
