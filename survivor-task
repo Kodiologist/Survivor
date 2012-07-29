@@ -8,7 +8,8 @@ from sys import argv
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
-o = schizoidpy.Task(button_radius = .1)
+o = schizoidpy.Task(
+    okay_button_pos = (0, -.7))
 o.save('task_version', par['task_version'])
 
 # ------------------------------------------------------------
@@ -106,7 +107,7 @@ def message(duration, string):
     with o.hiding(big_canvas):
         o.wait_screen(duration,
             strip_canvas,
-            o.text(0, 0, string))
+            o.text(0, 0, string, wrap = 1.2))
 
 blank_background = o.hiding(background_imagestim, big_canvas)
 
@@ -239,7 +240,7 @@ def voting(nround):
     for p in cps:
         o.button_screen(('subject_votes', p['id']),
            o.text(0, .5, '[TODO: photo goes here]'),
-           o.text(0, voting_msg_y,
+           o.text(0, voting_msg_y, wrap = 2, string =
                'Should we keep {} or kick {} out?'.format(
                    p['name'], pronoun_obj(p))),
            o.button(-.25, -.7, 'Kick\nOut'),
@@ -399,7 +400,7 @@ with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
 # Post-game questionnaire
 # ------------------------------------------------------------
 
-o.questionnaire_screen('postgame_questionnaire', 'Answer the below questionnaire. Pick the options that best represent the feelings you were experiencing during the game.',
+o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pick the options that best represent the feelings you were experiencing during the game.',
     scale_levels = ('Not at all', '', '', '', 'Extremely'),
     questions = [
         {'id': ('task disengagement', 4), 'text': 'I thought "This game is dumb."'},
