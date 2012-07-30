@@ -9,6 +9,7 @@ from sys import argv
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
 o = schizoidpy.Task(
+    send_actiview_trigger_codes = par['eeg'],
     button_radius = .12,
     okay_button_pos = (0, -.7))
 o.save('task_version', par['task_version'])
@@ -78,6 +79,9 @@ round_descriptions = [
         responses = ['yes', 'quest', 'victory', 'crustacean', 'pizza', 'frost'])]
 
 round_wait = 2
+
+reject_onset_code = 1
+accept_onset_code = 2
 
 # ------------------------------------------------------------
 # Helper functions
@@ -276,6 +280,7 @@ def voting(nround):
                 o.text(0, voting_msg_y, p['name']),
                 o.text(0, 0, '[TODO: photo goes here]'))
             o.wait_screen(1, o.fixation_cross)
+            o.trigger(accept_onset_code if p['votes'][nround] else reject_onset_code)
             o.wait_screen(1.5,
                 *(accept_icon_c if p['votes'][nround] else reject_icon_c))
 
@@ -476,7 +481,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
 # Done!
 # ------------------------------------------------------------
 
-o.write_data(par['output_path_fmt'].format(**o.data))
+o.done(par['output_path_fmt'].format(**o.data))
 
 o.wait_screen(1,
     o.text(0, 0, 'Done!\n\nPlease let the experimenter know you are done.'))
