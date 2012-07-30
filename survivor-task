@@ -38,12 +38,12 @@ interests = {
     'Video Games, Soccer',
     'Reading and writing all kinds of things. But especially poetry.',
     'baking, skateboards, dogs',
-    'Ancient Rome, comic books',
+    'singing and swimming (not at the same time)',
     'jazz band, movies',
     'football, baseball, juggling',
     'Horror movies & magic tricks',
     'um, Hawaii? I really like traveling. I went snorkeling once, too.',
-    'philosophy, video games, my cats',
+    'drawing, video games, my cats',
     'drama'}
 ages = [
     11, 11, 11, 11,
@@ -75,7 +75,7 @@ round_descriptions = [
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will continue on to the Big Island of Hawaii.",
         question = "What's your favorite word?",
-        responses = ['yes', 'quest', 'victory', 'crustacean', 'immortality', 'frost'])]
+        responses = ['yes', 'quest', 'victory', 'crustacean', 'pizza', 'frost'])]
 
 round_wait = 2
 
