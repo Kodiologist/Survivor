@@ -55,27 +55,27 @@ round_descriptions = [
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round to see who will continue on.",
         question = 'Who do you most admire?',
-        responses = 10 * ['STUB']),
+        responses = ["don't know", 'my mom', 'Grandpa', 'my English teacher', 'obama', 'maya angelou', 'abraham lincoln', 'mark zuckerberg', 'Einstein', 'Bill Waterson']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round to see who will continue on.",
         question = "What's your least favorite thing to do (that you have to do anyway)?",
-        responses = 9 * ['STUB']),
+        responses = ['clean my room', 'The dishes', 'math homework', 'homework', 'babysit my little brother', 'Getting up in the morning!', 'school', 'church', 'errands']),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
         fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again!",
         question = 'If you could bring only one thing to a desert island, what would it be?',
-        responses = 8 * ['STUB']),
+        responses = ['signal flares', 'wii', 'xbox', 'computer', 'my iphone', 'lots of books', 'a soccer ball', 'my best friend']),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
         fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
         question = "What's your favorite subject in school?",
-        responses = 7 * ['STUB']),
+        responses = ['none of them', 'lunch', 'PE', 'math', 'science', 'Latin', 'social studies']),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will continue on to the Big Island of Hawaii.",
         question = "What's your favorite word?",
-        responses = 6 * ['STUB'])]
+        responses = ['yes', 'quest', 'victory', 'crustacean', 'immortality', 'frost'])]
 
 round_wait = 2
 
@@ -404,8 +404,11 @@ for i, r in enumerate(round_descriptions):
             [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
             [('SUBJECT', subject_name, o.data['round'][nround]['poll_question'])])
         o.save('poll_response_order', [responses[0] for r in responses])
-        o.instructions('poll_results', "Here are your responses:\n\n" + "\n".join(
-            ["{}: {}".format(r[1], r[2]) for r in responses]))
+        o.okay_screen('poll_results',
+            o.text(0, .8, "Here are your responses:"),
+            o.text(0, .65,
+                "\n".join(["{}: {}".format(r[1], r[2]) for r in responses]),
+                wrap = 1.4, vAlign = 'top'))
 
         voting(nround)
 
