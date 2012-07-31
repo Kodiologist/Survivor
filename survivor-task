@@ -162,7 +162,7 @@ coplayers = dict(
 
 for k, p in coplayers.items():
     p['id'] = k
-    p['votes'] = [None] + map(bool, p['votes'])
+    p['votes'] = map(bool, p['votes'])
     p['poll_responses'] = len(p['votes']) * [None]
 coplayers = coplayers.values()
 
@@ -281,7 +281,7 @@ def voting(nround):
     with blank_background:
         cps = shuffled(coplayers)
         o.save('coplayer_votes_shown_order', [p['id'] for p in cps])
-        if nround == 1:
+        if nround == 0:
             o.okay_screen('feedback_explanation',
                 o.text(0, .7, "You'll now get to see how each other player voted for you. You'll see each player's name and photo followed by an icon."),
                 accept_icon(-.5),
@@ -378,10 +378,10 @@ with background('Hawaje-NoRedLine.jpg'):
     lag(3)
 
 # ------------------------------------------------------------
-# Round 1
+# Round 0
 # ------------------------------------------------------------
 
-with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
+with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
 
     message(round_wait, 'Round 1: Nihau')
 
@@ -401,17 +401,17 @@ with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island.<br><br>Watch out: votes aren't private. Each player gets to see how every other player voted for them.")
 
-    voting(1)
+    voting(0)
 
 # ------------------------------------------------------------
 # All other rounds
 # ------------------------------------------------------------
 
 for i, r in enumerate(round_descriptions):
-    nround = i + 2
+    nround = i + 1
     with o.dkey_prefix(('round', nround)), background(r['background']):
 
-        message(round_wait, 'Round {}: {}'.format(nround, r['place']))
+        message(round_wait, 'Round {}: {}'.format(nround + 1, r['place']))
         o.instructions('fluff', r['fluff'])
 
         o.text_entry_screen('poll_question',
