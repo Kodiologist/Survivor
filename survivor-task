@@ -236,25 +236,25 @@ def icon_frame(x, color):
 
 def reject_icon(x = 0):
     x = x * (o.screen_width/2)
-    return icon_frame(x, 'red') + [
+    return StimGroup(icon_frame(x, 'red') + [
         Rect(o.win, icon_dim, icon_thickness,
             pos = (x, 0), ori = 45,
             units = 'pix', fillColor = 'red', lineColor = 'red'),
         Rect(o.win, icon_dim, icon_thickness,
             pos = (x, 0), ori = -45,
-            units = 'pix', fillColor = 'red', lineColor = 'red')]
+            units = 'pix', fillColor = 'red', lineColor = 'red')])
 
 reject_icon_c = reject_icon()
 
 def accept_icon(x = 0):
     x = x * (o.screen_width/2)
-    return icon_frame(x, 'green') + [
+    return StimGroup(icon_frame(x, 'green') + [
         Rect(o.win, .75*icon_dim, icon_thickness, ori = -68,
             pos = (x + 20, 0),
             units = 'pix', fillColor = 'green', lineColor = 'green'),
         Rect(o.win, .25*icon_dim, icon_thickness, ori = 45,
             pos = (x - 2.2*icon_thickness, -.25*icon_dim),
-            units = 'pix', fillColor = 'green', lineColor = 'green')]
+            units = 'pix', fillColor = 'green', lineColor = 'green')])
 
 accept_icon_c = accept_icon()
 
@@ -284,11 +284,12 @@ def voting(nround):
         if nround == 1:
             o.okay_screen('feedback_explanation',
                 o.text(0, .7, "You'll now get to see how each other player voted for you. You'll see each player's name and photo followed by an icon."),
+                accept_icon(-.5),
                 o.text(-.5, -.3, "This means a vote to keep you.",
                     vAlign = 'top', wrap = .6),
+                reject_icon(.5),
                 o.text(.5, -.3, "This means a vote to kick you out.",
-                    vAlign = 'top', wrap = .6),
-                *(accept_icon(-.5) + reject_icon(.5)))
+                    vAlign = 'top', wrap = .6))
         for p in cps:
             o.wait_screen(1, o.fixation_cross)
             o.wait_screen(2,
@@ -297,7 +298,7 @@ def voting(nround):
             o.wait_screen(1, o.fixation_cross)
             o.trigger(accept_onset_code if p['votes'][nround] else reject_onset_code)
             o.wait_screen(1.5,
-                *(accept_icon_c if p['votes'][nround] else reject_icon_c))
+                accept_icon_c if p['votes'][nround] else reject_icon_c)
 
     # An expendable coplayer is outsted.
     loser = choice([p for p in coplayers if p['expendable']])
