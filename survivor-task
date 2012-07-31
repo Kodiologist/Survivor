@@ -84,6 +84,20 @@ round_descriptions = [
 
 round_wait = 2
 
+# The format of EEG trigger codes is as follows:
+#
+# Bits 0–2: Encodes the type of event.
+events = dict(
+    # We skip 0 because that's a control code.
+    subject_votes_to_accept              = 0b00000001,
+    subject_votes_to_reject              = 0b00000010,
+    coplayer_picture_before_showing_vote = 0b00000011,
+    subject_gets_accept_vote             = 0b00000100,
+    subject_gets_reject_vote             = 0b00000101)
+# Bits 3–6: Encodes the coplayer involved in the event.
+# Bit 7: Always 0, avoiding confusion with codes 255 and 256
+#   (which are more control codes).
+
 reject_onset_code = 1
 accept_onset_code = 2
 
@@ -160,8 +174,9 @@ coplayers = dict(
    xpendable_rfirst_2 = dict(expendable = True, votes = alternate_rfirst),
    xpendable_rfirst_3 = dict(expendable = True, votes = alternate_rfirst))
 
-for k, p in coplayers.items():
+for i, (k, p) in enumerate(sorted(coplayers.items())):
     p['id'] = k
+    p['trigger_code'] = i << 3
     p['votes'] = map(bool, p['votes'])
     p['poll_responses'] = len(p['votes']) * [None]
 coplayers = coplayers.values()
@@ -269,8 +284,10 @@ def voting(nround):
            o.text(0, -.25, wrap = 2, string =
                'Should we keep {} or kick {} out?'.format(
                    p['name'], pronoun_obj(p))),
-           o.button(-.25, -.7, 'Kick\nOut'),
-           o.button(.25, -.7, 'Keep'))
+           o.button(-.25, -.7, 'Kick\nOut',
+               p['trigger_code'] | events['subject_votes_to_reject']),
+           o.button(.25, -.7, 'Keep',
+               p['trigger_code'] | events['subject_votes_to_accept']))
 
     # Use a variable delay for verisimilitude.
     varwait = .5 + max(expovariate(1) for _ in coplayers)
@@ -292,11 +309,15 @@ def voting(nround):
                     vAlign = 'top', wrap = .6))
         for p in cps:
             o.wait_screen(1, o.fixation_cross)
+            o.trigger(p['trigger_code'] |
+                events['coplayer_picture_before_showing_vote'])
             o.wait_screen(2,
                 o.text(0, -.5, p['name']),
                 portrait_stim(0, 0, p))
             o.wait_screen(1, o.fixation_cross)
-            o.trigger(accept_onset_code if p['votes'][nround] else reject_onset_code)
+            keep = p['votes'][nround]
+            o.trigger(p['trigger_code'] | events[
+                'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
             o.wait_screen(1.5,
                 accept_icon_c if p['votes'][nround] else reject_icon_c)
 
