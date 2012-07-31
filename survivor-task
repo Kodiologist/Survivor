@@ -2,6 +2,7 @@
 # encoding: UTF-8
 
 import schizoidpy
+from schizoidpy import StimGroup
 from psychopy.visual import ImageStim, Rect, Circle
 from random import sample, expovariate
 from sys import argv
@@ -22,6 +23,7 @@ male_names = {'Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake'}
 extra_male_name = 'Austin'
 female_names = {'Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma'}
 extra_female_name = 'Faith'
+portrait_dims = (144, 216)
 male_portraits = {'m-hispanic-smiling-blue-messyhair.jpg', 'm-hispanic-smiling-turquoise.jpg', 'm-white-neutral-gray.jpg', 'm-white-smiling-black.jpg', 'm-white-smiling-gray-braces.jpg', 'm-white-smiling-white-small_waving.jpg'}
 female_portraits = {'f-hispanic-smiling-outdoors.jpg', 'f-white-neutral-gray-tanktop.jpg', 'f-white-neutral-workroom.jpg', 'f-white-smiling-black-braces.jpg', 'f-white-smiling-gray.jpg', 'f-white-smiling-office.jpg'}
 locations = {
@@ -189,9 +191,13 @@ portrait_stim_cache = {}
 def portrait_stim(x, y, p):
     k = x, y, p['portrait']
     if k not in portrait_stim_cache:
-        portrait_stim_cache[k] = ImageStim(o.win,
-            pos = (x, y),
-            image = image_path(p['portrait']))
+        portrait_stim_cache[k] = StimGroup((
+            ImageStim(o.win, pos = (x, y),
+                image = image_path(p['portrait'])),
+            Rect(o.win, pos = (x, y),
+                width = (portrait_dims[0] + 3) / (.5 * o.screen_width),
+                height = (portrait_dims[1] + 3) / (.5 * o.screen_height),
+                lineColor = "black", lineWidth = 3)))
     return portrait_stim_cache[k]
 
 # Assign fluff.
