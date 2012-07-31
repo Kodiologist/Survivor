@@ -22,6 +22,8 @@ male_names = {'Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake'}
 extra_male_name = 'Austin'
 female_names = {'Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma'}
 extra_female_name = 'Faith'
+male_portraits = {'m-hispanic-smiling-blue-messyhair.jpg', 'm-hispanic-smiling-turquoise.jpg', 'm-white-neutral-gray.jpg', 'm-white-smiling-black.jpg', 'm-white-smiling-gray-braces.jpg', 'm-white-smiling-white-small_waving.jpg'}
+female_portraits = {'f-hispanic-smiling-outdoors.jpg', 'f-white-neutral-gray-tanktop.jpg', 'f-white-neutral-workroom.jpg', 'f-white-smiling-black-braces.jpg', 'f-white-smiling-gray.jpg', 'f-white-smiling-office.jpg'}
 locations = {
     ('Pasadena, CA', 'McKinley School'),
     ('Chicago, IL', 'Jonathan Burr Elementary'),
@@ -177,11 +179,20 @@ def pronoun_nom(p): return 'she' if p['female'] else 'he'
 def pronoun_obj(p): return 'her' if p['female'] else 'him'
 def pronoun_gen(p): return 'her' if p['female'] else 'his'
 
-# Assign names.
-males = shuffled(male_names)
-females = shuffled(female_names)
+# Assign names and portraits.
+males = zip(shuffled(male_names), shuffled(male_portraits))
+females = zip(shuffled(female_names), shuffled(female_portraits))
 for p in coplayers:
-    p['name'] = females.pop() if p['female'] else males.pop()
+    p['name'], p['portrait'] = females.pop() if p['female'] else males.pop()
+
+portrait_stim_cache = {}
+def portrait_stim(x, y, p):
+    k = x, y, p['portrait']
+    if k not in portrait_stim_cache:
+        portrait_stim_cache[k] = ImageStim(o.win,
+            pos = (x, y),
+            image = image_path(p['portrait']))
+    return portrait_stim_cache[k]
 
 # Assign fluff.
 for p, age, (hometown, school), interest in zip(
@@ -241,8 +252,6 @@ def accept_icon(x = 0):
 
 accept_icon_c = accept_icon()
 
-voting_msg_y = -.5
-
 def voting(nround):
 
     # The subject votes.
@@ -250,8 +259,8 @@ def voting(nround):
     o.save('subject_votes_order', [p['id'] for p in cps])
     for p in cps:
         o.button_screen(('subject_votes', p['id']),
-           o.text(0, .5, '[TODO: photo goes here]'),
-           o.text(0, voting_msg_y, wrap = 2, string =
+           portrait_stim(0, .25, p),
+           o.text(0, -.25, wrap = 2, string =
                'Should we keep {} or kick {} out?'.format(
                    p['name'], pronoun_obj(p))),
            o.button(-.25, -.7, 'Kick\nOut'),
@@ -277,8 +286,8 @@ def voting(nround):
         for p in cps:
             o.wait_screen(1, o.fixation_cross)
             o.wait_screen(2,
-                o.text(0, voting_msg_y, p['name']),
-                o.text(0, 0, '[TODO: photo goes here]'))
+                o.text(0, -.5, p['name']),
+                portrait_stim(0, 0, p))
             o.wait_screen(1, o.fixation_cross)
             o.trigger(accept_onset_code if p['votes'][nround] else reject_onset_code)
             o.wait_screen(1.5,
@@ -332,6 +341,7 @@ with background('Hawaje-NoRedLine.jpg'):
             transgal = choice([p for p in coplayers if not p['female']])
             transgal['female'] = True
             transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
+            transgal['portrait'], = female_portraits - {p['portrait'] for p in coplayers if p['female']}
 
         o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
         subject_name = o.data['profile']['name']
@@ -374,7 +384,7 @@ with o.dkey_prefix(('round', 1)), background('Niihau_sep_2007.jpg'):
     o.save('profile_order', [p['id'] for p in cps])
     for i, p in enumerate(cps):
         o.okay_screen(('fluff', i),
-            o.text(0, .5, '[TODO: photo goes here]'),
+            portrait_stim(0, .5, p),
             o.html(0, 0,
                 p['name'] + "<br><br>" +
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
