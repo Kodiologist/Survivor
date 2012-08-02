@@ -378,7 +378,7 @@ with background('Hawaje-NoRedLine.jpg'):
     with o.dkey_prefix('profile'):
 
         o.button_screen('gender',
-           o.text(0, .8, 'Are you male or female?', vAlign = 'top'),
+           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you male or female?', vAlign = 'top'),
            o.button(-.25, -.7, 'Male'),
            o.button(.25, -.7, 'Female'))
         if o.data['profile']['gender'] == 'Male':
@@ -389,7 +389,7 @@ with background('Hawaje-NoRedLine.jpg'):
             transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
             transgal['portrait'], = female_portraits - {p['portrait'] for p in coplayers if p['female']}
 
-        o.text_entry_screen('name', 'Now you can fill out your profile.\n\nWhat is your first name?')
+        o.text_entry_screen('name', 'What is your first name?')
         subject_name = o.data['profile']['name']
         # Try to normalize capitalization.
         if subject_name.isalpha() and (
