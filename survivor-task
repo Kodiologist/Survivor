@@ -355,9 +355,11 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('introduction'):
 
-        o.instructions('set_the_scene', "You've just landed on the Hawaiian Island of Nihau to begin a summer vacation with a group of other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, you will be able to begin your vacation: relaxing on the beach, swimming in the sparkling water, biking around volcanoes, visiting parks, shopping, and whatever else you'd like to do.")
+        o.instructions('set_the_scene', "You've just landed on the Hawaiian Island of Nihau to begin a summer vacation with a group of {} other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, you will be able to begin your vacation: relaxing on the beach, swimming in the sparkling water, biking around volcanoes, visiting parks, shopping, and whatever else you'd like to do.".format(len(coplayers)))
 
-        o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players you're traveling with. After each round, you'll have the chance to vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to hang out with them as long as possible to continue on the Island Getaway!")
+        o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players you're traveling with. After each round, you'll have the chance to vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to hang out with them as long as possible to be one of the {} players (out of the original {}) who make it to the Big Island!".format(
+            len(coplayers) + 1 - (len(round_descriptions) + 1),
+            len(coplayers) + 1))
 
     with o.dkey_prefix('profile'):
 
