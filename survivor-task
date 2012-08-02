@@ -205,11 +205,12 @@ for p in coplayers:
 
 portrait_stim_cache = {}
 def portrait_stim(x, y, p):
-    k = x, y, p['portrait']
+    img = par['subject_portrait_path'] if p is None else image_path(p['portrait'])
+    k = x, y, img
     if k not in portrait_stim_cache:
         portrait_stim_cache[k] = StimGroup((
             ImageStim(o.win, pos = (x, y),
-                image = image_path(p['portrait'])),
+                image = img),
             Rect(o.win, pos = (x, y),
                 width = (portrait_dims[0] + 3) / (.5 * o.screen_width),
                 height = (portrait_dims[1] + 3) / (.5 * o.screen_height),
@@ -413,6 +414,15 @@ with background('Hawaje-NoRedLine.jpg'):
         o.text_entry_screen('school', 'What school do you go to?')
 
         o.text_entry_screen('interests', "What are some things you're interested in?")
+
+        o.okay_screen('view',
+            portrait_stim(0, .5, None),
+            o.html(0, 0,
+                subject_name + "<br><br>" +
+                '<b>{}</b><br>'.format(o.data['profile']['gender']) +
+                '<br>'.join(
+                    '<b>{}:</b> {}'.format(k.capitalize(), o.data['profile'][k]) for k in
+                        ['age', 'hometown', 'school', 'interests'])))
 
     lag(3)
 
