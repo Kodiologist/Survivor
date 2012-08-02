@@ -4,7 +4,7 @@
 import schizoidpy
 from schizoidpy import StimGroup
 from psychopy.visual import ImageStim, Rect, Circle
-from random import sample, expovariate
+from random import random, expovariate, sample
 from sys import argv
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
@@ -307,8 +307,10 @@ def voting(nround):
                 reject_icon(.5),
                 o.text(.5, -.3, "This means a vote to kick you out.",
                     vAlign = 'top', wrap = .6))
-        for p in cps:
-            o.wait_screen(1, o.fixation_cross)
+        for i, p in enumerate(cps):
+            varwait = 2 + random()
+            o.save(('feedback_varwait', i), varwait)
+            o.wait_screen(varwait, o.fixation_cross)
             o.trigger(p['trigger_code'] |
                 events['coplayer_picture_before_showing_vote'])
             o.wait_screen(2,
