@@ -327,11 +327,12 @@ def voting(nround):
     loser = choice([p for p in coplayers if p['expendable']])
     o.save('loser', loser['id'])
     coplayers.remove(loser)
-    o.instructions('loser',
-        "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. The remaining players will continue on to the next island.".format(
+    o.okay_screen('loser',
+        portrait_stim(0, .5, loser),
+        o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. The remaining players will continue on to the next island.".format(
             loser['name'],
             len(coplayers)/2 + 2,
-            pronoun_gen(loser).capitalize()))
+            pronoun_gen(loser).capitalize())))
 
 # ------------------------------------------------------------
 # Preliminaries
