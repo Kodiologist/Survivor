@@ -5,6 +5,7 @@ import schizoidpy
 from schizoidpy import StimGroup
 from psychopy.visual import ImageStim, Rect, Circle
 from random import random, expovariate, sample
+from cgi import escape
 from sys import argv
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
@@ -280,8 +281,20 @@ def voting(nround):
     o.save('subject_votes_order', [p['id'] for p in cps])
     for p in cps:
         o.button_screen(('subject_votes', p['id']),
-           portrait_stim(0, .25, p),
-           o.text(0, -.25, wrap = 2, string =
+           portrait_stim(-.5, .5, p),
+           o.html(.25, .5,
+               p['name'] + "<br><br>" +
+               '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+               '<br>'.join(
+                   '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
+                       ['Age', 'Hometown', 'School', 'Interests']) +
+               ''.join(
+                   '<br><b>{}:</b> {}'.format(
+                           r['question'],
+                           p['poll_responses'][i + 1])
+                       for i, r in enumerate(round_descriptions)
+                       if i + 1 <= nround)),
+           o.text(0, -.5, wrap = 2, string =
                'Should we keep {} or kick {} out?'.format(
                    p['name'], pronoun_obj(p))),
            o.button(-.25, -.7, 'Kick\nOut',
