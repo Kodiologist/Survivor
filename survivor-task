@@ -130,7 +130,7 @@ def background(image_name):
     return o.showing(background_imagestim, big_canvas)
 
 def message(duration, string):
-    # Temporarily replace big_canvas with strip_canvas
+    # Temporarily replace big_canvas with strip_canvas.
     with o.hiding(big_canvas):
         o.wait_screen(duration,
             strip_canvas,
@@ -231,7 +231,8 @@ if par['debug']:
 
 o.save('coplayers', coplayers[:])
   # We copy the coplayers list because we'll be removing elements
-  # as expendable coplayers are kicked out.
+  # as expendable coplayers are kicked out. But this is
+  # deliberately not a deep copy.
 
 # ------------------------------------------------------------
 # The voting subroutine
@@ -285,17 +286,18 @@ def voting(nround):
         o.button_screen(('subject_votes', p['id']),
             portrait_stim(-.5, .5, p),
             o.html(.25, .5,
+                # Show everything the subject knows about this
+                # coplayer, except for observed voting behavior.
                 p['name'] + "<br><br>" +
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                 '<br>'.join(
-                    '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'Hometown', 'School', 'Interests']) +
-                ''.join(
-                    '<br><b>{}:</b> {}'.format(
+                    ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
+                        ['Age', 'Hometown', 'School', 'Interests']] +
+                    ['<b>{}:</b> {}'.format(
                             escape(r['question']),
                             escape(p['poll_responses'][i + 1]))
                         for i, r in enumerate(round_descriptions)
-                        if i + 1 <= nround)),
+                        if i + 1 <= nround])),
             o.text(0, -.5, wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
@@ -336,7 +338,7 @@ def voting(nround):
             o.trigger(p['trigger_code'] | events[
                 'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
             o.wait_screen(1.5,
-                accept_icon_c if p['votes'][nround] else reject_icon_c)
+                accept_icon_c if keep else reject_icon_c)
 
     # An expendable coplayer is outsted.
     loser = choice([p for p in coplayers if p['expendable']])
@@ -371,7 +373,8 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('introduction'):
 
-        o.instructions('set_the_scene', "You've just landed on the Hawaiian Island of Nihau to begin a summer vacation with a group of {} other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, you will be able to begin your vacation: relaxing on the beach, swimming in the sparkling water, biking around volcanoes, visiting parks, shopping, and whatever else you'd like to do.".format(len(coplayers)))
+        o.instructions('set_the_scene', "You've just landed on the Hawaiian Island of Nihau to begin a summer vacation with a group of {} other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, you will be able to begin your vacation: relaxing on the beach, swimming in the sparkling water, biking around volcanoes, visiting parks, shopping, and whatever else you'd like to do.".format(
+            len(coplayers)))
 
         o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players you're traveling with. After each round, you'll have the chance to vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to hang out with them as long as possible to be one of the {} players (out of the original {}) who make it to the Big Island!".format(
             len(coplayers) + 1 - (len(round_descriptions) + 1),
