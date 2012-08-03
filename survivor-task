@@ -285,7 +285,7 @@ def voting(nround):
     for p in cps:
         o.button_screen(('subject_votes', p['id']),
             portrait_stim(-.5, .5, p),
-            o.html(.25, .5,
+            o.html(.2, .8, vAlign = 'top', font_size = 14, string =
                 # Show everything the subject knows about this
                 # coplayer, except for observed voting behavior.
                 p['name'] + "<br><br>" +
