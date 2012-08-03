@@ -283,26 +283,26 @@ def voting(nround):
     o.save('subject_votes_order', [p['id'] for p in cps])
     for p in cps:
         o.button_screen(('subject_votes', p['id']),
-           portrait_stim(-.5, .5, p),
-           o.html(.25, .5,
-               p['name'] + "<br><br>" +
-               '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
-               '<br>'.join(
-                   '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
-                       ['Age', 'Hometown', 'School', 'Interests']) +
-               ''.join(
-                   '<br><b>{}:</b> {}'.format(
-                           r['question'],
-                           p['poll_responses'][i + 1])
-                       for i, r in enumerate(round_descriptions)
-                       if i + 1 <= nround)),
-           o.text(0, -.5, wrap = 2, string =
-               'Should we keep {} or kick {} out?'.format(
-                   p['name'], pronoun_obj(p))),
-           o.button(-.25, -.7, 'Kick\nOut',
-               p['trigger_code'] | events['subject_votes_to_reject']),
-           o.button(.25, -.7, 'Keep',
-               p['trigger_code'] | events['subject_votes_to_accept']))
+            portrait_stim(-.5, .5, p),
+            o.html(.25, .5,
+                p['name'] + "<br><br>" +
+                '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+                '<br>'.join(
+                    '<b>{}:</b> {}'.format(k, p['fluff'][k]) for k in
+                        ['Age', 'Hometown', 'School', 'Interests']) +
+                ''.join(
+                    '<br><b>{}:</b> {}'.format(
+                            r['question'],
+                            p['poll_responses'][i + 1])
+                        for i, r in enumerate(round_descriptions)
+                        if i + 1 <= nround)),
+            o.text(0, -.5, wrap = 2, string =
+                'Should we keep {} or kick {} out?'.format(
+                    p['name'], pronoun_obj(p))),
+            o.button(-.25, -.7, 'Kick\nOut',
+                p['trigger_code'] | events['subject_votes_to_reject']),
+            o.button(.25, -.7, 'Keep',
+                p['trigger_code'] | events['subject_votes_to_accept']))
 
     # Use a variable delay for verisimilitude.
     varwait = .5 + max(expovariate(1) for _ in coplayers)
