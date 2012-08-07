@@ -480,7 +480,7 @@ for i, r in enumerate(round_descriptions):
         responses = shuffled(
             [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
             [('SUBJECT', subject_name, o.data['round'][nround]['poll_question'])])
-        o.save('poll_response_order', [responses[0] for r in responses])
+        o.save('poll_response_order', [r[0] for r in responses])
         o.okay_screen('poll_results',
             o.text(0, .8, "Here are your responses:"),
             o.text(0, .65,
