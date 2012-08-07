@@ -224,11 +224,6 @@ for p, age, (hometown, school), interest in zip(
     p['fluff'] = dict(
         Age = age, Hometown = hometown, School = school, Interests = interest)
 
-# Dump coplayer descriptions.
-if par['debug']:
-    for p in sorted(coplayers, key = lambda p: p['id']):
-        print "--{}--\n{}".format(p['id'], p)
-
 o.save('coplayers', {p['id']: p for p in coplayers})
   # We don't copy the coplayer-objects because we want later edits
   # (such as the addition of poll responses) to be recorded.
