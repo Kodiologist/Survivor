@@ -229,10 +229,9 @@ if par['debug']:
     for p in sorted(coplayers, key = lambda p: p['id']):
         print "--{}--\n{}".format(p['id'], p)
 
-o.save('coplayers', coplayers[:])
-  # We copy the coplayers list because we'll be removing elements
-  # as expendable coplayers are kicked out. But this is
-  # deliberately not a deep copy.
+o.save('coplayers', {p['id']: p for p in coplayers})
+  # We don't copy the coplayer-objects because we want later edits
+  # (such as the addition of poll responses) to be recorded.
 
 # ------------------------------------------------------------
 # The voting subroutine
