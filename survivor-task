@@ -341,6 +341,11 @@ def voting(nround):
                 accept_icon_c if keep else reject_icon_c)
 
     # An expendable coplayer is outsted.
+    votes_against_loser = len(coplayers)/2 + 2
+    votes_against_subject = sum(not p['votes'][nround] for p in coplayers)
+    if votes_against_loser <= votes_against_subject:
+        votes_against_loser = votes_against_subject + 1
+    o.save('votes_against_loser', votes_against_loser)
     loser = choice([p for p in coplayers if p['expendable']])
     o.save('loser', loser['id'])
     coplayers.remove(loser)
@@ -348,7 +353,7 @@ def voting(nround):
         portrait_stim(0, .5, loser),
         o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. The remaining players will continue on to the next island.".format(
             loser['name'],
-            len(coplayers)/2 + 2,
+            votes_against_loser,
             pronoun_gen(loser).capitalize())))
 
 # ------------------------------------------------------------
