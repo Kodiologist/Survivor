@@ -53,7 +53,8 @@ interests = {
     'drawing, video games, my cats',
     'drama'}
 ages = map(str, [
-    11, 11, 11, 11,
+    10,
+    11, 11, 11
     12, 12, 12, 12, 12,
     13, 13])
 
