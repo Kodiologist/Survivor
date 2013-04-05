@@ -13,6 +13,7 @@ par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 o = schizoidpy.Task(
     send_actiview_trigger_codes = par['eeg'],
     inpout32_addr = par['inpout32_addr'],
+    double_draw = par['double_draw'],
     button_radius = .12,
     okay_button_pos = (0, -.7))
 o.save('task_version', par['task_version'])
