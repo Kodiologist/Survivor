@@ -5,7 +5,7 @@ This repository houses the task code for Survivor, an ongoing research project o
 License
 ============================================================
 
-This program is copyright 2012 Kodi Arfer.
+This program is copyright 2012, 2013 Kodi Arfer.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
