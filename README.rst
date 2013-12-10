@@ -1,4 +1,4 @@
-This repository houses the task code for Survivor, an ongoing research project on social rejection in young adolescents by Autumn Kujawa, Dan Klein, and yours truly.
+This repository houses the task code for Survivor, a research project on social rejection in young adolescents by Autumn Kujawa, Dan Klein, Greg Hajcak Proudfit, and yours truly.
 
 `SchizoidPy`_ is required.
 
