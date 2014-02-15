@@ -54,10 +54,9 @@ interests = {
     'drawing, video games, my cats',
     'drama'}
 ages = map(str, [
-    10,
     11, 11, 11,
     12, 12, 12, 12, 12,
-    13, 13])
+    13, 13, 13])
 
 round_descriptions = [
     dict(place = 'Kauai',
