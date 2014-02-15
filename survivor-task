@@ -156,27 +156,27 @@ coplayers = dict(
 # - A true vote is a vote to keep the subject and
 #   a false vote is a vote to reject.
 
-   a1 = dict(expendable = False,
-       votes = (0, 0, 0, 1, 0, 0)),
-   a2 = dict(expendable = False,
-       votes = (1, 0, 1, 0, 0, 0)),
-   a3 = dict(expendable = False,
-       votes = (0, 1, 1, 0, 0, 1)),
-   a4 = dict(expendable = False,
-       votes = (1, 0, 0, 1, 1, 1)),
-   a5 = dict(expendable = False,
-       votes = (1, 1, 0, 1, 1, 1)),
-     # Each column has 2 of one choice and 3 of the other, and
-     # there are 15 of each across the whole matrix. Each coplayer
-     # aN votes to accept the player N times over the course of
-     # the game.
+    a1 = dict(expendable = False,
+        votes = (0, 0, 0, 1, 0, 0)),
+    a2 = dict(expendable = False,
+        votes = (1, 0, 1, 0, 0, 0)),
+    a3 = dict(expendable = False,
+        votes = (0, 1, 1, 0, 0, 1)),
+    a4 = dict(expendable = False,
+        votes = (1, 0, 0, 1, 1, 1)),
+    a5 = dict(expendable = False,
+        votes = (1, 1, 0, 1, 1, 1)),
+      # Each column has 2 of one choice and 3 of the other, and
+      # there are 15 of each across the whole matrix. Each coplayer
+      # aN votes to accept the player N times over the course of
+      # the game.
 
-   xpendable_afirst_1 = dict(expendable = True, votes = alternate_afirst),
-   xpendable_afirst_2 = dict(expendable = True, votes = alternate_afirst),
-   xpendable_afirst_3 = dict(expendable = True, votes = alternate_afirst),
-   xpendable_rfirst_1 = dict(expendable = True, votes = alternate_rfirst),
-   xpendable_rfirst_2 = dict(expendable = True, votes = alternate_rfirst),
-   xpendable_rfirst_3 = dict(expendable = True, votes = alternate_rfirst))
+    xpendable_afirst_1 = dict(expendable = True, votes = alternate_afirst),
+    xpendable_afirst_2 = dict(expendable = True, votes = alternate_afirst),
+    xpendable_afirst_3 = dict(expendable = True, votes = alternate_afirst),
+    xpendable_rfirst_1 = dict(expendable = True, votes = alternate_rfirst),
+    xpendable_rfirst_2 = dict(expendable = True, votes = alternate_rfirst),
+    xpendable_rfirst_3 = dict(expendable = True, votes = alternate_rfirst))
 
 for i, (k, p) in enumerate(sorted(coplayers.items())):
     p['id'] = k
