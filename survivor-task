@@ -4,7 +4,8 @@
 import schizoidpy
 from schizoidpy import StimGroup
 from psychopy.visual import ImageStim, Rect, Circle
-from random import random, expovariate, sample
+from psychopy.core import CountdownTimer
+from random import random, lognormvariate, expovariate, sample
 from cgi import escape
 from sys import argv
 
@@ -94,7 +95,8 @@ events = dict(
     # We skip 0 because that's a control code.
     subject_votes_to_accept              = 0b00000001,
     subject_votes_to_reject              = 0b00000010,
-    coplayer_picture_before_showing_vote = 0b00000011,
+   #coplayer_picture_before_showing_vote = 0b00000011,
+      # Currently unused.
     subject_gets_accept_vote             = 0b00000100,
     subject_gets_reject_vote             = 0b00000101)
 # Bits 3–6: Encodes the coplayer involved in the event.
@@ -282,10 +284,21 @@ accept_icon_c = accept_icon()
 
 def voting(nround):
 
-    # The subject votes.
     cps = shuffled(coplayers)
-    o.save('subject_votes_order', [p['id'] for p in cps])
-    for p in cps:
+    o.save('vote_order', [p['id'] for p in cps])
+    with blank_background:
+      for i, p in enumerate(cps):
+
+        # Choose an amount of time that we're pretending the
+        # coplayer takes to vote. The random distribution here is
+        # made to be similar to the real distribution of voting
+        # times from past subjects, biased against very long waits
+        # (since we don't want to waste subjects' time).
+        varwait = lognormvariate(.5, .75)
+        o.save(('feedback_varwait', i), varwait)
+        feedback_timer = CountdownTimer(varwait)
+
+        # The subject votes.
         o.button_screen(('subject_votes', p['id']),
             portrait_stim(-.5, .5, p),
             o.html(.2, .8, vAlign = 'top', font_size = 14, string =
@@ -309,39 +322,20 @@ def voting(nround):
             o.button(.25, -.7, 'Keep',
                 p['trigger_code'] | events['subject_votes_to_accept']))
 
-    # Use a variable delay for verisimilitude.
-    varwait = .5 + max(expovariate(1) for _ in coplayers)
-    o.save('voting_varwait', varwait)
-    lag(varwait)
+        # If the subject voted more quickly than we're pretending
+        # the coplayer did, make the subject wait.
+        o.wait_screen_till(feedback_timer, o.text(0, 0,
+            u'Waiting for {} to vote…'.format(p['name'])))
 
-    # Coplayers' votes are shown.
-    with blank_background:
-        cps = shuffled(coplayers)
-        o.save('coplayer_votes_shown_order', [p['id'] for p in cps])
-        if nround == 0:
-            o.okay_screen('feedback_explanation',
-                o.text(0, .7, "You'll now get to see how each other player voted for you. You'll see each player's name and photo followed by an icon."),
-                accept_icon(-.5),
-                o.text(-.5, -.3, "This means a vote to keep you.",
-                    vAlign = 'top', wrap = .6),
-                reject_icon(.5),
-                o.text(.5, -.3, "This means a vote to kick you out.",
-                    vAlign = 'top', wrap = .6))
-        for i, p in enumerate(cps):
-            varwait = 2 + random()
-            o.save(('feedback_varwait', i), varwait)
-            o.wait_screen(varwait, o.fixation_cross)
-            o.trigger(p['trigger_code'] |
-                events['coplayer_picture_before_showing_vote'])
-            o.wait_screen(2,
-                o.text(0, -.5, p['name']),
-                portrait_stim(0, 0, p))
-            o.wait_screen(1, o.fixation_cross)
-            keep = p['votes'][nround]
-            o.trigger(p['trigger_code'] | events[
-                'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
-            o.wait_screen(1.5,
-                accept_icon_c if keep else reject_icon_c)
+        # Show a fixation cross.
+        o.wait_screen(1, o.fixation_cross)
+
+        # Now show the coplayer's vote.
+        keep = p['votes'][nround]
+        o.trigger(p['trigger_code'] | events[
+            'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
+        o.wait_screen(1.5,
+            accept_icon_c if keep else reject_icon_c)
 
     # An expendable coplayer is outsted.
     votes_against_loser = len(coplayers)/2 + 2
@@ -460,7 +454,16 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'School', 'Interests'])))
 
-    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Watch out: votes aren't private. After you vote, you will see how the other players voted for you.")
+    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Watch out: votes aren't private. Players will vote on each other in pairs, at the same time, but once both players in a pair have voted, they'll immediately see others' votes.")
+
+    o.okay_screen('feedback_explanation',
+        o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
+        accept_icon(-.5),
+        o.text(-.5, -.3, "This means a vote to keep you.",
+            vAlign = 'top', wrap = .6),
+        reject_icon(.5),
+        o.text(.5, -.3, "This means a vote to kick you out.",
+            vAlign = 'top', wrap = .6))
 
     voting(0)
 
