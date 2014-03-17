@@ -101,9 +101,6 @@ events = dict(
 # Bit 7: Always 0, avoiding confusion with codes 255 and 256
 #   (which are more control codes).
 
-reject_onset_code = 1
-accept_onset_code = 2
-
 # ------------------------------------------------------------
 # Helper functions
 # ------------------------------------------------------------
