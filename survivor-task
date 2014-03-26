@@ -453,15 +453,15 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'School', 'Interests'])))
 
-    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Watch out: votes aren't private. Players will vote on each other in pairs, at the same time, but once both players in a pair have voted, they'll immediately see others' votes.")
+    o.instructions('voting_begins', html = True, wrap = 1.2, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Watch out: votes aren't private. Players will vote on each other in pairs, at the same time, but once both players in a pair have voted, they'll immediately see others' votes.")
 
     o.okay_screen('feedback_explanation',
         o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
-        accept_icon(-.5),
-        o.text(-.5, -.3, "This means a vote to keep you.",
+        accept_icon(-.4),
+        o.text(-.4, -.3, "This means a vote to keep you.",
             vAlign = 'top', wrap = .6),
-        reject_icon(.5),
-        o.text(.5, -.3, "This means a vote to kick you out.",
+        reject_icon(.4),
+        o.text(.4, -.3, "This means a vote to kick you out.",
             vAlign = 'top', wrap = .6))
 
     voting(0)
