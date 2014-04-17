@@ -334,8 +334,9 @@ def voting(nround):
         keep = p['votes'][nround]
         o.trigger(p['trigger_code'] | events[
             'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
-        o.wait_screen(1.5,
+        o.wait_screen(2,
             accept_icon_c if keep else reject_icon_c)
+        o.wait_screen(1.5)
 
     # An expendable coplayer is outsted.
     votes_against_loser = len(coplayers)/2 + 2
