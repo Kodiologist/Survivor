@@ -524,11 +524,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
         {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
         {'id': ('belonging', 2), 'text': 'I felt rejected.'},
-        {'id': ('mood', 1), 'text': 'I felt good.'},
         {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
-        {'id': ('mood', 8), 'text': 'I felt sad.'},
-        {'id': ('mood', 7), 'text': 'I felt happy.'},
-        {'id': ('mood', 2), 'text': 'I felt bad.'},
         {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
         {'id': ('meaningful existence', 1), 'text': 'I felt invisible.'},
         {'id': ('meaningful existence', 4), 'text': 'I felt important.'},
@@ -539,8 +535,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
         {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."},
         {'id': ('control', 1), 'text': 'I felt powerful.'},
-        {'id': ('control', 3), 'text': 'I felt I had the ability to significantly alter events.'},
-        {'id': ('mood', 5), 'text': 'I felt angry.'}])
+        {'id': ('control', 3), 'text': 'I felt I had the ability to significantly alter events.'}])
 
 # ------------------------------------------------------------
 # Done!
