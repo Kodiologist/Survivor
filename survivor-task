@@ -342,7 +342,7 @@ def voting(nround):
         o.wait_screen(1.5)
 
     if not practice:
-      # An expendable coplayer is outsted.
+      # An expendable coplayer is ousted.
         votes_against_loser = len(coplayers)/2 + 2
         votes_against_subject = sum(not p['votes'][nround] for p in coplayers)
         if votes_against_loser <= votes_against_subject:
@@ -355,7 +355,7 @@ def voting(nround):
             o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. You get to continue on to the next island!".format(
                 loser['name'],
                 votes_against_loser,
-            pronoun_gen(loser).capitalize())))
+                pronoun_gen(loser).capitalize())))
 
 # ------------------------------------------------------------
 # Preliminaries
