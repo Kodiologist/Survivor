@@ -527,16 +527,13 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('belonging', 2), 'text': 'I felt rejected.'},
         {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
         {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
-        {'id': ('meaningful existence', 1), 'text': 'I felt invisible.'},
         {'id': ('meaningful existence', 4), 'text': 'I felt important.'},
-        {'id': ('meaningful existence', 5), 'text': 'I felt useful.'},
         {'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'},
         {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
         {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
         {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
         {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."},
-        {'id': ('control', 1), 'text': 'I felt powerful.'},
-        {'id': ('control', 3), 'text': 'I felt I had the ability to significantly alter events.'}])
+        {'id': ('control', 1), 'text': 'I felt powerful.'}])
 
 # ------------------------------------------------------------
 # Done!
