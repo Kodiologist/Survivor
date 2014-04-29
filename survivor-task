@@ -16,7 +16,8 @@ o = schizoidpy.Task(
     inpout32_addr = par['inpout32_addr'],
     double_draw = par['double_draw'],
     button_radius = .12,
-    okay_button_pos = (0, -.7))
+    okay_button_pos = (0, -.7),
+    bg_color = 'black', fixation_cross_color = 'white')
 o.save('task_version', par['task_version'])
 
 # ------------------------------------------------------------
@@ -216,9 +217,9 @@ for p in coplayers:
     p['name'], p['portrait'] = females.pop() if p['female'] else males.pop()
 
 portrait_stim_cache = {}
-def portrait_stim(x, y, p):
+def portrait_stim(x, y, p, border_color = 'black'):
     img = par['subject_portrait_path'] if p is None else image_path(p['portrait'])
-    k = x, y, img
+    k = x, y, border_color, img
     if k not in portrait_stim_cache:
         portrait_stim_cache[k] = StimGroup((
             ImageStim(o.win, pos = (x, y),
@@ -226,7 +227,7 @@ def portrait_stim(x, y, p):
             Rect(o.win, pos = (x, y),
                 width = (portrait_dims[0] + 3) / (.5 * o.screen_width),
                 height = (portrait_dims[1] + 3) / (.5 * o.screen_height),
-                lineColor = "black", lineWidth = 3)))
+                lineColor = border_color, lineWidth = 3)))
     return portrait_stim_cache[k]
 
 # Assign fluff.
@@ -300,8 +301,8 @@ def voting(nround):
 
         # The subject votes.
         o.button_screen(('subject_votes', p['id']),
-            portrait_stim(-.5, .5, p),
-            o.html(.2, .8, vAlign = 'top', font_size = 14, string =
+            portrait_stim(-.5, .5, p, border_color = 'white'),
+            o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
                 # Show everything the subject knows about this
                 # coplayer, except for observed voting behavior.
                 p['name'] + "<br><br>" +
@@ -314,7 +315,7 @@ def voting(nround):
                             escape(p['poll_responses'][i + 1]))
                         for i, r in enumerate(round_descriptions)
                         if i + 1 <= nround])),
-            o.text(0, -.5, wrap = 2, string =
+            o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
             o.button(-.25, -.7, 'Kick\nOut',
@@ -324,7 +325,7 @@ def voting(nround):
 
         # If the subject voted more quickly than we're pretending
         # the coplayer did, make the subject wait.
-        o.wait_screen_till(feedback_timer, o.text(0, 0,
+        o.wait_screen_till(feedback_timer, o.text(0, 0, color = 'white', string =
             u'Waiting for {} to vote…'.format(p['name'])))
 
         # Show a fixation cross.
@@ -512,6 +513,7 @@ with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
 # ------------------------------------------------------------
 
 o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pick the options that best represent the feelings you were experiencing during the game.',
+    prompt_color = 'white',
     scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite a lot', 'Extremely'),
     questions = [
         {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
@@ -542,4 +544,4 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
 o.done(par['output_path_fmt'].format(**o.data))
 
 o.wait_screen(1,
-    o.text(0, 0, 'Done!\n\nPlease let the experimenter know you are done.'))
+    o.text(0, 0, color = 'white', string = 'Done!\n\nPlease let the experimenter know you are done.'))
