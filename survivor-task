@@ -260,26 +260,14 @@ def icon_frame(x, color):
             pos = (x - icon_dim/2, 0), **kw)]
 
 def reject_icon(x = 0):
-    x = x * (o.screen_width/2)
-    return StimGroup(icon_frame(x, 'red') + [
-        Rect(o.win, icon_dim, icon_thickness,
-            pos = (x, 0), ori = 45,
-            units = 'pix', fillColor = 'red', lineColor = 'red'),
-        Rect(o.win, icon_dim, icon_thickness,
-            pos = (x, 0), ori = -45,
-            units = 'pix', fillColor = 'red', lineColor = 'red')])
+    return ImageStim(o.win, pos = (x, 0),
+        image = image_path('thumbs-down.png'))
 
 reject_icon_c = reject_icon()
 
 def accept_icon(x = 0):
-    x = x * (o.screen_width/2)
-    return StimGroup(icon_frame(x, 'green') + [
-        Rect(o.win, .75*icon_dim, icon_thickness, ori = -68,
-            pos = (x + 20, 0),
-            units = 'pix', fillColor = 'green', lineColor = 'green'),
-        Rect(o.win, .25*icon_dim, icon_thickness, ori = 45,
-            pos = (x - 2.2*icon_thickness, -.25*icon_dim),
-            units = 'pix', fillColor = 'green', lineColor = 'green')])
+    return ImageStim(o.win, pos = (x, 0),
+        image = image_path('thumbs-up.png'))
 
 accept_icon_c = accept_icon()
 
