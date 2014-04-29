@@ -273,19 +273,32 @@ accept_icon_c = accept_icon()
 
 def voting(nround):
 
-    cps = shuffled(coplayers)
-    o.save('vote_order', [p['id'] for p in cps])
+    practice = nround is None
+    if practice:
+        cps = [
+            dict(id = 'practice_a',
+                 name = 'Player A', female = False,
+                 portrait = 'example-male.png',
+                 vote = True),
+            dict(id = 'practice_b',
+                 name = 'Player B', female = True,
+                 portrait = 'example-female.png',
+                 vote = False)]
+    else:
+        cps = shuffled(coplayers)
+        o.save('vote_order', [p['id'] for p in cps])
     with blank_background:
       for i, p in enumerate(cps):
 
-        # Choose an amount of time that we're pretending the
-        # coplayer takes to vote. The random distribution here is
-        # made to be similar to the real distribution of voting
-        # times from past subjects, biased against very long waits
-        # (since we don't want to waste subjects' time).
-        varwait = lognormvariate(.5, .75)
-        o.save(('feedback_varwait', i), varwait)
-        feedback_timer = CountdownTimer(varwait)
+        if not practice:
+          # Choose an amount of time that we're pretending the
+          # coplayer takes to vote. The random distribution here is
+          # made to be similar to the real distribution of voting
+          # times from past subjects, biased against very long waits
+          # (since we don't want to waste subjects' time).
+            varwait = lognormvariate(.5, .75)
+            o.save(('feedback_varwait', i), varwait)
+            feedback_timer = CountdownTimer(varwait)
 
         # The subject votes.
         o.button_screen(('subject_votes', p['id']),
@@ -295,51 +308,53 @@ def voting(nround):
                 # coplayer, except for observed voting behavior.
                 p['name'] + "<br><br>" +
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
-                '<br>'.join(
+                ('' if practice else '<br>'.join(
                     ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'School', 'Interests']] +
                     ['<b>{}:</b> {}'.format(
                             escape(r['question']),
                             escape(p['poll_responses'][i + 1]))
                         for i, r in enumerate(round_descriptions)
-                        if i + 1 <= nround])),
+                        if i + 1 <= nround]))),
             o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
-            o.button(-.25, -.7, 'Kick\nOut',
+            o.button(-.25, -.7, 'Kick\nOut', None if practice else
                 p['trigger_code'] | events['subject_votes_to_reject']),
-            o.button(.25, -.7, 'Keep',
+            o.button(.25, -.7, 'Keep', None if practice else
                 p['trigger_code'] | events['subject_votes_to_accept']))
 
-        # If the subject voted more quickly than we're pretending
-        # the coplayer did, make the subject wait.
-        o.wait_screen_till(feedback_timer, o.text(0, 0, color = 'white', string =
-            u'Waiting for {} to vote…'.format(p['name'])))
+        if not practice:
+          # If the subject voted more quickly than we're pretending
+          # the coplayer did, make the subject wait.
+            o.wait_screen_till(feedback_timer, o.text(0, 0, color = 'white', string =
+                u'Waiting for {} to vote…'.format(p['name'])))
 
         # Show a fixation cross.
         o.wait_screen(1, o.fixation_cross)
 
         # Now show the coplayer's vote.
-        keep = p['votes'][nround]
-        o.trigger(p['trigger_code'] | events[
+        keep = p['vote'] if practice else p['votes'][nround]
+        if not practice: o.trigger(p['trigger_code'] | events[
             'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
         o.wait_screen(2,
             accept_icon_c if keep else reject_icon_c)
         o.wait_screen(1.5)
 
-    # An expendable coplayer is outsted.
-    votes_against_loser = len(coplayers)/2 + 2
-    votes_against_subject = sum(not p['votes'][nround] for p in coplayers)
-    if votes_against_loser <= votes_against_subject:
-        votes_against_loser = votes_against_subject + 1
-    o.save('votes_against_loser', votes_against_loser)
-    loser = kickout_order[nround]
-    coplayers.remove(loser)
-    o.okay_screen('loser',
-        portrait_stim(0, .5, loser),
-        o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. You get to continue on to the next island!".format(
-            loser['name'],
-            votes_against_loser,
+    if not practice:
+      # An expendable coplayer is outsted.
+        votes_against_loser = len(coplayers)/2 + 2
+        votes_against_subject = sum(not p['votes'][nround] for p in coplayers)
+        if votes_against_loser <= votes_against_subject:
+            votes_against_loser = votes_against_subject + 1
+        o.save('votes_against_loser', votes_against_loser)
+        loser = kickout_order[nround]
+        coplayers.remove(loser)
+        o.okay_screen('loser',
+            portrait_stim(0, .5, loser),
+            o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. You get to continue on to the next island!".format(
+                loser['name'],
+                votes_against_loser,
             pronoun_gen(loser).capitalize())))
 
 # ------------------------------------------------------------
@@ -453,6 +468,11 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
         reject_icon(.4),
         o.text(.4, -.3, "This means a vote to kick you out.",
             vAlign = 'top', wrap = .6))
+
+    with o.dkey_prefix('voting_practice'):
+        o.instructions('intro', "First, you'll see two examples of how voting works.")
+        voting(None)
+        o.instructions('done', 'Now for the first round of real voting.')
 
     voting(0)
 
