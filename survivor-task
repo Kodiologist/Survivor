@@ -102,9 +102,17 @@ events = dict(
     accepting_subject_gets_reject_vote   = 0b00000101,
     rejecting_subject_gets_accept_vote   = 0b00000110,
     rejecting_subject_gets_reject_vote   = 0b00000111);
-# Bits 3–6: Encodes the coplayer involved in the event.
+# Bit 3: Encodes coplayer gender (0 male, 1 female).
+# Bits 4–6: Encodes the coplayer involved in the event. These
+#   ID numbers are gender-specific (e.g., male coplayer 3 and
+#   female coplayer 3 are different coplayers).
 # Bit 7: Always 0, avoiding confusion with codes 255 and 256
 #   (which are more control codes).
+def trigger_code(coplayer, event):
+    return (
+        (coplayer['trigger_id'] << 4) |
+        (coplayer['female'] << 3) |
+        events[event])
 
 # ------------------------------------------------------------
 # Helper functions
@@ -181,7 +189,6 @@ coplayers = dict(
 
 for i, (k, p) in enumerate(sorted(coplayers.items())):
     p['id'] = k
-    p['trigger_code'] = i << 3
     p['votes'] = map(bool, p['votes'])
     p['poll_responses'] = len(p['votes']) * [None]
 coplayers = coplayers.values()
@@ -322,9 +329,9 @@ def voting(nround):
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
             o.button(-.25, -.7, 'Kick\nOut', None if practice else
-                p['trigger_code'] | events['subject_votes_to_reject']),
+                trigger_code(p, 'subject_votes_to_reject')),
             o.button(.25, -.7, 'Keep', None if practice else
-                p['trigger_code'] | events['subject_votes_to_accept']))
+                trigger_code(p, 'subject_votes_to_accept')))
 
         if not practice:
           # If the subject voted more quickly than we're pretending
@@ -337,11 +344,11 @@ def voting(nround):
 
         # Now show the coplayer's vote.
         pv_keep = p['vote'] if practice else p['votes'][nround]
-        if not practice: o.trigger(p['trigger_code'] | events[
+        if not practice: o.trigger(trigger_code(p, 
             'accepting_subject_gets_accept_vote' if sv_keep and pv_keep else
             'accepting_subject_gets_reject_vote' if sv_keep and not pv_keep else
             'rejecting_subject_gets_accept_vote' if not sv_keep and pv_keep else
-            'rejecting_subject_gets_reject_vote'])
+            'rejecting_subject_gets_reject_vote'))
         o.wait_screen(2,
             accept_icon_c if keep else reject_icon_c)
         o.wait_screen(1.5)
@@ -440,6 +447,13 @@ with background('Hawaje-NoRedLine.jpg'):
                         ['age', 'hometown', 'school', 'interests'])))
 
     lag(3)
+
+# Now that the coplayers' genders are set, we can assign trigger
+# codes.
+seen_genders = [0, 0]
+for p in coplayers:
+    p['trigger_id'] = seen_genders[p['female']]
+    seen_genders[p['female']] += 1
 
 # ------------------------------------------------------------
 # Round 0
