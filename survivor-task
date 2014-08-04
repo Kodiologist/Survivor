@@ -310,7 +310,7 @@ def voting(nround):
             feedback_timer = CountdownTimer(varwait)
 
         # The subject votes.
-        sv_keep = o.button_screen(('subject_votes', p['id']),
+        s_vote = o.button_screen(('subject_votes', p['id']),
             portrait_stim(-.5, .5, p, border_color = 'white'),
             o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
                 # Show everything the subject knows about this
@@ -332,6 +332,7 @@ def voting(nround):
                 trigger_code(p, 'subject_votes_to_reject')),
             o.button(.25, -.7, 'Keep', None if practice else
                 trigger_code(p, 'subject_votes_to_accept')))
+        sv_keep = s_vote == 'Keep'
 
         if not practice:
           # If the subject voted more quickly than we're pretending
@@ -350,7 +351,7 @@ def voting(nround):
             'rejecting_subject_gets_accept_vote' if not sv_keep and pv_keep else
             'rejecting_subject_gets_reject_vote'))
         o.wait_screen(2,
-            accept_icon_c if keep else reject_icon_c)
+            accept_icon_c if pv_keep else reject_icon_c)
         o.wait_screen(1.5)
 
     if not practice:
