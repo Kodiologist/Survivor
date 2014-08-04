@@ -98,8 +98,10 @@ events = dict(
     subject_votes_to_reject              = 0b00000010,
    #coplayer_picture_before_showing_vote = 0b00000011,
       # Currently unused.
-    subject_gets_accept_vote             = 0b00000100,
-    subject_gets_reject_vote             = 0b00000101)
+    accepting_subject_gets_accept_vote   = 0b00000100,
+    accepting_subject_gets_reject_vote   = 0b00000101,
+    rejecting_subject_gets_accept_vote   = 0b00000110,
+    rejecting_subject_gets_reject_vote   = 0b00000111);
 # Bits 3–6: Encodes the coplayer involved in the event.
 # Bit 7: Always 0, avoiding confusion with codes 255 and 256
 #   (which are more control codes).
@@ -301,7 +303,7 @@ def voting(nround):
             feedback_timer = CountdownTimer(varwait)
 
         # The subject votes.
-        o.button_screen(('subject_votes', p['id']),
+        sv_keep = o.button_screen(('subject_votes', p['id']),
             portrait_stim(-.5, .5, p, border_color = 'white'),
             o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
                 # Show everything the subject knows about this
@@ -334,9 +336,12 @@ def voting(nround):
         o.wait_screen(1, o.fixation_cross)
 
         # Now show the coplayer's vote.
-        keep = p['vote'] if practice else p['votes'][nround]
+        pv_keep = p['vote'] if practice else p['votes'][nround]
         if not practice: o.trigger(p['trigger_code'] | events[
-            'subject_gets_accept_vote' if keep else 'subject_gets_reject_vote'])
+            'accepting_subject_gets_accept_vote' if sv_keep and pv_keep else
+            'accepting_subject_gets_reject_vote' if sv_keep and not pv_keep else
+            'rejecting_subject_gets_accept_vote' if not sv_keep and pv_keep else
+            'rejecting_subject_gets_reject_vote'])
         o.wait_screen(2,
             accept_icon_c if keep else reject_icon_c)
         o.wait_screen(1.5)
