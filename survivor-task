@@ -374,7 +374,7 @@ def voting(nround):
 
         # Now show the coplayer's vote.
         pv_keep = p['vote'] if practice else p['votes'][nround]
-        if not practice: o.trigger(trigger_code(p, 
+        if not practice: o.trigger(trigger_code(p,
             'accepting_subject_gets_accept_vote' if sv_keep and pv_keep else
             'accepting_subject_gets_reject_vote' if sv_keep and not pv_keep else
             'rejecting_subject_gets_accept_vote' if not sv_keep and pv_keep else
