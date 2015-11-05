@@ -24,68 +24,78 @@ o.save('task_version', par['task_version'])
 # Data
 # ------------------------------------------------------------
 
-male_names = {'Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake'}
-extra_male_name = 'Austin'
-female_names = {'Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma'}
-extra_female_name = 'Faith'
+# Various kinds of fluff (like interests and poll responses) have
+# more values defined here than can be shown to any one subject.
+# The uses of shuffled() and zip() in the code mean that each
+# subject will see random subsets.
+
+male_names = {'Ryan', 'Michael', 'Jake', 'Elijah', 'Corey', 'Travis'}
+extra_male_name = 'Ben'
+female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
+extra_female_name = 'Marika'
 portrait_dims = (144, 216)
 male_portraits = {'m-hispanic-smiling-blue-messyhair.jpg', 'm-hispanic-smiling-turquoise.jpg', 'm-white-neutral-gray.jpg', 'm-white-smiling-black.jpg', 'm-white-smiling-gray-braces.jpg', 'm-white-smiling-white-small_waving.jpg'}
 female_portraits = {'f-hispanic-smiling-outdoors.jpg', 'f-white-neutral-gray-tanktop.jpg', 'f-white-neutral-workroom.jpg', 'f-white-smiling-black-braces.jpg', 'f-white-smiling-gray.jpg', 'f-white-smiling-office.jpg'}
 locations = {
-    'Pasadena, CA',
-    'Chicago, IL',
-    'Dayton, TN',
-    'Scranton, PA',
-    'Pittsburgh, PA',
-    'Ocean City, NJ',
-    'Saint Paul, MN',
-    'Euclid, OH',
-    'Westbrook, ME',
-    'Allen, TX',
-    'San Jose, CA'}
+    'Banff, AB',
+    'Brampton, ON',
+    'Corner Brook, NL',
+    'Halifax, NS',
+    'London, ON',
+    'Mississauga, ON',
+    'Montreal, QC',
+    'Montreal, QC',
+    'Niagara, NY',
+    'Quebec City, QC',
+    'Red Deer, AB',
+    'Sherbrooke, QC',
+    'Toronto, ON',
+    'Vancouver, BC'}
 interests = {
-    'Pretty much anything, lol.',
-    'Video Games, Soccer',
-    'Reading and writing all kinds of things. But especially poetry.',
-    'baking, skateboards, dogs',
-    'singing and swimming (not at the same time)',
-    'jazz band, movies',
-    'baseball, juggling',
-    'Horror movies & magic tricks',
-    'um, Hawaii? I really like traveling. I went snorkeling once, too.',
-    'drawing, video games, my cats',
-    'drama'}
+    'eating, going to the gym, playing music',
+    "I draw funny caricatures of people I don't like",
+    'I like fashion, and staying informed about national and international politics!',
+    'I like going on nature walks',
+    'I like taking photographs of food',
+    'I like writing my own screen dramas, with me being the star!',
+    'I love sports, especially volleyball. I play on the varsity team',
+    "I'm really interested in computers. I love taking them apart to see how they work and then putting them back together",
+    "Karaoke any time, any where.",
+    'playing piano and running',
+    'Politics, reading, drama tv shows, running, photography...I have too many!',
+    "Teaching myself new (not necessarily useful) skills like juggling."}
 ages = map(str, [
-    11, 11, 11,
-    12, 12, 12, 12, 12,
-    13, 13, 13])
+    18,
+    19, 19, 19, 19,
+    20, 20, 20,
+    21, 21, 21])
 
 round_descriptions = [
     dict(place = 'Kauai',
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
         question = 'Who do you most admire?',
-        responses = ["don't know", 'my mom', 'Grandpa', 'my English teacher', 'obama', 'j.k. rowling', 'abraham lincoln', 'ghandi', 'Ellen Degeneres', 'Katniss Everdeen']),
+        responses = ['Carey Price', 'definitely my mom', 'in general, people who have goals and try their best to achieve them', 'Jon Stewart.', 'Malala Yousafzai', 'my aunt!', 'my best friend', 'My dad', 'my Grandpa', 'my high school English teacher', 'My older sister', 'Oprah Winfrey']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
         question = "What's your least favorite thing to do (that you have to do anyway)?",
-        responses = ['clean my room', 'The dishes', 'math homework', 'homework', 'babysit my little brother', 'Getting up in the morning!', 'school', 'church', 'sit in the backseat']),
+        responses = ['babysitting anyone under 18', 'cleaning the bathroom', 'Doing dirty dishes', 'Flossing', 'going to the gym', 'I am very afraid of taking the plane', 'I hate being involved in boring conversations', 'Laundry', 'Put together IKEA furniture.', 'Study', 'Studying', 'unclog/clean drains of any kind.']),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
         fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again.",
         question = 'If you could bring only one thing to a desert island, what would it be?',
-        responses = ['signal flares', 'an airplane', 'xbox', 'my chinchilla. do pets count?', 'my iphone', 'lots of books', 'a soccer ball', 'my best friend']),
+        responses = ['a fishing rod', 'Adele\'s latest album, although "Hello" might get a bit depressing.', 'An adequate food supply', 'an intelligent answer would be to bring a paddle or something to get out of there, but I guess I would bring a huge bag of chips', 'I would bring my dog to keep me company', "lotssssss of books, like when you think it's enough but then add more", 'my iPhone', 'my running shoes', 'my ukulele', 'peanut butter', "probably a coffee maker, I can't live without coffee!", 'the biggest bag of Cheetos possible.']),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
         fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
         question = "What's your favorite subject in school?",
-        responses = ['none of them', 'lunch', 'PE', 'math', 'science', 'Spanish', 'social studies']),
+        responses = ['Analysis of Markets (an economics class)', 'any science, especially biology', 'Art!!', 'biology', 'computer science', 'Drama', 'drama!', 'Economics.', 'English', 'history', 'International politics!', 'physics and math']),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
         question = "What's your favorite word?",
-        responses = ["cool beans, but I guess that's 2 words!", '???', 'victory', 'tumblr', 'pizza', 'frost'])]
+        responses = ['Clown', "I think I'll say eloquence, I love the meaning and the way it sounds", 'Kafuffle', 'Microsoft', 'Moist', 'Pizzazz', 'Pumpernickel', 'Sizzle', 'ukulele', 'wanderlust', 'Wasabi', 'yolo! Haha'])]
 
 round_wait = 2
 
