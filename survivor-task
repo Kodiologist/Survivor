@@ -558,8 +558,8 @@ for i, r in enumerate(round_descriptions):
         o.save('poll_response_order', [r[0] for r in responses])
         o.okay_screen('poll_results',
             o.text(0, .8, "Here are your responses:"),
-            o.text(0, .65,
-                "\n".join(["{}: {}".format(r[1], r[2]) for r in responses]),
+            o.html(0, .65,
+                "<br>".join(["<b>{}</b>: {}".format(escape(r[1]), escape(r[2])) for r in responses]),
                 wrap = 1.4, vAlign = 'top'))
 
         voting(nround)
