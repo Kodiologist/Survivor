@@ -291,23 +291,14 @@ def accept_icon(x = 0):
 accept_icon_c = accept_icon()
 
 def likability_scale(y):
-    rs = RatingScale(o.win, pos = (0, y),
+    return RatingScale(o.win, pos = (0, y),
         low = 1, high = 9,
-        lowAnchorText = 'Not at all',
-        highAnchorText = 'Extremely',
+        labels = ['Not at all', 'Somewhat', 'Extremely'],
         textColor = 'white', lineColor = 'white',
-        markerStyle = 'circle', markerColor = 'white',
-        stretchHoriz = 1.75,
-        showValue = False, allowSkip = False, showScale = False,
+        marker = 'circle', markerColor = 'white',
+        stretch = 1.75,
+        showValue = False, skipKeys = None, scale = None,
         singleClick = True, showAccept = False)
-    # Also create a middle anchor.
-    middleAnchorText = 'Somewhat'
-    ts = [x for x in rs.visualDisplayElements if isinstance(x, TextStim)]
-    rs.visualDisplayElements.append(TextStim(
-        win = rs.win, height = rs.textSizeSmall,
-        pos = [0, ts[0].pos[1]],
-        color = rs.textColor, text = middleAnchorText))
-    return rs
 
 def voting(nround):
 
@@ -425,6 +416,7 @@ o.start_clock()
 # ------------------------------------------------------------
 
 with background('Hawaje-NoRedLine.jpg'):
+
     message(2, 'Aloha!')
 
     with o.dkey_prefix('introduction'):
