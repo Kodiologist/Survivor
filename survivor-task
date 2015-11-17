@@ -600,6 +600,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
 # ------------------------------------------------------------
 
 o.done(par['output_path_fmt'].format(**o.data))
+print '### Data written to', par['output_path_fmt'].format(**o.data)
 
 o.wait_screen(1,
     o.text(0, 0, color = 'white', string = 'Done!\n\nPlease let the experimenter know you are done.'))
