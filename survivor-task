@@ -35,8 +35,8 @@ extra_male_name = 'Ben'
 female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
 extra_female_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'m-hispanic-smiling-blue-messyhair.jpg', 'm-hispanic-smiling-turquoise.jpg', 'm-white-neutral-gray.jpg', 'm-white-smiling-black.jpg', 'm-white-smiling-gray-braces.jpg', 'm-white-smiling-white-small_waving.jpg'}
-female_portraits = {'f-hispanic-smiling-outdoors.jpg', 'f-white-neutral-gray-tanktop.jpg', 'f-white-neutral-workroom.jpg', 'f-white-smiling-black-braces.jpg', 'f-white-smiling-gray.jpg', 'f-white-smiling-office.jpg'}
+male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(6)}
+female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(6)}
 locations = {
     'Banff, AB',
     'Brampton, ON',
