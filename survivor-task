@@ -20,6 +20,7 @@ o = schizoidpy.Task(
     send_actiview_trigger_codes = par['eeg'],
     inpout32_addr = par['inpout32_addr'],
     double_draw = par['double_draw'],
+    shrink_screen = par['shrink_screen'],
     button_radius = .12,
     okay_button_pos = (0, -.7),
     bg_color = 'black', fixation_cross_color = 'white')
