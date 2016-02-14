@@ -5,7 +5,7 @@ import psychopy.logging; psychopy.logging.console.setLevel(psychopy.logging.CRIT
 
 import schizoidpy
 from schizoidpy import StimGroup
-from psychopy.visual import TextStim, ImageStim, Rect, Circle, RatingScale
+from psychopy.visual import ImageStim, Rect, Circle
 from psychopy.core import CountdownTimer
 from random import random, lognormvariate, expovariate, sample
 from cgi import escape
@@ -296,16 +296,6 @@ def accept_icon(x = 0):
 
 accept_icon_c = accept_icon()
 
-def likability_scale(y):
-    return RatingScale(o.win, pos = (0, y),
-        low = 1, high = 9,
-        labels = ['Not at all', 'Somewhat', 'Extremely'],
-        textColor = 'white', lineColor = 'white',
-        marker = 'circle', markerColor = 'white',
-        stretch = 1.75,
-        showValue = False, skipKeys = None, scale = None,
-        singleClick = True, showAccept = False)
-
 def voting(nround):
 
     practice = nround is None
@@ -378,14 +368,6 @@ def voting(nround):
             'rejecting_subject_gets_reject_vote'))
         o.wait_screen(2,
             accept_icon_c if pv_keep else reject_icon_c)
-
-        # Now solicit the subject's opinion of the coplayer.
-        o.scale_screen(('likability_rating', p['id']),
-            o.text(0, .6, 'How much do you like {}?'.format(p['name']), color = 'white'),
-            likability_scale(.3),
-            o.text(0, -.2, 'How much do you think other people would like {}?'.format(pronoun_obj(p)), color = 'white'),
-            likability_scale(-.5))
-
         o.wait_screen(1.5)
 
     if not practice:
