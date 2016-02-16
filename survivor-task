@@ -257,10 +257,10 @@ o.save('coplayer_kickout_order', [p['id'] for p in kickout_order])
 
 # Make the coplayers evenly split by gender within the expendable
 # and non-expendable groups.
-for i, p in enumerate(shuffled([p for p in coplayers if p['expendable']])):
-    p['female'] = bool(i % 2)
-for i, p in enumerate(shuffled([p for p in coplayers if not p['expendable']])):
-    p['female'] = bool(i % 2)
+for e in [True, False]:
+    for i, p in enumerate(shuffled(
+            [p for p in coplayers if p['expendable'] == e])):
+        p['female'] = bool(i % 2)
   # Because there's an odd number of non-expendable coplayers,
   # we're left with one more male than we have females. Later,
   # if we learn that the subject is male, we'll make one of
