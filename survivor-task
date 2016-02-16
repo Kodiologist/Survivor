@@ -14,6 +14,7 @@ from psychopy.core import CountdownTimer
 from random import random, lognormvariate, expovariate, sample
 from cgi import escape
 from sys import argv
+from collections import Counter
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
@@ -37,13 +38,13 @@ o.save('task_version', par['task_version'])
 # The uses of shuffled() and zip() in the code mean that each
 # subject will see random subsets.
 
-male_names = {'Ryan', 'Michael', 'Jake', 'Elijah', 'Corey', 'Travis'}
+male_names = {'Ryan', 'Michael', 'Jake', 'Elijah', 'Corey', 'Travis', 'PLACEHOLDER'}
 extra_male_name = 'Ben'
-female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
+female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie', 'PLACEHOLDER'}
 extra_female_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(6)}
-female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(6)}
+male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(len(male_names))}
+female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(len(female_names))}
 locations = {
     'Banff, AB',
     'Brampton, ON',
@@ -71,8 +72,10 @@ interests = {
     "Karaoke any time, any where.",
     'playing piano and running',
     'Politics, reading, drama tv shows, running, photography...I have too many!',
-    "Teaching myself new (not necessarily useful) skills like juggling."}
+    "Teaching myself new (not necessarily useful) skills like juggling.",
+    'PLACEHOLDER'}
 ages = map(str, [
+    1, 1, # PLACEHOLDERS
     18,
     19, 19, 19, 19,
     20, 20, 20,
@@ -83,7 +86,7 @@ round_descriptions = [
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
         question = 'Who do you most admire?',
-        responses = ['Carey Price', 'definitely my mom', 'in general, people who have goals and try their best to achieve them', 'Jon Stewart.', 'Malala Yousafzai', 'my aunt!', 'my best friend', 'My dad', 'my Grandpa', 'my high school English teacher', 'My older sister', 'Oprah Winfrey']),
+        responses = ['Carey Price', 'definitely my mom', 'in general, people who have goals and try their best to achieve them', 'Jon Stewart.', 'Malala Yousafzai', 'my aunt!', 'my best friend', 'My dad', 'my Grandpa', 'my high school English teacher', 'My older sister', 'Oprah Winfrey', 'PLACEHOLDER']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
@@ -112,14 +115,12 @@ round_wait = 2
 # Bits 0–2: Encodes the type of event.
 events = dict(
     # We skip 0 because that's a control code.
-    subject_votes_to_accept              = 0b00000001,
-    subject_votes_to_reject              = 0b00000010,
-   #coplayer_picture_before_showing_vote = 0b00000011,
-      # Currently unused.
-    accepting_subject_gets_accept_vote   = 0b00000100,
-    accepting_subject_gets_reject_vote   = 0b00000101,
-    rejecting_subject_gets_accept_vote   = 0b00000110,
-    rejecting_subject_gets_reject_vote   = 0b00000111);
+    subject_votes_to_accept   = 0b00000001,
+    subject_votes_to_reject   = 0b00000010,
+    subject_votes_neutral     = 0b00000011,
+    subject_gets_accept_vote  = 0b00000100,
+    subject_gets_reject_vote  = 0b00000101,
+    subject_gets_neutral_vote = 0b00000110)
 # Bit 3: Encodes coplayer gender (0 male, 1 female).
 # Bits 4–6: Encodes the coplayer involved in the event. These
 #   ID numbers are gender-specific (e.g., male coplayer 3 and
@@ -174,51 +175,83 @@ def lag(duration):
 # * Coplayers
 # ------------------------------------------------------------
 
-alternate_afirst = (1, 0, 1, 0, 1, 0)
-alternate_rfirst = (0, 1, 0, 1, 0, 1)
+class VoteType(object):
+    def __init__(self, letter):
+        self.letter = letter
+    def __str__(self):
+        return self.letter
+Reject = VoteType('R')
+Neutral = VoteType('N')
+Accept = VoteType('A')
 
 coplayers = dict(
-# - Expendable coplayers will eventually be kicked off;
-#   non-expendable coplayers won't.
-# - A true vote is a vote to keep the subject and
-#   a false vote is a vote to reject.
 
-    a1 = dict(expendable = False,
-        votes = (0, 0, 0, 1, 0, 0)),
-    a2 = dict(expendable = False,
-        votes = (1, 0, 1, 0, 0, 0)),
-    a3 = dict(expendable = False,
-        votes = (0, 1, 1, 0, 0, 1)),
-    a4 = dict(expendable = False,
-        votes = (1, 0, 0, 1, 1, 1)),
-    a5 = dict(expendable = False,
-        votes = (1, 1, 0, 1, 1, 1)),
-      # Each column has 2 of one choice and 3 of the other, and
-      # there are 15 of each across the whole matrix. Each coplayer
-      # aN votes to accept the player N times over the course of
-      # the game.
+    mean3 = dict(expendable = False,
+        votes = (Reject, Reject, Reject, Neutral, Reject, Reject)),
+    mean2 = dict(expendable = False,
+        votes = (Reject, Reject, Neutral, Reject, Reject, Neutral)),
+    mean1 = dict(expendable = False,
+        votes = (Neutral, Reject, Reject, Accept, Reject, Neutral)),
+    indiff = dict(expendable = False,
+        votes = (Neutral, Neutral, Neutral, Reject, Accept, Neutral)),
+    nice1 = dict(expendable = False,
+        votes = (Accept, Neutral, Accept, Accept, Neutral, Reject)),
+    nice2 = dict(expendable = False,
+        votes = (Accept, Accept, Accept, Neutral, Neutral, Accept)),
+    nice3 = dict(expendable = False,
+        votes = (Accept, Accept, Neutral, Accept, Accept, Accept)),
 
-    xpendable_afirst_1 = dict(expendable = True, votes = alternate_afirst),
-    xpendable_afirst_2 = dict(expendable = True, votes = alternate_afirst),
-    xpendable_afirst_3 = dict(expendable = True, votes = alternate_afirst),
-    xpendable_rfirst_1 = dict(expendable = True, votes = alternate_rfirst),
-    xpendable_rfirst_2 = dict(expendable = True, votes = alternate_rfirst),
-    xpendable_rfirst_3 = dict(expendable = True, votes = alternate_rfirst))
-
-for i, (k, p) in enumerate(sorted(coplayers.items())):
+    xpendable_rna = dict(expendable = True,
+        votes = (Reject, Neutral, Accept, Reject, Neutral, Accept)),
+    xpendable_ran = dict(expendable = True,
+        votes = (Reject, Accept, Neutral, Reject, Accept, Neutral)),
+    xpendable_nra = dict(expendable = True,
+        votes = (Neutral, Reject, Accept, Neutral, Reject, Accept)),
+    xpendable_nar = dict(expendable = True,
+        votes = (Neutral, Accept, Reject, Neutral, Accept, Reject)),
+    xpendable_arn = dict(expendable = True,
+        votes = (Accept, Reject, Neutral, Accept, Reject, Neutral)),
+    xpendable_anr = dict(expendable = True,
+        votes = (Accept, Neutral, Reject, Accept, Neutral, Reject)))
+for k, p in sorted(coplayers.items()):
     p['id'] = k
-    p['votes'] = map(bool, p['votes'])
     p['poll_responses'] = len(p['votes']) * [None]
 coplayers = coplayers.values()
 
+# Enable this block to show the properties of the matrix of votes
+# among the non-expendable coplayers.
+if False:
+    mat = [cp['votes']
+        for x in ('mean3', 'mean2', 'mean1', 'indiff', 'nice1', 'nice2', 'nice3')
+        for cp in coplayers
+        if cp['id'] == x]
+    print 'Totals'
+    for votetype in Reject, Neutral, Accept:
+        print votetype, sum(1 for row in mat for v in row if v is votetype)
+    print ''
+    print 'Columns'
+    ncol = len(mat[0])
+    for votetype in Reject, Neutral, Accept:
+        print votetype, ' '.join(
+            str(sum(1 for row in mat if row[i] == votetype))
+            for i in range(ncol))
+    print ''
+    print 'Rows'
+    from collections import Counter
+    for row in mat:
+        d = Counter(row)
+        print 'R {}, N {}, A {}'.format(d[Reject], d[Neutral], d[Accept])
+    exit()
+
 # Decide what order the expendables will be kicked out. We choose
-# a random order that will result in the subject receiving either
-# (with equal probability) 10 accepts and 11 rejects or 11 accepts
-# and 10 rejects.
+# a random order that will result in the subject getting an equal
+# number of each type of vote.
 while True:
     kickout_order = shuffled([p for p in coplayers if p['expendable']])
-    if (''.join([str(int(p['votes'][0])) for p in kickout_order])
-            not in ('010101', '101010')):
+    counts = Counter([vote
+        for i, cp in enumerate(kickout_order)
+        for vote in cp['votes'][: i + 1]])
+    if len(counts.keys()) == len('RNA') and len(set(counts.values())) == 1:
         break
 o.save('coplayer_kickout_order', [p['id'] for p in kickout_order])
 
@@ -289,14 +322,17 @@ def icon_frame(x, color):
 def reject_icon(x = 0):
     return ImageStim(o.win, pos = (x, 0),
         image = image_path('thumbs-down.png'))
-
-reject_icon_c = reject_icon()
+Reject.icon_c = reject_icon()
 
 def accept_icon(x = 0):
     return ImageStim(o.win, pos = (x, 0),
         image = image_path('thumbs-up.png'))
+Accept.icon_c = accept_icon()
 
-accept_icon_c = accept_icon()
+def neutral_icon(x = 0):
+    return ImageStim(o.win, pos = (x, 0),
+        image = image_path('thumbs-side.png'))
+Neutral.icon_c = neutral_icon()
 
 def voting(nround):
 
@@ -306,11 +342,11 @@ def voting(nround):
             dict(id = 'practice_a',
                  name = 'Player A', female = False,
                  portrait = 'example-male.png',
-                 vote = True),
+                 vote = Accept),
             dict(id = 'practice_b',
                  name = 'Player B', female = True,
                  portrait = 'example-female.png',
-                 vote = False)]
+                 vote = Reject)]
     else:
         cps = shuffled(coplayers)
         o.save('vote_order', [p['id'] for p in cps])
@@ -346,11 +382,12 @@ def voting(nround):
             o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
-            o.button(-.25, -.7, 'Kick\nOut', None if practice else
+            o.button(-.3, -.7, 'Kick\nOut', None if practice else
                 trigger_code(p, 'subject_votes_to_reject')),
-            o.button(.25, -.7, 'Keep', None if practice else
+            o.button(0, -.7, 'Neutral', None if practice else
+                trigger_code(p, 'subject_votes_neutral')),
+            o.button(.3, -.7, 'Keep', None if practice else
                 trigger_code(p, 'subject_votes_to_accept')))
-        sv_keep = s_vote == 'Keep'
 
         if not practice:
           # If the subject voted more quickly than we're pretending
@@ -362,30 +399,22 @@ def voting(nround):
         o.wait_screen(1, o.fixation_cross)
 
         # Now show the coplayer's vote.
-        pv_keep = p['vote'] if practice else p['votes'][nround]
-        if not practice: o.trigger(trigger_code(p,
-            'accepting_subject_gets_accept_vote' if sv_keep and pv_keep else
-            'accepting_subject_gets_reject_vote' if sv_keep and not pv_keep else
-            'rejecting_subject_gets_accept_vote' if not sv_keep and pv_keep else
-            'rejecting_subject_gets_reject_vote'))
-        o.wait_screen(2,
-            accept_icon_c if pv_keep else reject_icon_c)
+        pv = p['vote'] if practice else p['votes'][nround]
+        if not practice: o.trigger(trigger_code(p, {
+            Reject: 'subject_gets_reject_vote',
+            Neutral: 'subject_gets_neutral_vote',
+            Accept: 'subject_gets_accept_vote'}[pv]))
+        o.wait_screen(2, pv.icon_c)
         o.wait_screen(1.5)
 
     if not practice:
       # An expendable coplayer is ousted.
-        votes_against_loser = len(coplayers)/2 + 2
-        votes_against_subject = sum(not p['votes'][nround] for p in coplayers)
-        if votes_against_loser <= votes_against_subject:
-            votes_against_loser = votes_against_subject + 1
-        o.save('votes_against_loser', votes_against_loser)
         loser = kickout_order[nround]
         coplayers.remove(loser)
         o.okay_screen('loser',
             portrait_stim(0, .5, loser),
-            o.text(0, -.2, "And it's final decision time. Looks like {} got {} votes to go home! {} journey ends here. You get to continue on to the next island!".format(
+            o.text(0, -.2, "And it's final decision time. Looks like {} got the least points! {} journey ends here. You get to continue on to the next island!".format(
                 loser['name'],
-                votes_against_loser,
                 pronoun_gen(loser).capitalize())))
 
 # ------------------------------------------------------------
@@ -584,7 +613,18 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
 # * Done!
 # ------------------------------------------------------------
 
-o.done(par['output_path_fmt'].format(**o.data))
+def jf(x):
+    if x is Reject:
+        return -1
+    elif x is Neutral:
+        return 0
+    elif x is Accept:
+        return 1
+    else:
+        raise TypeError
+
+o.done(par['output_path_fmt'].format(**o.data),
+    json_default = jf)
 print '### Data written to', par['output_path_fmt'].format(**o.data)
 
 o.wait_screen(1,
