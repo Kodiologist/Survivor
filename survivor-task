@@ -318,18 +318,18 @@ def icon_frame(x, color):
         Rect(o.win, icon_thickness, icon_dim,
             pos = (x - icon_dim/2, 0), **kw)]
 
-def reject_icon(x = 0):
-    return ImageStim(o.win, pos = (x, 0),
+def reject_icon(x = 0, y = 0):
+    return ImageStim(o.win, pos = (x, y),
         image = image_path('thumbs-down.png'))
 Reject.icon_c = reject_icon()
 
-def accept_icon(x = 0):
-    return ImageStim(o.win, pos = (x, 0),
+def accept_icon(x = 0, y = 0):
+    return ImageStim(o.win, pos = (x, y),
         image = image_path('thumbs-up.png'))
 Accept.icon_c = accept_icon()
 
-def neutral_icon(x = 0):
-    return ImageStim(o.win, pos = (x, 0),
+def neutral_icon(x = 0, y = 0):
+    return ImageStim(o.win, pos = (x, y),
         image = image_path('thumbs-side.png'))
 Neutral.icon_c = neutral_icon()
 
@@ -523,18 +523,24 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'School', 'Interests'])))
 
-    o.instructions('voting_begins', html = True, wrap = 1.25, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out (0 points) or keep (2 points) each player. If you are on the fence about another player, you can also vote neutral (1 point). Whoever receives the <b>least</b> points will be kicked out of the game. Remember: someone has to be kicked out each round, so be sure to cast your vote for who should go.<br><br>Each time you vote, you will then find out how that player voted for you.")
+    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. You will now vote to kick out (0 points) or keep (2 points) each player. If you're on the fence about another player, you can also vote neutral (1 point). Whoever receives the <b>least</b> points will be kicked out of the game. Remember: someone has to be kicked out each round, so be sure to cast your vote for who should go.")
 
+    x_adjust = .5
+    y_icon_center = .15
+    y_icon_label = y_icon_center - .3
     o.okay_screen('feedback_explanation',
-        o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
-        reject_icon(-.5),
-        o.text(-.5, -.3, "This means a vote to kick you out.",
+        o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon to indicate how that player voted for you."),
+        reject_icon(-x_adjust, y_icon_center),
+        o.text(-x_adjust, y_icon_label,
+            "(0 points)\nThis means a vote to kick you out.",
             vAlign = 'top', wrap = .4),
-        neutral_icon(0),
-        o.text(0, -.3, "This means a neutral vote.",
+        neutral_icon(0, y_icon_center),
+        o.text(0, y_icon_label,
+            "(1 point)\nThis means a neutral vote for you.",
             vAlign = 'top', wrap = .4),
-        accept_icon(.5),
-        o.text(.5, -.3, "This means a vote to keep you.",
+        accept_icon(x_adjust, y_icon_center),
+        o.text(x_adjust, y_icon_label,
+            "(2 points)\nThis means a vote to keep you.",
             vAlign = 'top', wrap = .4))
 
     with o.dkey_prefix('voting_practice'):
