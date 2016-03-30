@@ -11,7 +11,7 @@ with warnings.catch_warnings():
 del lognull
 from psychopy.visual import ImageStim, Rect, Circle
 from psychopy.core import CountdownTimer
-from random import random, lognormvariate, expovariate, sample
+from random import random, uniform, lognormvariate, expovariate, sample
 from cgi import escape
 from sys import argv
 from collections import Counter
@@ -158,10 +158,10 @@ def background(image_name):
     background_imagestim.setImage(image_path(image_name))
     return o.showing(background_imagestim, big_canvas)
 
-def message(duration, string):
+def message(duration, string, f = o.wait_screen):
     # Temporarily replace big_canvas with strip_canvas.
     with o.hiding(big_canvas):
-        o.wait_screen(duration,
+        f(duration,
             strip_canvas,
             o.text(0, 0, string, wrap = 1.2))
 
@@ -169,6 +169,9 @@ blank_background = o.hiding(background_imagestim, big_canvas)
 
 def lag(duration):
     message(duration, u'Waiting for all players to finish…')
+def lag_till(countdown_timer):
+    message(countdown_timer, u'Waiting for all players to finish…',
+        f = o.wait_screen_till)
 
 # ------------------------------------------------------------
 # * Coplayers
@@ -571,16 +574,18 @@ for i, r in enumerate(round_descriptions):
         message(round_wait, 'Round {}: {}'.format(nround + 1, r['place']))
         o.instructions('fluff', r['fluff'])
 
+        varwait = uniform(8, 12)
+        o.save(('poll_varwait', i), varwait)
+        poll_timer = CountdownTimer(varwait)
+
         o.text_entry_screen('poll_question',
             "Now you'll all answer another question so you can get to know each other better.\n\n" +
             r['question'])
 
+        lag_till(poll_timer)
+
         for p, resp in zip(coplayers, shuffled(r['responses'])):
             p['poll_responses'][nround] = resp
-        varwait = max(expovariate(2) for _ in coplayers)
-        o.save('poll_varwait', varwait)
-        lag(varwait)
-
         responses = shuffled(
             [(p['id'], p['name'], p['poll_responses'][nround]) for p in coplayers] +
             [('SUBJECT', subject_name, o.data['round'][nround]['poll_question'])])
