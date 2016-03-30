@@ -43,8 +43,8 @@ extra_male_name = 'Ben'
 female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie', 'Tamara'}
 extra_female_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(len(male_names))}
-female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(len(female_names))}
+male_portraits = {'m-adult-1.jpg', 'm-adult-3.jpg', 'shankman-m-adult-1.jpg', 'shankman-m-adult-2.jpg', 'shankman-m-adult-3.jpg', 'shankman-m-adult-4.jpg', 'shankman-m-adult-5.jpg'}
+female_portraits = {'f-adult-4.jpg', 'f-adult-6.jpg', 'shankman-f-adult-1.jpg', 'shankman-f-adult-2.jpg', 'shankman-f-adult-3.jpg', 'shankman-f-adult-4.jpg', 'shankman-f-adult-5.jpg'}
 locations = {
     'American',
     'FSU',
