@@ -333,7 +333,10 @@ def neutral_icon(x = 0, y = 0):
         image = image_path('thumbs-side.png'))
 Neutral.icon_c = neutral_icon()
 
+first_voting_wait = True
+
 def voting(nround):
+    global first_voting_wait
 
     practice = nround is None
     if practice:
@@ -352,7 +355,7 @@ def voting(nround):
     with blank_background:
       for i, p in enumerate(cps):
 
-        if not practice:
+        if not practice and not first_voting_wait:
           # Choose an amount of time that we're pretending the
           # coplayer takes to vote. The random distribution here is
           # made to be similar to the real distribution of voting
@@ -389,10 +392,17 @@ def voting(nround):
                 trigger_code(p, 'subject_votes_to_accept')))
 
         if not practice:
-          # If the subject voted more quickly than we're pretending
-          # the coplayer did, make the subject wait.
-            o.wait_screen_till(feedback_timer, o.text(0, 0, color = 'white', string =
-                u'Waiting for {} to vote…'.format(p['name'])))
+            text = o.text(0, 0, color = 'white', string =
+                u'Waiting for {} to vote…'.format(p['name']))
+            if first_voting_wait:
+              # The first voting wait period always takes 3
+              # seconds, so the message can be seen clearly.
+                o.wait_screen(3, text)
+                first_voting_wait = False
+            else:
+              # If the subject voted more quickly than we're
+              # pretending the coplayer did, make the subject wait.
+                o.wait_screen_till(feedback_timer, text)
 
         # Show a fixation cross.
         o.wait_screen(1, o.fixation_cross)
