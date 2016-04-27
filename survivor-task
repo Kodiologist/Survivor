@@ -573,9 +573,12 @@ with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
 # * Post-game questionnaire
 # ------------------------------------------------------------
 
+scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite a lot', 'Extremely', 'I prefer not to answer')
+na_scale_level = scale_levels.index('I prefer not to answer') + 1
+
 o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pick the options that best represent the feelings you were experiencing during the game.',
     prompt_color = 'white',
-    scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite a lot', 'Extremely'),
+    scale_levels = scale_levels,
     questions = [
         {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
         {'id': ('other', 1), 'text': 'It bothered me to vote off other players.'},
@@ -595,6 +598,12 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
         {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
         {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."}])
+
+# "I prefer not to answer" values are set to "NA".
+for rs in o.data['postgame_questionnaire'].values():
+   for i, r in enumerate(rs):
+       if r == na_scale_level:
+           rs[i] = 'NA'
 
 # ------------------------------------------------------------
 # * Done!
