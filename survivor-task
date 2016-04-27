@@ -24,68 +24,70 @@ o.save('task_version', par['task_version'])
 # Data
 # ------------------------------------------------------------
 
-male_names = {'Zach', 'Elijah', 'Travis', 'Michael', 'Ryan', 'Jake'}
-extra_male_name = 'Austin'
-female_names = {'Gabby', 'Katherine', 'Jen', 'Sarah', 'Rebecca', 'Emma'}
+male_names = {'Ben', 'Christian', 'Darin', 'Jack', 'Liam', 'Trevor'}
+extra_male_name = 'Noah'
+female_names = {'Alexis', 'Anna', 'Brianna', 'Gabrielle', 'Julia', 'Margaret'}
 extra_female_name = 'Faith'
 portrait_dims = (144, 216)
-male_portraits = {'m-hispanic-smiling-blue-messyhair.jpg', 'm-hispanic-smiling-turquoise.jpg', 'm-white-neutral-gray.jpg', 'm-white-smiling-black.jpg', 'm-white-smiling-gray-braces.jpg', 'm-white-smiling-white-small_waving.jpg'}
-female_portraits = {'f-hispanic-smiling-outdoors.jpg', 'f-white-neutral-gray-tanktop.jpg', 'f-white-neutral-workroom.jpg', 'f-white-smiling-black-braces.jpg', 'f-white-smiling-gray.jpg', 'f-white-smiling-office.jpg'}
+male_portraits = {'klein-age15-m-{}.jpg'.format(i + 1) for i in range(8)}
+female_portraits = {'klein-age15-f-{}.jpg'.format(i + 1) for i in range(7)}
 locations = {
-    ('Pasadena, CA', 'McKinley School'),
-    ('Chicago, IL', 'Jonathan Burr Elementary'),
-    ('Dayton, TN', 'Spring City Middle School'),
-    ('Scranton, PA', 'Dunmore Middle School'),
-    ('Pittsburgh, PA', 'Jefferson Middle School'),
-    ('Ocean City, NJ', 'Ocean City Intermediate'),
-    ('Saint Paul, MN', 'Twin Cities Academy'),
-    ('Euclid, OH', 'Forest Park Middle School'),
-    ('Westbrook, ME', 'Westbrook Middle School'),
-    ('Allen, TX', 'Kerr Elementary School'),
-    ('San Jose, CA', 'Holy Family School')}
+    ('Pasadena, CA', 'Pasadena High School'),
+    ('Chicago, IL', 'UIC College Prep'),
+    ('Dayton, TN', 'Rhea County High School'),
+    ('Scranton, PA', 'Scranton Prep'),
+    ('Pittsburgh, PA', 'Taylor Allderdice High School'),
+    ('Ocean City, NJ', 'Ocean City High School'),
+    ('Saint Paul, MN', 'Central High School'),
+    ('Euclid, OH', 'Andrews Osborne Academy'),
+    ('Westbrook, ME', 'Westbrook High School'),
+    ('Allen, TX', 'Coram Deo Academy'),
+    ('San Jose, CA', 'Bellarmine College Prep')}
+
 interests = {
-    'Pretty much anything, lol.',
-    'Video Games, Soccer',
-    'Reading and writing all kinds of things. But especially poetry.',
-    'baking, skateboards, dogs',
-    'singing and swimming (not at the same time)',
-    'jazz band, movies',
-    'baseball, juggling',
-    'Horror movies & magic tricks',
-    'um, Hawaii? I really like traveling. I went snorkeling once, too.',
-    'drawing, video games, my cats',
-    'drama'}
+    'Drama club',
+    'Drawing and painting',
+    'fishing or anything outdoors',
+    'Instagram, twitter',
+    'listening to music and watching netflix',
+    'Minecraft, videogames',
+    'pretty much any sport',
+    'Relaxing on the beach',
+    'Shopping with friends',
+    'skateboarding',
+    'Sleeping',
+    'soccer!!'}
 ages = map(str, [
-    11, 11, 11,
-    12, 12, 12, 12, 12,
-    13, 13, 13])
+    14, 14, 14,
+    15, 15, 15, 15, 15,
+    16, 16, 16])
 
 round_descriptions = [
     dict(place = 'Kauai',
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
-        question = 'Who do you most admire?',
-        responses = ["don't know", 'my mom', 'Grandpa', 'my English teacher', 'obama', 'j.k. rowling', 'abraham lincoln', 'ghandi', 'Ellen Degeneres', 'Katniss Everdeen']),
+        question = "Who's your favorite singer or musical group?",
+        responses = ['2 Chainz', 'bieber', 'Drake', 'EDM', 'Fall Out Boy', 'fetty wap', 'Grateful Dead', 'Grimes', 'J. Cole', 'Luke Bryan', 'The Weeknd', 'wiz khalifa']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
         question = "What's your least favorite thing to do (that you have to do anyway)?",
-        responses = ['clean my room', 'The dishes', 'math homework', 'homework', 'babysit my little brother', 'Getting up in the morning!', 'school', 'church', 'sit in the backseat']),
+        responses = ['babysit my bro and sis', 'Class presentations', 'Clean my room', 'go to school', 'Going to the orthodontist', 'Gym class', 'math homework', 'Take out the garbage', 'Wake up early for school']),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
         fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again.",
         question = 'If you could bring only one thing to a desert island, what would it be?',
-        responses = ['signal flares', 'an airplane', 'xbox', 'my chinchilla. do pets count?', 'my iphone', 'lots of books', 'a soccer ball', 'my best friend']),
+        responses = ['A boat', 'Computer', 'iphone', 'My best friend', 'My dog', 'My phone', 'Pizza', 'swiss army knife']),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
         fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
         question = "What's your favorite subject in school?",
-        responses = ['none of them', 'lunch', 'PE', 'math', 'science', 'Spanish', 'social studies']),
+        responses = ['Art', 'Band class', 'Earth Science', 'English', 'gym', 'Lunch', 'Social Studies', 'Spanish', 'The bus ride home']),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
         question = "What's your favorite word?",
-        responses = ["cool beans, but I guess that's 2 words!", '???', 'victory', 'tumblr', 'pizza', 'frost'])]
+        responses = ['Ability to kill zombies', 'Flying', 'Mind control', 'mind reading', 'Shape shifting', 'Super strength', 'Time travel'])]
 
 round_wait = 2
 
@@ -410,8 +412,8 @@ with background('Hawaje-NoRedLine.jpg'):
             # of equal number of male and female players.
             transgal = choice([p for p in coplayers if not p['female']])
             transgal['female'] = True
-            transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
-            transgal['portrait'], = female_portraits - {p['portrait'] for p in coplayers if p['female']}
+            transgal['name'] = choice(female_names - {p['name'] for p in coplayers if p['female']})
+            transgal['portrait'] = choice(female_portraits - {p['portrait'] for p in coplayers if p['female']})
 
         o.text_entry_screen('name', 'What is your first name?')
         subject_name = o.data['profile']['name']
