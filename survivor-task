@@ -90,7 +90,7 @@ round_descriptions = [
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
-        question = "What's your favorite word?",
+        question = "If you could have a super power, what would it be?",
         responses = ['Ability to kill zombies', 'Flying', 'Mind control', 'mind reading', 'Shape shifting', 'Super strength', 'Time travel'])]
 
 round_wait = 2
