@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # encoding: UTF-8
 
+# Silence warnings
+import psychopy.logging
+psychopy.logging.console.setLevel(psychopy.logging.CRITICAL)
+
 import schizoidpy
 from schizoidpy import StimGroup
 from psychopy.visual import ImageStim, Rect, Circle
