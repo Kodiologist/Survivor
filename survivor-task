@@ -462,6 +462,10 @@ with background('Hawaje-NoRedLine.jpg'):
                     '<b>{}:</b> {}'.format(k.capitalize(), escape(o.data['profile'][k])) for k in
                         ['age', 'hometown', 'school', 'interests'])))
 
+    # Don't keep the profile data due to IRB shenanigans (for
+    # the Kujawa lab at Penn State).
+    del o.data['profile']
+
     lag(3)
 
 # Now that the coplayers' genders are set, we can assign trigger
