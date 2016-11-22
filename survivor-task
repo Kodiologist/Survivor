@@ -39,7 +39,8 @@ locations = {
     ('Pasadena, CA', 'Pasadena High School'),
     ('Chicago, IL', 'UIC College Prep'),
     ('Dayton, TN', 'Rhea County High School'),
-    ('Scranton, PA', 'Scranton Prep'),
+    ('Scranton, PA', 'West Scranton Intermediate'),
+      # This one is special. It will be assigned to the 12-year-old.
     ('Pittsburgh, PA', 'Taylor Allderdice High School'),
     ('Ocean City, NJ', 'Ocean City High School'),
     ('Saint Paul, MN', 'Central High School'),
@@ -253,6 +254,11 @@ for p, age, (hometown, school), interest in zip(
         coplayers, shuffled(ages), shuffled(locations), shuffled(interests)):
     p['fluff'] = dict(
         Age = age, Hometown = hometown, School = school, Interests = interest)
+# Make sure the 12-year-old is in the middle school.
+age12_p = next(p for p in coplayers if p['fluff']['Age'] == '12')
+middleschool_p = next(p for p in coplayers if 'Intermediate' in p['fluff']['School'])
+middleschool_p['fluff']['Age'], age12_p['fluff']['Age'] = (
+    age12_p['fluff']['Age'], middleschool_p['fluff']['Age'])
 
 o.save('coplayers', {p['id']: p for p in coplayers})
   # We don't copy the coplayer-objects because we want later edits
