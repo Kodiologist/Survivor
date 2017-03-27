@@ -387,12 +387,18 @@ def voting(nround):
             o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
-            o.button(-.3, -.7, 'Kick\nOut', None if practice else
-                trigger_code(p, 'subject_votes_to_reject')),
-            o.button(0, -.7, 'Neutral', None if practice else
-                trigger_code(p, 'subject_votes_neutral')),
-            o.button(.3, -.7, 'Keep', None if practice else
-                trigger_code(p, 'subject_votes_to_accept')))
+            o.button(-.3, -.7, 'Keep',
+                keybinding = 'num_1',
+                trigger_code = None if practice else
+                    trigger_code(p, 'subject_votes_to_accept')),
+            o.button(0, -.7, 'Neutral',
+                keybinding = 'num_2',
+                trigger_code = None if practice else
+                    trigger_code(p, 'subject_votes_neutral')),
+            o.button(.3, -.7, 'Kick\nOut',
+                keybinding = 'num_3',
+                trigger_code = None if practice else
+                    trigger_code(p, 'subject_votes_to_reject')))
 
         if not practice:
             text = o.text(0, 0, color = 'white', string =
@@ -462,9 +468,9 @@ with background('Hawaje-NoRedLine.jpg'):
     with o.dkey_prefix('profile'):
 
         o.button_screen('gender',
-           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you male or female?', vAlign = 'top'),
-           o.button(-.25, -.7, 'Male'),
-           o.button(.25, -.7, 'Female'))
+           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you male or female? (Type "m" or "f" or click a button.)', vAlign = 'top'),
+           o.button(-.25, -.7, 'Male', keybinding = 'm'),
+           o.button(.25, -.7, 'Female', keybinding = 'f'))
         if o.data['profile']['gender'] == 'Male':
             # Make a male non-expendable female so that there's
             # of equal number of male and female players.
