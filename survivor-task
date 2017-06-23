@@ -33,7 +33,7 @@ extra_male_name = 'Noah'
 female_names = {'Alexis', 'Anna', 'Brianna', 'Gabrielle', 'Julia', 'Margaret'}
 extra_female_name = 'Faith'
 portrait_dims = (144, 216)
-male_portraits = {'klein-age15-m-{}.jpg'.format(i + 1) for i in range(8)}
+male_portraits = {'klein-age15-m-1.jpg', 'klein-age15-m-4.jpg', 'klein-age15-m-7.jpg', 'klein-age15-m-8.jpg', 'm-hispanic-smiling-blue-messyhair.jpg', 'm-white-smiling-black.jpg', 'shankman-m-adult-1.jpg', 'kujawa-m-1.jpg'}
 female_portraits = {'klein-age15-f-{}.jpg'.format(i + 1) for i in range(7)}
 locations = {
     ('Pasadena, CA', 'Pasadena High School'),
