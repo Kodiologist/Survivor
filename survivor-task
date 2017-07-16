@@ -43,20 +43,17 @@ portrait_dims = (144, 216)
 male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(6)}
 female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(6)}
 locations = {
-    'Banff, AB',
-    'Brampton, ON',
-    'Corner Brook, NL',
-    'Halifax, NS',
-    'London, ON',
-    'Mississauga, ON',
-    'Montreal, QC',
-    'Montreal, QC',
-    'Niagara, NY',
-    'Quebec City, QC',
-    'Red Deer, AB',
-    'Sherbrooke, QC',
-    'Toronto, ON',
-    'Vancouver, BC'}
+    'Pasadena, CA',
+    'Chicago, IL',
+    'Dayton, TN',
+    'Scranton, PA',
+    'Pittsburgh, PA',
+    'Ocean City, NJ',
+    'Saint Paul, MN',
+    'Euclid, OH',
+    'Westbrook, ME',
+    'Allen, TX',
+    'San Jose, CA'}
 interests = {
     'eating, going to the gym, playing music',
     "I draw funny caricatures of people I don't like",
