@@ -68,10 +68,12 @@ interests = {
     'Politics, reading, drama tv shows, running, photography...I have too many!',
     "Teaching myself new (not necessarily useful) skills like juggling."}
 ages = map(str, [
-    18,
-    19, 19, 19, 19,
-    20, 20, 20,
-    21, 21, 21])
+    15,
+    16, 16,
+    17, 17,
+    18, 18,
+    19, 19,
+    20, 20])
 
 round_descriptions = [
     dict(place = 'Kauai',
