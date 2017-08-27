@@ -67,13 +67,6 @@ interests = {
     'playing piano and running',
     'Politics, reading, drama tv shows, running, photography...I have too many!',
     "Teaching myself new (not necessarily useful) skills like juggling."}
-ages = map(str, [
-    15,
-    16, 16,
-    17, 17,
-    18, 18,
-    19, 19,
-    20, 20])
 
 round_descriptions = [
     dict(place = 'Kauai',
@@ -255,10 +248,10 @@ def portrait_stim(x, y, p, border_color = 'black'):
     return portrait_stim_cache[k]
 
 # Assign fluff.
-for p, age, hometown, interest in zip(
-        coplayers, shuffled(ages), shuffled(locations), shuffled(interests)):
+for p, hometown, interest in zip(
+        coplayers, shuffled(locations), shuffled(interests)):
     p['fluff'] = dict(
-        Age = age, Hometown = hometown, Interests = interest)
+        Hometown = hometown, Interests = interest)
 
 o.save('coplayers', {p['id']: p for p in coplayers})
   # We don't copy the coplayer-objects because we want later edits
@@ -334,7 +327,7 @@ def voting(nround):
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                 ('' if practice else '<br>'.join(
                     ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'Hometown', 'Interests']] +
+                        ['Hometown', 'Interests']] +
                     ['<b>{}:</b> {}'.format(
                             escape(r['question']),
                             escape(p['poll_responses'][i + 1]))
@@ -446,8 +439,6 @@ with background('Hawaje-NoRedLine.jpg'):
         except StopIteration:
             pass
 
-        o.nonneg_int_entry_screen('age', 'How old are you?')
-
         o.text_entry_screen('hometown', 'What is your hometown?')
 
         o.text_entry_screen('interests', "What are some things you're interested in?")
@@ -459,7 +450,7 @@ with background('Hawaje-NoRedLine.jpg'):
                 '<b>{}</b><br>'.format(o.data['profile']['gender']) +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k.capitalize(), escape(o.data['profile'][k])) for k in
-                        ['age', 'hometown', 'interests'])))
+                        ['hometown', 'interests'])))
 
     lag(3)
 
@@ -490,7 +481,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'Hometown', 'Interests'])))
+                        ['Hometown', 'Interests'])))
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You can vote to keep or send home as many players as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.")
 
