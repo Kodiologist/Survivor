@@ -40,8 +40,8 @@ extra_male_name = 'Ben'
 female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
 extra_female_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'m-adult-{}.jpg'.format(n + 1) for n in range(6)}
-female_portraits = {'f-adult-{}.jpg'.format(n + 1) for n in range(6)}
+male_portraits = {'barch-m-1.jpg', 'barch-m-2.jpg', 'klein-age15-m-2.jpg', 'klein-age15-m-5.jpg', 'klein-age15-m-6.jpg', 'm-adult-4.jpg', 'shankman-m-adult-3.jpg'}
+female_portraits = {'barch-f-1.jpg', 'barch-f-2.jpg', 'barch-f-3.jpg', 'f-adult-6.jpg', 'klein-age15-f-4.jpg', 'klein-age15-f-5.jpg', 'shankman-f-adult-2.jpg'}
 locations = {
     'Pasadena, CA',
     'Chicago, IL',
@@ -420,7 +420,7 @@ with background('Hawaje-NoRedLine.jpg'):
             transgal = choice([p for p in coplayers if not p['female']])
             transgal['female'] = True
             transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
-            transgal['portrait'], = female_portraits - {p['portrait'] for p in coplayers if p['female']}
+            transgal['portrait'] = choice(female_portraits - {p['portrait'] for p in coplayers if p['female']})
 
         o.text_entry_screen('name', 'What is your first name?')
         subject_name = o.data['profile']['name']
