@@ -75,7 +75,7 @@ round_descriptions = [
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
         question = "Who's your favorite singer or musical group?",
-        responses = ['2 Chainz', 'Childish Gambino', 'Drake', 'Ed Sheeran', 'Fall Out Boy', 'fetty wap', 'Grateful Dead', 'Grimes', 'J. Cole', 'Luke Bryan', 'The Weeknd', 'wiz khalifa']),
+        responses = ['Jason Aldean', 'Childish Gambino', 'Drake', 'Ed Sheeran', 'Fall Out Boy', 'fetty wap', 'Grateful Dead', 'Grimes', 'J. Cole', 'Luke Bryan', 'The Weeknd', 'wiz khalifa']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
@@ -409,7 +409,7 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('introduction'):
 
-        o.instructions('set_the_scene', "Let's pretend you've just landed on the Hawaiian Island of Niihau to begin a summer vacation with a group of {} other kids. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, your vacation will begin!".format(
+        o.instructions('set_the_scene', "Let's pretend you've just landed on the Hawaiian Island of Niihau to begin a summer vacation with a group of {} other teens. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, your vacation will begin!".format(
             len(coplayers)))
 
         o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players. After each round, you'll vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to stay in the game and be one of the {} players (out of the original {}) who make it to the Big Island!".format(
@@ -499,7 +499,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'School', 'Interests'])))
 
-    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with you on to the next island? You can vote to keep or send home as many kids as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.")
+    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with you on to the next island? You can vote to keep or send home as many other players as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.")
 
     o.okay_screen('feedback_explanation',
         o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
