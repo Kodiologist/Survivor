@@ -170,6 +170,16 @@ def write(write_point):
     o.write(p)
     print 'Data written to', p
 
+def simplify_gender(gender):
+  # When the text string `gender` clearly identifies a binary gender,
+  # return "Male" or "Female". Otherwise, just normalize capitalization.
+    g = gender.lower()
+    if g in ['m', 'male', 'b', 'boy', 'man']:
+        return 'Male'
+    if g in ['f', 'female', 'g', 'girl', 'w', 'woman']:
+        return 'Female'
+    return gender[0].upper() + gender[1:].lower()
+
 # ------------------------------------------------------------
 # Coplayers
 # ------------------------------------------------------------
@@ -426,10 +436,8 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('profile'):
 
-        o.button_screen('gender',
-           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you male or female?', vAlign = 'top'),
-           o.button(-.25, -.7, 'Male'),
-           o.button(.25, -.7, 'Female'))
+        o.text_entry_screen('gender', 'Now you can fill out your profile.\n\nWhat is your gender?')
+        o.data['profile']['gender'] = simplify_gender(o.data['profile']['gender'])
         if o.data['profile']['gender'] == 'Male':
             # Make a male non-expendable female so that there's
             # of equal number of male and female players.
