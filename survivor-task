@@ -7,7 +7,8 @@ psychopy.logging.console.setLevel(psychopy.logging.CRITICAL)
 
 import schizoidpy
 from schizoidpy import StimGroup
-from psychopy.visual import ImageStim, Rect, Circle
+from psychopy.visual import TextStim, ImageStim, Rect, Circle
+from psychopy.visual.ratingscale import RatingScale
 from psychopy.core import CountdownTimer
 from random import random, lognormvariate, expovariate, sample
 from cgi import escape
@@ -285,6 +286,33 @@ o.save('coplayers', {p['id']: p for p in coplayers})
   # (such as the addition of poll responses) to be recorded.
 
 # ------------------------------------------------------------
+# * The likability-rating subroutine
+# ------------------------------------------------------------
+
+def likability_scale(y):
+    rs = RatingScale(o.win, pos = (0, y),
+        low = 1, high = 9,
+        labels = ['Not at all', 'Somewhat', 'Extremely'],
+        textColor = 'black', lineColor = 'black',
+        marker = 'circle', markerColor = 'black',
+        stretch = 1.75,
+        showValue = False, skipKeys = None, scale = None,
+        singleClick = True, showAccept = False)
+    return rs
+
+def rate_likabilities(time):
+    cps = shuffled(coplayers)
+    o.save(('likability_ratings', time, 'rating_order'),
+        [p['id'] for p in cps])
+    for p in cps:
+        o.scale_screen(('likability_ratings', time, 'ratings', p['id']),
+            portrait_stim(-.5, .5, p),
+            o.text(0, .2, 'How much do you like {}?'.format(p['name'])),
+            likability_scale(0),
+            o.text(0, -.5, 'How much do you think other people would like {}?'.format(pronoun_obj(p))),
+            likability_scale(-.7))
+
+# ------------------------------------------------------------
 # * The voting subroutine
 # ------------------------------------------------------------
 
@@ -517,6 +545,8 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'School', 'Interests'])))
 
+    rate_likabilities('pre')
+
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with you on to the next island? You can vote to keep or send home as many other players as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.")
 
     o.okay_screen('feedback_explanation',
@@ -576,6 +606,8 @@ for i, r in enumerate(round_descriptions):
 
 with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
     message(3, 'You made it to the Big Island of Hawaii!\nLet the vacation begin!')
+
+    rate_likabilities('post')
 
 # ------------------------------------------------------------
 # * Post-game questionnaire
