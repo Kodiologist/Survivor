@@ -378,18 +378,18 @@ def icon_frame(x, color):
         Rect(o.win, icon_thickness, icon_dim,
             pos = (x - icon_dim/2, 0), **kw)]
 
-def reject_icon(x = 0):
-    return ImageStim(o.win, pos = (x, 0),
+def reject_icon(x = 0, y = 0):
+    return ImageStim(o.win, pos = (x, y),
         image = image_path('thumbs-down.png'))
 Reject.icon_c = reject_icon()
 
-def accept_icon(x = 0):
-    return ImageStim(o.win, pos = (x, 0),
+def accept_icon(x = 0, y = 0):
+    return ImageStim(o.win, pos = (x, y),
         image = image_path('thumbs-up.png'))
 Accept.icon_c = accept_icon()
 
-def neutral_icon(x = 0):
-    return Rect(o.win, width = .25, height = .5, pos = (x, 0),
+def neutral_icon(x = 0, y = 0):
+    return Rect(o.win, width = .25, height = .5, pos = (x, y),
         fillColor = 'yellow',
         lineColor = 'gray', lineWidth = 10)
 Neutral.icon_c = neutral_icon()
@@ -412,57 +412,63 @@ def voting(nround):
     else:
         cps = shuffled(coplayers)
         o.save('vote_order', [p['id'] for p in cps])
+
     with blank_background:
-      for i, p in enumerate(cps):
 
-        # The subject votes.
-        stimuli = [
-            portrait_stim(-.5, .5, p, border_color = 'white'),
-            o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
-                # Show everything the subject knows about this
-                # coplayer, except for observed voting behavior.
-                p['name'] + "<br><br>" +
-                '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
-                ('' if practice else '<br>'.join(
-                    ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'Hometown', 'School', 'Interests']] +
-                    ['<b>{}:</b> {}'.format(
-                            escape(r['question']),
-                            escape(p['poll_responses'][i + 1]))
-                        for i, r in enumerate(round_descriptions)
-                        if i + 1 <= nround])))]
-        voting_timer = CountdownTimer(voting_time_limit)
-        o.keypress_screen(('subject_votes', p['id']),
-            {
-               voting_timer: TriggerKey('Neutral', None if practice else
-                   trigger_code(p, 'subject_votes_neutral')),
-               Reject.key: TriggerKey('Kick\nOut', None if practice else
-                   trigger_code(p, 'subject_votes_to_reject')),
-               Accept.key: TriggerKey('Keep', None if practice else
-                   trigger_code(p, 'subject_votes_to_accept'))},
-            o.text(0, -.5, color = 'white', wrap = 2, string =
-                'Vote on ' + p['name']),
-            o.text(-.25, -.7, color = 'white', string =
-                '{} - Kick Out'.format(Reject.key)),
-            o.text(.25, -.7, color = 'white', string =
-                '{} - Keep'.format(Accept.key)),
-            *stimuli)
-        o.wait_screen_till(voting_timer,
-            o.text(0, -.5, color = 'white', wrap = 2, string =
-                'Vote registered'),
-            *stimuli)
+        o.keypress_screen('start',
+            {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
+            o.text(0, 0, color = 'white', string = "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
 
-        # Show a fixation cross.
-        o.wait_screen(1, o.fixation_cross)
+        for i, p in enumerate(cps):
 
-        # Now show the coplayer's vote.
-        pv = p['vote'] if practice else p['votes'][nround]
-        if not practice: o.trigger(trigger_code(p, {
-            Reject: 'subject_gets_reject_vote',
-            Neutral: 'subject_gets_neutral_vote',
-            Accept: 'subject_gets_accept_vote'}[pv]))
-        o.wait_screen(2, pv.icon_c)
-        o.wait_screen(1.5)
+            # The subject votes.
+            stimuli = [
+                portrait_stim(-.5, .5, p, border_color = 'white'),
+                o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
+                    # Show everything the subject knows about this
+                    # coplayer, except for observed voting behavior.
+                    p['name'] + "<br><br>" +
+                    '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+                    ('' if practice else '<br>'.join(
+                        ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
+                            ['Age', 'Hometown', 'School', 'Interests']] +
+                        ['<b>{}:</b> {}'.format(
+                                escape(r['question']),
+                                escape(p['poll_responses'][i + 1]))
+                            for i, r in enumerate(round_descriptions)
+                            if i + 1 <= nround])))]
+            voting_timer = CountdownTimer(voting_time_limit)
+            o.keypress_screen(('subject_votes', p['id']),
+                {
+                   voting_timer: TriggerKey('Neutral', None if practice else
+                       trigger_code(p, 'subject_votes_neutral')),
+                   Reject.key: TriggerKey('Kick\nOut', None if practice else
+                       trigger_code(p, 'subject_votes_to_reject')),
+                   Accept.key: TriggerKey('Keep', None if practice else
+                       trigger_code(p, 'subject_votes_to_accept'))},
+                o.text(0, -.5, color = 'white', wrap = 2, string =
+                    'Vote on ' + p['name']),
+                o.text(-.25, -.7, color = 'white', string =
+                    '{} - Kick Out'.format(Reject.key)),
+                o.text(.25, -.7, color = 'white', string =
+                    '{} - Keep'.format(Accept.key)),
+                *stimuli)
+            o.wait_screen_till(voting_timer,
+                o.text(0, -.5, color = 'white', wrap = 2, string =
+                    'Vote registered'),
+                *stimuli)
+
+            # Show a fixation cross.
+            o.wait_screen(1, o.fixation_cross)
+
+            # Now show the coplayer's vote.
+            pv = p['vote'] if practice else p['votes'][nround]
+            if not practice: o.trigger(trigger_code(p, {
+                Reject: 'subject_gets_reject_vote',
+                Neutral: 'subject_gets_neutral_vote',
+                Accept: 'subject_gets_accept_vote'}[pv]))
+            o.wait_screen(2, pv.icon_c)
+            o.wait_screen(1.5)
 
     if not practice:
       # An expendable coplayer is ousted.
@@ -588,16 +594,19 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
 
     rate_likabilities('pre')
 
-    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with you on to the next island? You can vote to keep or send home as many other players as you want, but you have to vote to send <b>at least one</b> other player home. Whoever gets the most votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.")
+    o.instructions('voting_begins', html = True, wrap = 1.25, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out (remove a point from) or keep (give a point to) each player. You have {voting_time_limit} seconds to vote. If your vote isn't received in time, the other player's score is unaffected.<br><br>Whoever receives the <b>least</b> points will be kicked out of the game. Remember: someone has to be kicked out each round, so be sure to cast your vote for who should go.<br><br>Each time you vote, you will then find out how that player voted for you.".format(**globals()))
 
     o.okay_screen('feedback_explanation',
         o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
-        accept_icon(-.4),
-        o.text(-.4, -.3, "This means a vote to keep you.",
-            vAlign = 'top', wrap = .6),
-        reject_icon(.4),
-        o.text(.4, -.3, "This means a vote to kick you out.",
-            vAlign = 'top', wrap = .6))
+        accept_icon(-.5, .1),
+        o.text(-.5, -.2, "This means a vote to keep you.",
+            vAlign = 'top', wrap = .5),
+        neutral_icon(0, .1),
+        o.text(0, -.2, "This means no vote (possibly due to a network error).",
+            vAlign = 'top', wrap = .5),
+        reject_icon(.5, .1),
+        o.text(.5, -.2, "This means a vote to kick you out.",
+            vAlign = 'top', wrap = .5))
 
     with o.dkey_prefix('voting_practice'):
         o.instructions('intro', "First, you'll see two examples of how voting works.")
