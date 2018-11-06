@@ -441,8 +441,7 @@ def voting(nround):
                Accept.key: TriggerKey('Keep', None if practice else
                    trigger_code(p, 'subject_votes_to_accept'))},
             o.text(0, -.5, color = 'white', wrap = 2, string =
-                'Should we keep {} or kick {} out?'.format(
-                    p['name'], pronoun_obj(p))),
+                'Vote on ' + p['name']),
             o.text(-.25, -.7, color = 'white', string =
                 '{} - Kick Out'.format(Reject.key)),
             o.text(.25, -.7, color = 'white', string =
