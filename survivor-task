@@ -6,7 +6,7 @@ import psychopy.logging
 psychopy.logging.console.setLevel(psychopy.logging.CRITICAL)
 
 import schizoidpy
-from schizoidpy import StimGroup
+from schizoidpy import StimGroup, TriggerKey
 from psychopy.visual import TextStim, ImageStim, Rect, Circle
 from psychopy.visual.ratingscale import RatingScale
 from psychopy.core import CountdownTimer
@@ -205,8 +205,10 @@ class VoteType(object):
     def __str__(self):
         return self.letter
 Reject = VoteType('R')
+Reject.key = 'f'
 Neutral = VoteType('N')
 Accept = VoteType('A')
+Accept.key = 'j'
 
 coplayers = dict(
 
@@ -423,7 +425,12 @@ def voting(nround):
             feedback_timer = CountdownTimer(varwait)
 
         # The subject votes.
-        o.button_screen(('subject_votes', p['id']),
+        o.keypress_screen(('subject_votes', p['id']),
+            {
+               Reject.key: TriggerKey('Kick\nOut', None if practice else
+                   trigger_code(p, 'subject_votes_to_reject')),
+               Accept.key: TriggerKey('Keep', None if practice else
+                   trigger_code(p, 'subject_votes_to_accept'))},
             portrait_stim(-.5, .5, p, border_color = 'white'),
             o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
                 # Show everything the subject knows about this
@@ -441,10 +448,10 @@ def voting(nround):
             o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
-            o.button(-.25, -.7, 'Kick\nOut', None if practice else
-                trigger_code(p, 'subject_votes_to_reject')),
-            o.button(.25, -.7, 'Keep', None if practice else
-                trigger_code(p, 'subject_votes_to_accept')))
+            o.text(-.25, -.7, color = 'white', string =
+                '{} - Kick Out'.format(Reject.key)),
+            o.text(.25, -.7, color = 'white', string =
+                '{} - Keep'.format(Accept.key)))
 
         if not practice:
           # If the subject voted more quickly than we're pretending
