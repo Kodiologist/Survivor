@@ -113,8 +113,7 @@ events = dict(
     # We skip 0 because that's a control code.
     subject_votes_to_accept   = 0b00000001,
     subject_votes_to_reject   = 0b00000010,
-   #subject_votes_neutral     = 0b00000011,
-      # Currently unused.
+    subject_votes_neutral     = 0b00000011,
     subject_gets_accept_vote  = 0b00000100,
     subject_gets_reject_vote  = 0b00000101,
     subject_gets_neutral_vote = 0b00000110)
@@ -395,6 +394,8 @@ def neutral_icon(x = 0):
         lineColor = 'gray', lineWidth = 10)
 Neutral.icon_c = neutral_icon()
 
+voting_time_limit = 5  # In seconds
+
 def voting(nround):
 
     practice = nround is None
@@ -414,23 +415,8 @@ def voting(nround):
     with blank_background:
       for i, p in enumerate(cps):
 
-        if not practice:
-          # Choose an amount of time that we're pretending the
-          # coplayer takes to vote. The random distribution here is
-          # made to be similar to the real distribution of voting
-          # times from past subjects, biased against very long waits
-          # (since we don't want to waste subjects' time).
-            varwait = lognormvariate(.5, .75)
-            o.save(('feedback_varwait', i), varwait)
-            feedback_timer = CountdownTimer(varwait)
-
         # The subject votes.
-        o.keypress_screen(('subject_votes', p['id']),
-            {
-               Reject.key: TriggerKey('Kick\nOut', None if practice else
-                   trigger_code(p, 'subject_votes_to_reject')),
-               Accept.key: TriggerKey('Keep', None if practice else
-                   trigger_code(p, 'subject_votes_to_accept'))},
+        stimuli = [
             portrait_stim(-.5, .5, p, border_color = 'white'),
             o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
                 # Show everything the subject knows about this
@@ -444,20 +430,28 @@ def voting(nround):
                             escape(r['question']),
                             escape(p['poll_responses'][i + 1]))
                         for i, r in enumerate(round_descriptions)
-                        if i + 1 <= nround]))),
+                        if i + 1 <= nround])))]
+        voting_timer = CountdownTimer(voting_time_limit)
+        o.keypress_screen(('subject_votes', p['id']),
+            {
+               voting_timer: TriggerKey('Neutral', None if practice else
+                   trigger_code(p, 'subject_votes_neutral')),
+               Reject.key: TriggerKey('Kick\nOut', None if practice else
+                   trigger_code(p, 'subject_votes_to_reject')),
+               Accept.key: TriggerKey('Keep', None if practice else
+                   trigger_code(p, 'subject_votes_to_accept'))},
             o.text(0, -.5, color = 'white', wrap = 2, string =
                 'Should we keep {} or kick {} out?'.format(
                     p['name'], pronoun_obj(p))),
             o.text(-.25, -.7, color = 'white', string =
                 '{} - Kick Out'.format(Reject.key)),
             o.text(.25, -.7, color = 'white', string =
-                '{} - Keep'.format(Accept.key)))
-
-        if not practice:
-          # If the subject voted more quickly than we're pretending
-          # the coplayer did, make the subject wait.
-            o.wait_screen_till(feedback_timer, o.text(0, 0, color = 'white', string =
-                u'Waiting for {} to vote…'.format(p['name'])))
+                '{} - Keep'.format(Accept.key)),
+            *stimuli)
+        o.wait_screen_till(voting_timer,
+            o.text(0, -.5, color = 'white', wrap = 2, string =
+                'Vote registered'),
+            *stimuli)
 
         # Show a fixation cross.
         o.wait_screen(1, o.fixation_cross)
