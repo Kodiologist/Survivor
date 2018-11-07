@@ -411,18 +411,12 @@ def voting(nround):
             stimuli = [
                 portrait_stim(-.5, .5, p, border_color = 'white'),
                 o.html(.2, .8, vAlign = 'top', color = 'white', font_size = 14, string =
-                    # Show everything the subject knows about this
-                    # coplayer, except for observed voting behavior.
+                    # Show the coplayer's profile.
                     p['name'] + "<br><br>" +
                     '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                     ('' if practice else '<br>'.join(
                         ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                            ['Age', 'School', 'Interests']] +
-                        ['<b>{}:</b> {}'.format(
-                                escape(r['question']),
-                                escape(p['poll_responses'][i + 1]))
-                            for i, r in enumerate(round_descriptions)
-                            if i + 1 <= nround])))]
+                            ['Age', 'School', 'Interests']])))]
             voting_timer = CountdownTimer(voting_time_limit)
             o.keypress_screen(('subject_votes', p['id']),
                 {
