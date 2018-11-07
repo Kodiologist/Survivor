@@ -38,23 +38,9 @@ extra_female_name = 'Faith'
 portrait_dims = (144, 216)
 male_portraits = {'example-male.png', 'klein-age15-m-1.jpg', 'klein-age15-m-4.jpg', 'klein-age15-m-7.jpg', 'klein-age15-m-8.jpg', 'm-hispanic-smiling-blue-messyhair.jpg', 'm-white-smiling-black.jpg', 'shankman-m-adult-1.jpg', 'kujawa-m-1.jpg'}
 female_portraits = {'example-female.png'}.union('klein-age15-f-{}.jpg'.format(i + 1) for i in range(7))
-locations = {
-    # Schools with "University" in the name are special. They can
-    # only be assigned to 18-year-olds.
-    ('PLACEHOLDER city 1', 'PLACEHOLDER school 1'),
-    ('PLACEHOLDER city 2', 'PLACEHOLDER school 2'),
-    ('Pasadena, CA', 'Pasadena High School'),
-    ('Chicago, IL', 'UIC College Prep'),
-    ('St. Louis, MO', 'Washington University'),
-    ('Notre Dame, IN', 'University of Notre Dame'),
-    ('Pittsburgh, PA', 'Taylor Allderdice High School'),
-    ('Ocean City, NJ', 'Ocean City High School'),
-    ('Saint Paul, MN', 'Central High School'),
-    ('Euclid, OH', 'Andrews Osborne Academy'),
-    ('Westbrook, ME', 'Westbrook High School'),
-    ('Allen, TX', 'Coram Deo Academy'),
-    ('San Jose, CA', 'Bellarmine College Prep')}
-
+schools = {'PLACEHOLDER school 1', 'PLACEHOLDER school 2', 'Pasadena High School', 'UIC College Prep', 'Washington University', 'University of Notre Dame', 'Taylor Allderdice High School', 'Ocean City High School', 'Central High School', 'Andrews Osborne Academy', 'Westbrook High School', 'Coram Deo Academy', 'Bellarmine College Prep'}
+  # Schools with "University" in the name are special. They can
+  # only be assigned to 18-year-olds.
 interests = {
     'PLACEHOLDER',
     'theater',
@@ -316,10 +302,10 @@ def portrait_stim(x, y, p, border_color = 'black'):
     return portrait_stim_cache[k]
 
 # Assign fluff.
-for p, age, (hometown, school), interest in zip(
-        coplayers, shuffled(ages), shuffled(locations), shuffled(interests)):
+for p, age, school, interest in zip(
+        coplayers, shuffled(ages), shuffled(schools), shuffled(interests)):
     p['fluff'] = dict(
-        Age = age, Hometown = hometown, School = school, Interests = interest)
+        Age = age, School = school, Interests = interest)
 # Make sure universities are only assigned to 18-year-olds.
 for p in [p for p in coplayers if
         'University' in p['fluff']['School'] and p['fluff']['Age'] != '18']:
@@ -431,7 +417,7 @@ def voting(nround):
                     '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                     ('' if practice else '<br>'.join(
                         ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                            ['Age', 'Hometown', 'School', 'Interests']] +
+                            ['Age', 'School', 'Interests']] +
                         ['<b>{}:</b> {}'.format(
                                 escape(r['question']),
                                 escape(p['poll_responses'][i + 1]))
@@ -540,8 +526,6 @@ with background('Hawaje-NoRedLine.jpg'):
 
         o.nonneg_int_entry_screen('age', 'How old are you?')
 
-        o.text_entry_screen('hometown', 'What is your hometown?')
-
         o.text_entry_screen('school', 'What school do you go to?')
 
         o.text_entry_screen('interests', "What are some things you're interested in?")
@@ -553,7 +537,7 @@ with background('Hawaje-NoRedLine.jpg'):
                 '<b>{}</b><br>'.format(o.data['profile']['gender']) +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k.capitalize(), escape(o.data['profile'][k])) for k in
-                        ['age', 'hometown', 'school', 'interests'])))
+                        ['age', 'school', 'interests'])))
 
     # Don't keep the profile data due to IRB shenanigans (for
     # the Kujawa lab at Penn State).
@@ -590,7 +574,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'Hometown', 'School', 'Interests'])))
+                        ['Age', 'School', 'Interests'])))
 
     rate_likabilities('pre')
 
