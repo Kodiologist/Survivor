@@ -31,64 +31,61 @@ o.save('task_version', par['task_version'])
 # * Data
 # ------------------------------------------------------------
 
-male_names = {'PLACEHOLDER male 1', 'Ben', 'Christian', 'Darin', 'Jack', 'Liam', 'Trevor'}
-extra_male_name = 'Noah'
-female_names = {'PLACEHOLDER female 1', 'Alexis', 'Anna', 'Brianna', 'Gabrielle', 'Julia', 'Margaret'}
-extra_female_name = 'Faith'
+male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
+extra_male_name = 'Peter'
+female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee ', 'Maya', 'Alysa'}
+extra_female_name = 'Sarah'
 portrait_dims = (144, 216)
-male_portraits = {'example-male.png', 'klein-age15-m-1.jpg', 'klein-age15-m-4.jpg', 'klein-age15-m-7.jpg', 'klein-age15-m-8.jpg', 'm-hispanic-smiling-blue-messyhair.jpg', 'm-white-smiling-black.jpg', 'shankman-m-adult-1.jpg', 'kujawa-m-1.jpg'}
-female_portraits = {'example-female.png'}.union('klein-age15-f-{}.jpg'.format(i + 1) for i in range(7))
-schools = {'PLACEHOLDER school 1', 'PLACEHOLDER school 2', 'Pasadena High School', 'UIC College Prep', 'Washington University', 'University of Notre Dame', 'Taylor Allderdice High School', 'Ocean City High School', 'Central High School', 'Andrews Osborne Academy', 'Westbrook High School', 'Coram Deo Academy', 'Bellarmine College Prep'}
-  # Schools with "University" in the name are special. They can
-  # only be assigned to 18-year-olds.
+male_portraits = {'vanderbilt-undergrad-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
+female_portraits = {'vanderbilt-undergrad-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
+schools = {'Centre College', 'Baylor University', 'Northwestern University', 'Ohio State University', 'Southern Methodist University', 'Purdue University', 'University of Northern Colorado', 'Florida International University', 'Valdosta State University', 'DeVry University', 'Stony Brook University', 'University of Oregon', 'University of Missouri'}
 interests = {
-    'PLACEHOLDER',
-    'theater',
-    'Drawing and painting',
-    'fishing or anything outdoors',
-    'Instagram, twitter',
-    'listening to music and watching netflix',
-    'Minecraft, videogames',
-    'pretty much any sport',
-    'Relaxing on the beach',
-    'Shopping with friends',
-    'skateboarding',
-    'Sleeping',
-    'soccer!!'}
+    'College football, exploring my city',
+    'Learning foreign languages and traveling',
+    'Reading good books, cooking',
+    'Visiting national parks, jogging, baking',
+    'Lacrosse, poetry, hanging with friends',
+    'business, astronomy, traveling',
+    'exploring new places, spending time with family and friends',
+    'sketching, hiking',
+    'social justice, public policy',
+    'yoga, soccer',
+    'volunteering, traveling',
+    'dogs',
+    'photography, French'}
 ages = map(str, [
-    1, 1, # PLACEHOLDERS
-    14,
-    15, 15,
-    16, 16, 16,
-    17, 17, 17,
-    18, 18])
+    18, 18, 18,
+    19, 19, 19,
+    20, 20, 20,
+    21, 21,
+    22, 22])
 
 round_descriptions = [
     dict(place = 'Kauai',
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
-        question = "Who's your favorite singer or musical group?",
-        responses = ['PLACEHOLDER a11', 'PLACEHOLDER a12', 'Jason Aldean', 'Childish Gambino', 'Drake', 'Ed Sheeran', 'Fall Out Boy', 'fetty wap', 'Grateful Dead', 'Grimes', 'J. Cole', 'Luke Bryan', 'The Weeknd', 'wiz khalifa']),
+        question = "What is your favorite movie?",
+        responses = ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens", "Spirited away"]),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
-        question = "What's your least favorite thing to do (that you have to do anyway)?",
-        responses = ['PLACEHOLDER a21', 'PLACEHOLDER a22', 'babysit my bro and sis', 'Class presentations', 'Clean my room', 'study', 'Going to the orthodontist', 'Exercise', 'math homework', 'Take out the garbage', 'Wake up early']),
+        question = "If money didn't matter, what would be your dream job?",
+        responses = ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist", "curator for an art gallery", "carpenter"]),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
         fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again.",
-        question = 'If you could bring only one thing to a desert island, what would it be?',
-        responses = ['PLACEHOLDER a31', 'PLACEHOLDER a32', 'A boat', 'Computer', 'iphone', 'My best friend', 'My dog', 'My phone', 'Pizza', 'swiss army knife']),
+        question = "If you had a whole day to do whatever you wanted, what would you do?",
+        responses = ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new", "Sleep in and relax", "Explore a part of my city I haven't been to before", "Write poetry"]),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
         fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
-        question = "What's your favorite class in school?",
-        responses = ['PLACEHOLDER a41', 'PLACEHOLDER a42', 'Art', 'Music', 'Bio', 'English', 'graphic design', 'Lunch', 'Social Studies', 'Spanish', 'Math']),
+        question = "What is your least favorite class?",
+        responses = ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus", "Logic", "Differential equations", "Intro philosophy", "Computer organization"]),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
-        question = "If you could have a super power, what would it be?",
-        responses = ['PLACEHOLDER a51', 'PLACEHOLDER a52', 'Ability to kill zombies', 'Flying', 'Mind control', 'mind reading', 'Shape shifting', 'Super strength', 'Time travel'])]
+        question = "If you could have dinner with any person, living or dead, who would it be?",
+        responses = ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg", "Kurt cobain", "John f kennedy", "David bowie", "John oliver", "Donald glover"])]
 
 round_wait = 2
 
@@ -306,13 +303,6 @@ for p, age, school, interest in zip(
         coplayers, shuffled(ages), shuffled(schools), shuffled(interests)):
     p['fluff'] = dict(
         Age = age, School = school, Interests = interest)
-# Make sure universities are only assigned to 18-year-olds.
-for p in [p for p in coplayers if
-        'University' in p['fluff']['School'] and p['fluff']['Age'] != '18']:
-    switch_with = next(p for p in coplayers if
-        'University' not in p['fluff']['School'] and p['fluff']['Age'] == '18')
-    p['fluff']['School'], switch_with['fluff']['School'] = (
-        switch_with['fluff']['School'], p['fluff']['School'])
 
 o.save('coplayers', {p['id']: p for p in coplayers})
   # We don't copy the coplayer-objects because we want later edits
