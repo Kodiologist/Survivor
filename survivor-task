@@ -325,15 +325,13 @@ def likability_scale(y):
 
 def rate_likabilities(time):
     cps = shuffled(coplayers)
-    o.save(('likability_ratings', time, 'rating_order'),
+    o.save(('likability_rating', time, 'rating_order'),
         [p['id'] for p in cps])
     for p in cps:
-        o.scale_screen(('likability_ratings', time, 'ratings', p['id']),
+        o.scale_screen(('likability_rating', time, 'ratings', p['id']),
             portrait_stim(-.5, .5, p),
-            o.text(0, .2, 'How much do you like {}?'.format(p['name'])),
-            likability_scale(0),
-            o.text(0, -.5, 'How much do you think other people would like {}?'.format(pronoun_obj(p))),
-            likability_scale(-.7))
+            o.text(0, 0, 'How much do you like {}?'.format(p['name'])),
+            likability_scale(-.2))
 
 # ------------------------------------------------------------
 # * The voting subroutine
