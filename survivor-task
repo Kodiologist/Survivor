@@ -611,6 +611,7 @@ for i, r in enumerate(round_descriptions):
             o.text(0, .8, "Here are your responses:"),
             o.text(0, .65,
                 "\n".join(["{}: {}".format(r[1], r[2]) for r in responses]),
+                height = .06,
                 wrap = 1.4, vAlign = 'top'))
 
         voting(nround)
