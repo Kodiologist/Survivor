@@ -444,7 +444,7 @@ def voting(nround):
         coplayers.remove(loser)
         o.okay_screen('loser',
             portrait_stim(0, .5, loser),
-            o.text(0, -.2, "And it's final decision time. Looks like {} got the least points! {} journey ends here. You get to continue on to the next island!".format(
+            o.text(0, -.2, "And it's final decision time. Looks like {} got the most votes to go home! {} journey ends here. You get to continue on to the next island!".format(
                 loser['name'],
                 pronoun_gen(loser).capitalize())))
 
@@ -560,7 +560,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
 
     rate_likabilities('pre')
 
-    o.instructions('voting_begins', html = True, wrap = 1.25, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out (remove a point from) or keep (give a point to) each player. You have {voting_time_limit} seconds to vote. If your vote isn't received in time, the other player's score is unaffected.<br><br>Whoever receives the <b>least</b> points will be kicked out of the game. Remember: someone has to be kicked out each round, so be sure to cast your vote for who should go.<br><br>Each time you vote, you will then find out how that player voted for you.".format(**globals()))
+    o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out or keep each player. You have {voting_time_limit} seconds to vote. The player with the greatest percentage of votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.".format(**globals()))
 
     o.okay_screen('feedback_explanation',
         o.text(0, .7, "For each player, after you've made your own vote, you'll see an icon that shows their vote."),
