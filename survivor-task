@@ -19,7 +19,7 @@ par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
 o = schizoidpy.Task(
     debug_log_dir = par['debug_log_dir'],
-    send_actiview_trigger_codes = par['eeg'],
+    send_actiview_trigger_codes = par['eeg'] and not par['fmri_mode'],
     inpout32_addr = par['inpout32_addr'],
     double_draw = par['double_draw'],
     button_radius = .12,
@@ -452,10 +452,12 @@ def voting(nround):
 # * Preliminaries
 # ------------------------------------------------------------
 
+o.save('mode', 'fmri' if par['fmri_mode'] else 'eeg')
+
 if par['debug']:
     o.data['subject'] = 'test'
 else:
-    o.get_subject_id('Island Getaway')
+    o.get_subject_id('Island Getaway - ' + o.data['mode'])
 
 subject_name = '???'
 
