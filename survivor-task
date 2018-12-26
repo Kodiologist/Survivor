@@ -112,6 +112,19 @@ def trigger_code(coplayer, event):
         (coplayer['female'] << 3) |
         events[event])
 
+button_box = {
+  # Maps fingers to their fMRI button-box codes.
+    'left pinkie':  '9',
+    'left ring':    '8',
+    'left middle':  '7',
+    'left index':   '6',
+    'left thumb':   '0',
+    'right thumb':  '5',
+    'right index':  '1',
+    'right middle': '2',
+    'right ring':   '3',
+    'right pinkie': '4'}
+
 # ------------------------------------------------------------
 # * Helper functions
 # ------------------------------------------------------------
@@ -187,10 +200,10 @@ class VoteType(object):
     def __str__(self):
         return self.letter
 Reject = VoteType('R')
-Reject.key = 'f'
+Reject.key = button_box['left index'] if par['fmri_mode'] else 'f'
 Neutral = VoteType('N')
 Accept = VoteType('A')
-Accept.key = 'j'
+Accept.key = button_box['right index'] if par['fmri_mode'] else 'j'
 
 coplayers = dict(
 
@@ -391,7 +404,10 @@ def voting(nround):
 
         o.keypress_screen('start',
             {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
-            o.text(0, 0, color = 'white', string = "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
+            o.text(0, 0, color = 'white', string =
+                "You'll use the buttons under your index fingers to vote. Press either one to begin voting."
+                if par['fmri_mode']
+                else "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
 
         for i, p in enumerate(cps):
 
@@ -417,9 +433,11 @@ def voting(nround):
                 o.text(0, -.5, color = 'white', wrap = 2, string =
                     'Vote on ' + p['name']),
                 o.text(-.25, -.7, color = 'white', string =
-                    '{} - Kick Out'.format(Reject.key)),
+                    '{} - Kick Out'.format(
+                        'left' if par['fmri_mode'] else Reject.key)),
                 o.text(.25, -.7, color = 'white', string =
-                    '{} - Keep'.format(Accept.key)),
+                    '{} - Keep'.format(
+                        'right' if par['fmri_mode'] else Accept.key)),
                 *stimuli)
             o.wait_screen_till(voting_timer,
                 o.text(0, -.5, color = 'white', wrap = 2, string =
