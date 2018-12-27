@@ -402,12 +402,13 @@ def voting(nround):
 
     with blank_background:
 
-        o.keypress_screen('start',
-            {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
-            o.text(0, 0, color = 'white', string =
-                "You'll use the buttons under your index fingers to vote. Press either one to begin voting."
-                if par['fmri_mode']
-                else "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
+        if par['fmri_mode']:
+            o.wait_screen(5,
+                o.text(0, 0, color = 'white', string = "Use the buttons under your index fingers to vote. Voting will begin in a few seconds."))
+        else:
+            o.keypress_screen('start',
+                {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
+                o.text(0, 0, color = 'white', string = "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
 
         for i, p in enumerate(cps):
 
