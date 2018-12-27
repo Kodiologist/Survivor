@@ -445,7 +445,7 @@ def voting(nround):
                 *stimuli)
 
             # Show a fixation cross.
-            o.wait_screen(1, o.fixation_cross)
+            o.wait_screen(2, o.fixation_cross)
 
             # Now show the coplayer's vote.
             pv = p['vote'] if practice else p['votes'][nround]
