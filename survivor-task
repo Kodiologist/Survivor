@@ -125,6 +125,8 @@ button_box = {
     'right ring':   '3',
     'right pinkie': '4'}
 
+fmri_start_scanning_key = 'grave'
+
 # ------------------------------------------------------------
 # * Helper functions
 # ------------------------------------------------------------
@@ -157,11 +159,19 @@ def message(duration, string):
         o.wait_screen(duration,
             strip_canvas,
             o.text(0, 0, string, wrap = 1.2))
+def fake_message(dkey, keys, string):
+   # Look like `message`, but actually wait for a keypress instead
+   # of waiting a fixed time.
+    with o.hiding(big_canvas):
+        o.keypress_screen(dkey, keys,
+            strip_canvas,
+            o.text(0, 0, string, wrap = 1.2))
 
 blank_background = o.hiding(background_imagestim, big_canvas)
 
 def lag(duration):
-    message(duration, u'Waiting for all players to finish…')
+    message(duration, lag_msg)
+lag_msg = u'Waiting for all players to finish…'
 
 def write(write_point):
     # Don't use o.save in case we're inside a `dkey_prefix`.
@@ -414,6 +424,11 @@ def voting(nround):
     else:
         # Make every post-feedback wait equal to the mean.
         postfeedback_waits = [mean_postfeedback_wait] * len(cps)
+
+    if par['fmri_mode']:
+        fake_message('begin_fmri',
+            fmri_start_scanning_key,
+            lag_msg)
 
     with blank_background:
 
