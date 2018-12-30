@@ -471,7 +471,8 @@ def voting(nround):
                 Accept: 'subject_gets_accept_vote'}[pv]))
             o.wait_screen(2, pv.icon_c)
 
-            o.wait_screen(postfeedback_waits[i])
+            # Show a fixation cross again.
+            o.wait_screen(postfeedback_waits[i], o.fixation_cross)
 
     if not practice:
       # An expendable coplayer is ousted.
