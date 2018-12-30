@@ -382,6 +382,7 @@ def neutral_icon(x = 0, y = 0):
 Neutral.icon_c = neutral_icon()
 
 voting_time_limit = 5  # In seconds
+mean_postfeedback_wait = 4 if par['fmri_mode'] else 1.5  # In seconds
 
 def voting(nround):
 
@@ -399,6 +400,20 @@ def voting(nround):
     else:
         cps = shuffled(coplayers)
         o.save('vote_order', [p['id'] for p in cps])
+
+    if par['fmri_mode']:
+        # Create a randomly ordered set of post-feedback waits with
+        # mean equal to `mean_postfeedback_wait`.
+        postfeedback_waits = [mean_postfeedback_wait + x
+            for i in range(1, len(cps) // 2 + 1)
+            for x in (-.25 * i, .25 * i)]
+        if len(cps) % 2:
+            postfeedback_waits.append(mean_postfeedback_wait)
+        postfeedback_waits = shuffled(postfeedback_waits)
+        o.save('postfeedback_waits', postfeedback_waits)
+    else:
+        # Make every post-feedback wait equal to the mean.
+        postfeedback_waits = [mean_postfeedback_wait] * len(cps)
 
     with blank_background:
 
@@ -455,7 +470,8 @@ def voting(nround):
                 Neutral: 'subject_gets_neutral_vote',
                 Accept: 'subject_gets_accept_vote'}[pv]))
             o.wait_screen(2, pv.icon_c)
-            o.wait_screen(1.5)
+
+            o.wait_screen(postfeedback_waits[i])
 
     if not practice:
       # An expendable coplayer is ousted.
