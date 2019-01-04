@@ -532,7 +532,7 @@ with background('Hawaje-NoRedLine.jpg'):
 
     with o.dkey_prefix('introduction'):
 
-        o.instructions('set_the_scene', "Let's pretend you've just landed on the Hawaiian Island of Niihau to begin a summer vacation with a group of {} other teens. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, your vacation will begin!".format(
+        o.instructions('set_the_scene', "Let's pretend you've just landed on the Hawaiian Island of Niihau to begin a summer vacation with a group of {} other college students. But the journey isn't over yet! First, you must make your way along the islands to get to the Big Island of Hawaii. Once there, your vacation will begin!".format(
             len(coplayers)))
 
         o.instructions('game_overview', "As you travel along the islands, you'll get to know more and more about the other players. After each round, you'll vote for who you would like to continue on to the Big Island with you and who you would like to send home. But the other players will also be voting on you! And your goal is to stay in the game and be one of the {} players (out of the original {}) who make it to the Big Island!".format(
