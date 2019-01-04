@@ -427,7 +427,7 @@ def voting(nround):
         # Make every post-feedback wait equal to the mean.
         postfeedback_waits = [mean_postfeedback_wait] * len(cps)
 
-    if par['fmri_mode']:
+    if par['fmri_mode'] and not practice:
         fake_message('begin_fmri',
             fmri_start_scanning_key,
             lag_msg)
