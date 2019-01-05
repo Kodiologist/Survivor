@@ -9,12 +9,11 @@ import schizoidpy
 from schizoidpy import StimGroup, TriggerKey
 from psychopy.visual import TextStim, ImageStim, Rect, Circle
 from psychopy.visual.ratingscale import RatingScale
-from psychopy.core import Clock, CountdownTimer
+from psychopy.core import CountdownTimer
 from random import random, lognormvariate, expovariate, sample
 from collections import Counter
 from cgi import escape
 from sys import argv
-from math import ceil
 
 par = dict(zip(argv[1::2], argv[2::2])) # DEPLOYMENT SCRIPT EDITS THIS LINE
 
@@ -394,7 +393,6 @@ Neutral.icon_c = neutral_icon()
 
 voting_time_limit = 5  # In seconds
 mean_postfeedback_wait = 4 if par['fmri_mode'] else 1.5  # In seconds
-fmri_scan_time = 1.1  # In seconds
 
 def voting(nround):
 
@@ -431,7 +429,6 @@ def voting(nround):
         fake_message('begin_fmri',
             fmri_start_scanning_key,
             lag_msg)
-        round_clock = Clock()
 
     with blank_background:
 
@@ -496,13 +493,7 @@ def voting(nround):
       # An expendable coplayer is ousted.
         loser = kickout_order[nround]
         coplayers.remove(loser)
-        result_duration = 5
-        if par['fmri_mode']:
-            # Pause on the result screen for a little extra time
-            # to finish the last scan.
-            t = round_clock.getTime() + result_duration
-            result_duration += fmri_scan_time * ceil(t / fmri_scan_time) - t
-        o.wait_screen(result_duration,
+        o.wait_screen(6.2,  # 5 seconds plus extra time for a final 1.1-s scan.
             portrait_stim(0, .5, loser),
             o.text(0, -.2, "And it's final decision time. Looks like {} got the most votes to go home! {} journey ends here. You get to continue on to the next island!".format(
                 loser['name'],
