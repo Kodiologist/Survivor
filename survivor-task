@@ -493,7 +493,7 @@ def voting(nround):
       # An expendable coplayer is ousted.
         loser = kickout_order[nround]
         coplayers.remove(loser)
-        o.wait_screen(6.2,  # 5 seconds plus extra time for a final 1.1-s scan.
+        o.wait_screen(5,
             portrait_stim(0, .5, loser),
             o.text(0, -.2, "And it's final decision time. Looks like {} got the most votes to go home! {} journey ends here. You get to continue on to the next island!".format(
                 loser['name'],
