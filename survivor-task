@@ -728,26 +728,14 @@ scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite\na lot', 'Extremely
 na_scale_level = scale_levels.index(refuse) + 1
 
 questions = [
-    {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
-    {'id': ('other', 1), 'text': 'It bothered me to vote off other players.'},
-    {'id': ('self-esteem', 2), 'text': 'My self-esteem was high.'},
+    {'id': ('need threat', 1), 'text': 'I felt as one with the other players.'},
     {'id': ('task disengagement', 5), 'text': 'I really wanted to stay in the game.'},
-    {'id': ('self-esteem', 3), 'text': 'I felt liked.'},
-    {'id': ('self-esteem', 4), 'text': 'I felt unsure of myself.'},
-    {'id': ('belonging', 5), 'text': 'I felt the other players wanted me to continue on to the Big Island.'},
-    {'id': ('preoccupation with exclusion', 1), 'text': 'I wondered "Why did they vote me off?"'},
+    {'id': ('need threat', 5), 'text': 'I felt like an outsider during the game.'},
     {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
-    {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
-    {'id': ('belonging', 2), 'text': 'I felt rejected.'},
-    {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
-    {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
-    {'id': ('meaningful existence', 4), 'text': 'I felt important.'},
-    {'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'},
-    {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
-    {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
-    {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
-    {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."},
-    {'id': ('control', 1), 'text': 'I felt powerful.'}]
+    {'id': ('need threat', 3), 'text': 'I did not feel accepted by the other players.'},
+    {'id': ('need threat', 2), 'text': 'I had the feeling that I belonged to the group during the game.'},
+    {'id': ('need threat', 4), 'text': 'During the game I felt connected with one of more other players.'},
+    {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."}]
 
 with o.dkey_prefix('postgame_questionnaire'), background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
     for q in questions:
