@@ -200,6 +200,45 @@ def simplify_gender(gender):
         return 'Female'
     return gender[0].upper() + gender[1:].lower()
 
+class TransformedRatingScale(RatingScale):
+    def __init__(self, *args, **kwargs):
+        self.transform = kwargs.pop('transform', None)
+        RatingScale.__init__(self, *args, **kwargs)
+
+    def getRating(self):
+        v = RatingScale.getRating(self)
+        if v is None or not self.transform:
+            return v
+        return self.transform(v)
+
+def rating_scale(y, num_options, **kwargs):
+    rs = TransformedRatingScale(o.win, pos = (0, y),
+        low = 1, high = num_options,
+        textColor = 'black', lineColor = 'black',
+        marker = 'circle', markerColor = 'black',
+        stretch = 2,
+        respKeys =
+            [button_box[k] for k in (
+              'left pinkie', 'left ring', 'left middle',
+              'left index', 'left thumb', 'right thumb')[:num_options]]
+            if par['fmri_mode']
+            else [str(i) for i in range(1, num_options + 1)],
+        acceptKeys = button_box['right index']
+            if par['fmri_mode']
+            else 'return',
+        showValue = False, skipKeys = None, scale = None,
+        showAccept = False,
+        **kwargs)
+    return rs
+
+def rating_scale_controls_text(num_options):
+    fmri_choice_controls =  (
+        {5: 'left hand', 6: 'left hand or right thumb'}[num_options])
+    return o.text(0, -.7, wrap = 2, string =
+        '{} - Choose an option\n{} - Confirm'.format(
+            fmri_choice_controls if par['fmri_mode'] else 'number keys',
+            'right index' if par['fmri_mode'] else 'Enter'))
+
 # ------------------------------------------------------------
 # * Coplayers
 # ------------------------------------------------------------
@@ -335,18 +374,8 @@ o.save('coplayers', {p['id']: p for p in coplayers})
 # * The likability-rating subroutine
 # ------------------------------------------------------------
 
-def likability_scale(y):
-    rs = RatingScale(o.win, pos = (0, y),
-        low = 1, high = 9,
-        labels = ['Not at all', 'Somewhat', 'Extremely'],
-        textColor = 'black', lineColor = 'black',
-        marker = 'circle', markerColor = 'black',
-        stretch = 1.75,
-        showValue = False, skipKeys = None, scale = None,
-        singleClick = True, showAccept = False)
-    return rs
-
 def rate_likabilities(time):
+    num_options = 5
     cps = shuffled(o.data['coplayers'].values())
       # We don't just say `shuffled(coplayers)` because we want
       # the subject to rate coplayers that have been kicked out.
@@ -356,7 +385,10 @@ def rate_likabilities(time):
         o.scale_screen(('likability_rating', time, 'ratings', p['id']),
             portrait_stim(-.5, .5, p),
             o.text(0, 0, 'How much do you like {}?'.format(p['name'])),
-            likability_scale(-.2))
+            rating_scale(y = -.2,
+                num_options = num_options,
+                labels = ['Not at all', 'Somewhat', 'Extremely']),
+            rating_scale_controls_text(num_options = num_options))
 
 # ------------------------------------------------------------
 # * The voting subroutine
@@ -613,13 +645,13 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'School', 'Interests'])))
 
-    rate_likabilities('pre')
-
     if par['fmri_mode']:
         ready_key = 'r'
         o.keypress_screen('fmri_setup',
             ready_key,
             o.text(0, 0, string = 'You may now enter the fMRI scanner.\n\nExperimenter, press the "{}" key when ready.'.format(ready_key)))
+
+    rate_likabilities('pre')
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out or keep each player. You have {voting_time_limit} seconds to vote. The player with the greatest percentage of votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.".format(**globals()))
 
@@ -692,41 +724,42 @@ with background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
 # ------------------------------------------------------------
 
 refuse = 'I prefer not\nto answer'
-scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite a lot', 'Extremely', refuse)
+scale_levels = ('Not at all', 'Slightly', 'Somewhat', 'Quite\na lot', 'Extremely', refuse)
 na_scale_level = scale_levels.index(refuse) + 1
 
-o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pick the options that best represent the feelings you were experiencing during the game.',
-    prompt_color = 'white',
-    scale_levels = scale_levels,
-    font_size = 12,
-    column_filler_width = 80,
-    questions = [
-        {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
-        {'id': ('other', 1), 'text': 'It bothered me to vote off other players.'},
-        {'id': ('self-esteem', 2), 'text': 'My self-esteem was high.'},
-        {'id': ('task disengagement', 5), 'text': 'I really wanted to stay in the game.'},
-        {'id': ('self-esteem', 3), 'text': 'I felt liked.'},
-        {'id': ('self-esteem', 4), 'text': 'I felt unsure of myself.'},
-        {'id': ('belonging', 5), 'text': 'I felt the other players wanted me to continue on to the Big Island.'},
-        {'id': ('preoccupation with exclusion', 1), 'text': 'I wondered "Why did they vote me off?"'},
-        {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
-        {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
-        {'id': ('belonging', 2), 'text': 'I felt rejected.'},
-        {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
-        {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
-        {'id': ('meaningful existence', 4), 'text': 'I felt important.'},
-        {'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'},
-        {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
-        {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
-        {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
-        {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."},
-        {'id': ('control', 1), 'text': 'I felt powerful.'}])
+questions = [
+    {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
+    {'id': ('other', 1), 'text': 'It bothered me to vote off other players.'},
+    {'id': ('self-esteem', 2), 'text': 'My self-esteem was high.'},
+    {'id': ('task disengagement', 5), 'text': 'I really wanted to stay in the game.'},
+    {'id': ('self-esteem', 3), 'text': 'I felt liked.'},
+    {'id': ('self-esteem', 4), 'text': 'I felt unsure of myself.'},
+    {'id': ('belonging', 5), 'text': 'I felt the other players wanted me to continue on to the Big Island.'},
+    {'id': ('preoccupation with exclusion', 1), 'text': 'I wondered "Why did they vote me off?"'},
+    {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
+    {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
+    {'id': ('belonging', 2), 'text': 'I felt rejected.'},
+    {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
+    {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
+    {'id': ('meaningful existence', 4), 'text': 'I felt important.'},
+    {'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'},
+    {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
+    {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
+    {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
+    {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."},
+    {'id': ('control', 1), 'text': 'I felt powerful.'}]
 
-# "I prefer not to answer" values are set to "NA".
-for rs in o.data['postgame_questionnaire'].values():
-   for i, r in enumerate(rs):
-       if r == na_scale_level:
-           rs[i] = 'NA'
+with o.dkey_prefix('postgame_questionnaire'), background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
+    for q in questions:
+        o.scale_screen(q['id'],
+            o.text(0, .5, 'In this questionnaire, pick the options that best represent the feelings you were experiencing during the game.'),
+            o.text(0, 0, q['text']),
+            rating_scale(y = -.2,
+                num_options = len(scale_levels),
+                choices = scale_levels,
+                transform = lambda v:
+                    'NA' if v == refuse else scale_levels.index(v) + 1),
+            rating_scale_controls_text(num_options = len(scale_levels)))
 
 # ------------------------------------------------------------
 # * Done!
