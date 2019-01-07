@@ -347,7 +347,9 @@ def likability_scale(y):
     return rs
 
 def rate_likabilities(time):
-    cps = shuffled(coplayers)
+    cps = shuffled(o.data['coplayers'].values())
+      # We don't just say `shuffled(coplayers)` because we want
+      # the subject to rate coplayers that have been kicked out.
     o.save(('likability_rating', time, 'rating_order'),
         [p['id'] for p in cps])
     for p in cps:
