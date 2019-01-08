@@ -33,7 +33,7 @@ o.save('task_version', par['task_version'])
 
 male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
 extra_male_name = 'Peter'
-female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee ', 'Maya', 'Alysa'}
+female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee', 'Maya', 'Alysa'}
 extra_female_name = 'Sarah'
 portrait_dims = (144, 216)
 male_portraits = {'vanderbilt-undergrad-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
