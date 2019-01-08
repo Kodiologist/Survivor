@@ -63,15 +63,15 @@ if par['fmri_mode']:
         'running, baking, hanging out with friends'}
     polls = [
         ['Who is your favorite fictional character?',
-            ["Harry potter", "Katniss Everdeen", "Iron Man", "Jim from The Office", "Groot", "Luke skywalker", "Atticus finch", "Hannibal lector", "Captain jack sparrow", "Jane Eyre", "Sherlock holmes", "Daenerys Targaryen", "Bart simpson"]],
+            ["Harry potter", "Katniss Everdeen", "Iron Man", "Jim from The Office", "Groot", "Luke skywalker", "Atticus finch", "Hannibal lector", "Captain jack sparrow", "Jane Eyre", "Sherlock holmes", "Daenerys Targaryen"]],
         ['If you could be any animal, what kind of animal would you be?',
-            ["Golden retriever", "Cat", "Beta fish", "Hummingbird", "Mountain lion", "Panther", "Water snake", "Giraffe", "Wild horse", "Beagle", "Hedgehog", "Sparrow", "Shark"]],
+            ["Golden retriever", "Cat", "Beta fish", "Hummingbird", "Mountain lion", "Panther", "Water snake", "Giraffe", "Wild horse", "Beagle", "Hedgehog"]],
         ['What is your favorite thing about your college or university?',
-            ["The people", "The food", "Interesting classes", "Being independent from my family", "How pretty campus is", "Cool organizations to get involved with", "Living in a dorm with my friends", "My friends", "Getting to figure out who I am and what I want", "I get to set my own schedule", "I don't have to go to class if I don't want to", "Getting to choose my own classes", "Being around different kinds of people"]],
+            ["The people", "The food", "Interesting classes", "Being independent from my family", "How pretty campus is", "Cool organizations to get involved with", "Living in a dorm with my friends", "My friends", "Getting to figure out who I am and what I want", "I get to set my own schedule"]],
         ['If you could live in any time period, which would it be?',
-            ["The future", "The wild west", "The 1960s", "the 80s", "Paris in the 1920s", "medieval France", "the renaissance", "ancient Greece", "the golden age of film in Hollywood", "right now", "200 years in the future", "The 70s", "Early 1800s England"]],
+            ["The future", "The wild west", "The 1960s", "the 80s", "Paris in the 1920s", "medieval France", "the renaissance", "ancient Greece", "the golden age of film in Hollywood"]],
         ['If you suddenly won a million dollars, what would be the first thing you bought with the money?',
-            ["A really fancy car", "A private island", "A mansion", "A beach house for my parents", "puppies", "designer clothes", "a luxury apartment", "a jet ski", "a beach vacation", "dinner in a fancy restaurant", "a Ferrari", "a private jet", "a yacht"]]]
+            ["A really fancy car", "A private island", "A mansion", "A beach house for my parents", "puppies", "designer clothes", "a luxury apartment", "a jet ski"]]]
 else:
     male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
     extra_male_name = 'Peter'
@@ -96,15 +96,15 @@ else:
         'photography, French'}
     polls = [
         ["What is your favorite movie?",
-            ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens", "Spirited away"]],
+            ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens"]],
         ["If money didn't matter, what would be your dream job?",
-            ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist", "curator for an art gallery", "carpenter"]],
+            ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist"]],
         ["If you had a whole day to do whatever you wanted, what would you do?",
-            ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new", "Sleep in and relax", "Explore a part of my city I haven't been to before", "Write poetry"]],
+            ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new"]],
         ["What is your least favorite class?",
-            ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus", "Logic", "Differential equations", "Intro philosophy", "Computer organization"]],
+            ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus"]],
         ["If you could have dinner with any person, living or dead, who would it be?",
-            ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg", "Kurt cobain", "John f kennedy", "David bowie", "John oliver", "Donald glover"]]]
+            ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg"]]]
 
 round_descriptions = [
     dict(place = 'Kauai',
