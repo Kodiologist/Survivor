@@ -31,28 +31,7 @@ o.save('task_version', par['task_version'])
 # * Data
 # ------------------------------------------------------------
 
-male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
-extra_male_name = 'Peter'
-female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee', 'Maya', 'Alysa'}
-extra_female_name = 'Sarah'
 portrait_dims = (144, 216)
-male_portraits = {'vanderbilt-undergrad-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
-female_portraits = {'vanderbilt-undergrad-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
-schools = {'Centre College', 'Baylor University', 'Northwestern University', 'Ohio State University', 'Southern Methodist University', 'Purdue University', 'University of Northern Colorado', 'Florida International University', 'Valdosta State University', 'DeVry University', 'Stony Brook University', 'University of Oregon', 'University of Missouri'}
-interests = {
-    'College football, exploring my city',
-    'Learning foreign languages and traveling',
-    'Reading good books, cooking',
-    'Visiting national parks, jogging, baking',
-    'Lacrosse, poetry, hanging with friends',
-    'business, astronomy, traveling',
-    'exploring new places, spending time with family and friends',
-    'sketching, hiking',
-    'social justice, public policy',
-    'yoga, soccer',
-    'volunteering, traveling',
-    'dogs',
-    'photography, French'}
 ages = map(str, [
     18, 18, 18,
     19, 19, 19,
@@ -60,32 +39,89 @@ ages = map(str, [
     21, 21,
     22, 22])
 
+if par['fmri_mode']:
+    male_names = {'Steve', 'Cody', 'Kyle', 'Aiden', 'Jacob', 'Daniel', 'Nick'}
+    extra_male_name = 'Rob'
+    female_names = {'Addison', 'Holly', 'Rachel', 'Lauren ', 'Jennifer', 'Molly', 'Jessica'}
+    extra_female_name = 'Kelsey'
+    male_portraits = {'vanderbilt-undergrad-fmri-m-{}.jpg'.format(i + 1) for i in range(7)}
+    female_portraits = {'vanderbilt-undergrad-fmri-f-{}.jpg'.format(i + 1) for i in range(7)}
+    schools = {'Kennesaw State University', 'University of Phoenix', 'Texas Tech University', 'Tulane University', 'Temple University ', 'Drexel University', 'Boise State University', 'University of Delaware', 'Old Dominion University', 'Birmingham-Southern College', 'University of North Carolina at Chapel Hill', 'Wake Forest University', 'Yale University'}
+    interests = {
+        'fishing, reading, spending time with friends',
+        'rock climbing, politics, nature',
+        'design and music',
+        'playing guitar and spending time with friends and family',
+        'travel, art, literature',
+        'chess, spending time with friends',
+        'drawing and painting',
+        'cooking, meeting new people',
+        'singing, choreography',
+        'travel and foreign languages',
+        'volunteering, reading, Spanish',
+        'public health, sculpting, working out',
+        'running, baking, hanging out with friends'}
+    polls = [
+        ['Who is your favorite fictional character?',
+            ["Harry potter", "Katniss Everdeen", "Iron Man", "Jim from The Office", "Groot", "Luke skywalker", "Atticus finch", "Hannibal lector", "Captain jack sparrow", "Jane Eyre", "Sherlock holmes", "Daenerys Targaryen", "Bart simpson"]],
+        ['If you could be any animal, what kind of animal would you be?',
+            ["Golden retriever", "Cat", "Beta fish", "Hummingbird", "Mountain lion", "Panther", "Water snake", "Giraffe", "Wild horse", "Beagle", "Hedgehog", "Sparrow", "Shark"]],
+        ['What is your favorite thing about your college or university?',
+            ["The people", "The food", "Interesting classes", "Being independent from my family", "How pretty campus is", "Cool organizations to get involved with", "Living in a dorm with my friends", "My friends", "Getting to figure out who I am and what I want", "I get to set my own schedule", "I don't have to go to class if I don't want to", "Getting to choose my own classes", "Being around different kinds of people"]],
+        ['If you could live in any time period, which would it be?',
+            ["The future", "The wild west", "The 1960s", "the 80s", "Paris in the 1920s", "medieval France", "the renaissance", "ancient Greece", "the golden age of film in Hollywood", "right now", "200 years in the future", "The 70s", "Early 1800s England"]],
+        ['If you suddenly won a million dollars, what would be the first thing you bought with the money?',
+            ["A really fancy car", "A private island", "A mansion", "A beach house for my parents", "puppies", "designer clothes", "a luxury apartment", "a jet ski", "a beach vacation", "dinner in a fancy restaurant", "a Ferrari", "a private jet", "a yacht"]]]
+else:
+    male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
+    extra_male_name = 'Peter'
+    female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee', 'Maya', 'Alysa'}
+    extra_female_name = 'Sarah'
+    male_portraits = {'vanderbilt-undergrad-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
+    female_portraits = {'vanderbilt-undergrad-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
+    schools = {'Centre College', 'Baylor University', 'Northwestern University', 'Ohio State University', 'Southern Methodist University', 'Purdue University', 'University of Northern Colorado', 'Florida International University', 'Valdosta State University', 'DeVry University', 'Stony Brook University', 'University of Oregon', 'University of Missouri'}
+    interests = {
+        'College football, exploring my city',
+        'Learning foreign languages and traveling',
+        'Reading good books, cooking',
+        'Visiting national parks, jogging, baking',
+        'Lacrosse, poetry, hanging with friends',
+        'business, astronomy, traveling',
+        'exploring new places, spending time with family and friends',
+        'sketching, hiking',
+        'social justice, public policy',
+        'yoga, soccer',
+        'volunteering, traveling',
+        'dogs',
+        'photography, French'}
+    polls = [
+        ["What is your favorite movie?",
+            ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens", "Spirited away"]],
+        ["If money didn't matter, what would be your dream job?",
+            ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist", "curator for an art gallery", "carpenter"]],
+        ["If you had a whole day to do whatever you wanted, what would you do?",
+            ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new", "Sleep in and relax", "Explore a part of my city I haven't been to before", "Write poetry"]],
+        ["What is your least favorite class?",
+            ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus", "Logic", "Differential equations", "Intro philosophy", "Computer organization"]],
+        ["If you could have dinner with any person, living or dead, who would it be?",
+            ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg", "Kurt cobain", "John f kennedy", "David bowie", "John oliver", "Donald glover"]]]
+
 round_descriptions = [
     dict(place = 'Kauai',
         background = 'Hanalei,_Kauai_HI.jpg',
-        fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
-        question = "What is your favorite movie?",
-        responses = ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens", "Spirited away"]),
+        fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round."),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
-        fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
-        question = "If money didn't matter, what would be your dream job?",
-        responses = ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist", "curator for an art gallery", "carpenter"]),
+        fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round."),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
-        fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again.",
-        question = "If you had a whole day to do whatever you wanted, what would you do?",
-        responses = ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new", "Sleep in and relax", "Explore a part of my city I haven't been to before", "Write poetry"]),
+        fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again."),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
-        fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
-        question = "What is your least favorite class?",
-        responses = ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus", "Logic", "Differential equations", "Intro philosophy", "Computer organization"]),
+        fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round."),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
-        fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
-        question = "If you could have dinner with any person, living or dead, who would it be?",
-        responses = ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg", "Kurt cobain", "John f kennedy", "David bowie", "John oliver", "Donald glover"])]
+        fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.")]
 
 round_wait = 2
 
@@ -679,7 +715,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
 # * All other rounds
 # ------------------------------------------------------------
 
-for i, r in enumerate(round_descriptions):
+for i, (r, (poll_question, poll_responses)) in enumerate(zip(round_descriptions, polls)):
     nround = i + 1
     with o.dkey_prefix(('round', nround)), background(r['background']):
 
@@ -688,9 +724,9 @@ for i, r in enumerate(round_descriptions):
 
         o.text_entry_screen('poll_question',
             "Now you'll all answer another question so you can get to know each other better.\n\n" +
-            r['question'])
+            poll_question)
 
-        for p, resp in zip(coplayers, shuffled(r['responses'])):
+        for p, resp in zip(coplayers, shuffled(poll_responses)):
             p['poll_responses'][nround] = resp
         varwait = max(expovariate(2) for _ in coplayers)
         o.save('poll_varwait', varwait)
