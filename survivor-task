@@ -96,15 +96,15 @@ else:
         'photography, French'}
     polls = [
         ["What is your favorite movie?",
-            ["Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens"]],
+            {"Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens"}],
         ["If money didn't matter, what would be your dream job?",
-            ["Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist"]],
+            {"Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist"}],
         ["If you had a whole day to do whatever you wanted, what would you do?",
-            ["Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new"]],
+            {"Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new"}],
         ["What is your least favorite class?",
-            ["Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus"]],
+            {"Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus"}],
         ["If you could have dinner with any person, living or dead, who would it be?",
-            ["Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg"]]]
+            {"Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg"}]]
 
 round_descriptions = [
     dict(place = 'Kauai',
