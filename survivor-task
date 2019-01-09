@@ -770,7 +770,7 @@ questions = [
     {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
     {'id': ('need threat', 3), 'text': 'I did not feel accepted by the other players.'},
     {'id': ('need threat', 2), 'text': 'I had the feeling that I belonged to the group during the game.'},
-    {'id': ('need threat', 4), 'text': 'During the game I felt connected with one of more other players.'},
+    {'id': ('need threat', 4), 'text': 'During the game I felt connected with one or more other players.'},
     {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."}]
 
 with o.dkey_prefix('postgame_questionnaire'), background('Rainbow_over_palms_at_Big_Island_of_Hawaii.jpg'):
