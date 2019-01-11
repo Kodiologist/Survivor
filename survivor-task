@@ -781,7 +781,7 @@ with o.dkey_prefix('postgame_questionnaire'), background('Rainbow_over_palms_at_
             rating_scale(y = -.2,
                 num_options = len(scale_levels),
                 choices = scale_levels,
-                textSize = .9,
+                textSize = .8,
                 transform = lambda v:
                     'NA' if v == refuse else scale_levels.index(v) + 1),
             rating_scale_controls_text(num_options = len(scale_levels)))
