@@ -150,16 +150,16 @@ def trigger_code(coplayer, event):
 
 button_box = {
   # Maps fingers to their fMRI button-box codes.
-    'left pinkie':  '9',
-    'left ring':    '8',
-    'left middle':  '7',
-    'left index':   '6',
-    'left thumb':   '0',
-    'right thumb':  '5',
-    'right index':  '1',
-    'right middle': '2',
-    'right ring':   '3',
-    'right pinkie': '4'}
+    'left pinkie':  '1',
+    'left ring':    '2',
+    'left middle':  '3',
+    'left index':   '4',
+    'left thumb':   '5',
+    'right thumb':  '6',
+    'right index':  '7',
+    'right middle': '8',
+    'right ring':   '9',
+    'right pinkie': '0'}
 
 fmri_start_scanning_key = 'grave'
 
