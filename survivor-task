@@ -574,6 +574,7 @@ def voting(nround):
 # ------------------------------------------------------------
 
 o.save('mode', 'fmri' if par['fmri_mode'] else 'eeg')
+par['subject_portrait_path'] = 'subject-{}.jpg'.format(o.data['mode'])
 
 if par['debug']:
     o.data['subject'] = 'test'
