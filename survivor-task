@@ -42,11 +42,11 @@ ages = map(str, [
 if par['fmri_mode']:
     male_names = {'Steve', 'Cody', 'Kyle', 'Aiden', 'Jacob', 'Daniel', 'Nick'}
     extra_male_name = 'Rob'
-    female_names = {'Addison', 'Holly', 'Rachel', 'Lauren ', 'Jennifer', 'Molly', 'Jessica'}
+    female_names = {'Addison', 'Holly', 'Rachel', 'Lauren', 'Jennifer', 'Molly', 'Jessica'}
     extra_female_name = 'Kelsey'
     male_portraits = {'vanderbilt-undergrad-fmri-m-{}.jpg'.format(i + 1) for i in range(7)}
     female_portraits = {'vanderbilt-undergrad-fmri-f-{}.jpg'.format(i + 1) for i in range(7)}
-    schools = {'Kennesaw State University', 'University of Phoenix', 'Texas Tech University', 'Tulane University', 'Temple University ', 'Drexel University', 'Boise State University', 'University of Delaware', 'Old Dominion University', 'Birmingham-Southern College', 'University of North Carolina at Chapel Hill', 'Wake Forest University', 'Yale University'}
+    schools = {'Kennesaw State University', 'University of Phoenix', 'Texas Tech University', 'Tulane University', 'Temple University', 'Drexel University', 'Boise State University', 'University of Delaware', 'Old Dominion University', 'Birmingham-Southern College', 'University of North Carolina at Chapel Hill', 'Wake Forest University', 'Yale University'}
     interests = {
         'fishing, reading, spending time with friends',
         'rock climbing, politics, nature',
