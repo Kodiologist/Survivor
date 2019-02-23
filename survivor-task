@@ -44,7 +44,7 @@ if par['fmri_mode']:
     extra_female_name = 'Kelsey'
     male_portraits = {'vanderbilt-kid-fmri-m-{}.jpg'.format(i + 1) for i in range(7)}
     female_portraits = {'vanderbilt-kid-fmri-f-{}.jpg'.format(i + 1) for i in range(7)}
-    schools = {'Kennesaw State University', 'University of Phoenix', 'Texas Tech University', 'Tulane University', 'Temple University', 'Drexel University', 'Boise State University', 'University of Delaware', 'Old Dominion University', 'Birmingham-Southern College', 'University of North Carolina at Chapel Hill', 'Wake Forest University', 'Yale University'}
+    hometowns = {'Burlington', 'Chicago', 'dc', 'Denver', 'lexington', 'madison', 'NY', 'PA', 'philadelphia', 'pittsburgh', 'Springfield', 'St louis', 'Stony Brook'}
     interests = {
         'Swimming',
         'Playing with friends',
@@ -77,7 +77,7 @@ else:
     extra_female_name = 'Sarah'
     male_portraits = {'vanderbilt-kid-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
     female_portraits = {'vanderbilt-kid-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
-    schools = {'Centre College', 'Baylor University', 'Northwestern University', 'Ohio State University', 'Southern Methodist University', 'Purdue University', 'University of Northern Colorado', 'Florida International University', 'Valdosta State University', 'DeVry University', 'Stony Brook University', 'University of Oregon', 'University of Missouri'}
+    hometowns = {'buffalo', 'charlotte', 'chicago', 'dc', 'Denver', 'hershey', 'Memphis', 'NYC', 'philly', 'Phoenix', 'St Louis', 'Stony brook', 'tampa'}
     interests = {
         'all sports',
         'Video games',
@@ -395,10 +395,10 @@ def portrait_stim(x, y, p, border_color = 'black'):
     return portrait_stim_cache[k]
 
 # Assign fluff.
-for p, age, school, interest in zip(
-        coplayers, shuffled(ages), shuffled(schools), shuffled(interests)):
+for p, age, hometown, interest in zip(
+        coplayers, shuffled(ages), shuffled(hometowns), shuffled(interests)):
     p['fluff'] = dict(
-        Age = age, School = school, Interests = interest)
+        Age = age, Hometown = hometown, Interests = interest)
 
 o.save('coplayers', {p['id']: p for p in coplayers})
   # We don't copy the coplayer-objects because we want later edits
@@ -519,7 +519,7 @@ def voting(nround):
                     '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                     ('' if practice else '<br>'.join(
                         ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                            ['Age', 'School', 'Interests']])))]
+                            ['Age', 'Hometown', 'Interests']])))]
             voting_timer = CountdownTimer(voting_time_limit)
             o.keypress_screen(('subject_votes', p['id']),
                 {
@@ -630,7 +630,7 @@ with background('Hawaje-NoRedLine.jpg'):
 
         o.nonneg_int_entry_screen('age', 'How old are you?')
 
-        o.text_entry_screen('school', 'What school do you go to?')
+        o.text_entry_screen('hometown', 'Where do you live?')
 
         o.text_entry_screen('interests', "What are some things you're interested in?")
 
@@ -641,7 +641,7 @@ with background('Hawaje-NoRedLine.jpg'):
                 '<b>{}</b><br>'.format(o.data['profile']['gender']) +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k.capitalize(), escape(o.data['profile'][k])) for k in
-                        ['age', 'school', 'interests'])))
+                        ['age', 'hometown', 'interests'])))
 
     # Don't keep the profile data due to IRB shenanigans (for
     # the Kujawa lab at Penn State).
@@ -678,7 +678,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                 '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
-                        ['Age', 'School', 'Interests'])))
+                        ['Age', 'Hometown', 'Interests'])))
 
     if par['fmri_mode']:
         ready_key = 'r'
