@@ -33,78 +33,76 @@ o.save('task_version', par['task_version'])
 
 portrait_dims = (144, 216)
 ages = map(str, [
-    18, 18, 18,
-    19, 19, 19,
-    20, 20, 20,
-    21, 21,
-    22, 22])
+    8, 8, 8, 8,
+    9, 9, 9, 9, 9,
+    10, 10, 10, 10])
 
 if par['fmri_mode']:
     male_names = {'Steve', 'Cody', 'Kyle', 'Aiden', 'Jacob', 'Daniel', 'Nick'}
     extra_male_name = 'Rob'
     female_names = {'Addison', 'Holly', 'Rachel', 'Lauren', 'Jennifer', 'Molly', 'Jessica'}
     extra_female_name = 'Kelsey'
-    male_portraits = {'vanderbilt-undergrad-fmri-m-{}.jpg'.format(i + 1) for i in range(7)}
-    female_portraits = {'vanderbilt-undergrad-fmri-f-{}.jpg'.format(i + 1) for i in range(7)}
+    male_portraits = {'vanderbilt-kid-fmri-m-{}.jpg'.format(i + 1) for i in range(7)}
+    female_portraits = {'vanderbilt-kid-fmri-f-{}.jpg'.format(i + 1) for i in range(7)}
     schools = {'Kennesaw State University', 'University of Phoenix', 'Texas Tech University', 'Tulane University', 'Temple University', 'Drexel University', 'Boise State University', 'University of Delaware', 'Old Dominion University', 'Birmingham-Southern College', 'University of North Carolina at Chapel Hill', 'Wake Forest University', 'Yale University'}
     interests = {
-        'fishing, reading, spending time with friends',
-        'rock climbing, politics, nature',
-        'design and music',
-        'playing guitar and spending time with friends and family',
-        'travel, art, literature',
-        'chess, spending time with friends',
-        'drawing and painting',
-        'cooking, meeting new people',
-        'singing, choreography',
-        'travel and foreign languages',
-        'volunteering, reading, Spanish',
-        'public health, sculpting, working out',
-        'running, baking, hanging out with friends'}
+        'Swimming',
+        'Playing with friends',
+        'basketball',
+        'biking, skateboarding',
+        'reading and painting',
+        'video games',
+        'Nintendo switch',
+        'Reading, sleeping',
+        'band, playing guitar',
+        'my cat',
+        'shopping and movies',
+        'gymnastics',
+        'youtube, friends'}
     polls = [
-        ['Who is your favorite fictional character?',
-            ["Harry potter", "Katniss Everdeen", "Iron Man", "Jim from The Office", "Groot", "Luke skywalker", "Atticus finch", "Hannibal lector", "Captain jack sparrow", "Jane Eyre", "Sherlock holmes", "Daenerys Targaryen"]],
-        ['If you could be any animal, what kind of animal would you be?',
-            ["Golden retriever", "Cat", "Beta fish", "Hummingbird", "Mountain lion", "Panther", "Water snake", "Giraffe", "Wild horse", "Beagle", "Hedgehog"]],
-        ['What is your favorite thing about your college or university?',
-            ["The people", "The food", "Interesting classes", "Being independent from my family", "How pretty campus is", "Cool organizations to get involved with", "Living in a dorm with my friends", "My friends", "Getting to figure out who I am and what I want", "I get to set my own schedule"]],
-        ['If you could live in any time period, which would it be?',
-            ["The future", "The wild west", "The 1960s", "the 80s", "Paris in the 1920s", "medieval France", "the renaissance", "ancient Greece", "the golden age of film in Hollywood"]],
-        ['If you suddenly won a million dollars, what would be the first thing you bought with the money?',
-            ["A really fancy car", "A private island", "A mansion", "A beach house for my parents", "puppies", "designer clothes", "a luxury apartment", "a jet ski"]]]
+        ["Who is your favorite character (can be from TV, movies, books, etc)?",
+            {"olaf", "Moana", "joy", "Chewbacca", "Spongebob", "Harry Potter", "The Minions", "Captain America", "Steven Universe", "Spiderman", "Wonder Woman", "Darth Vader"}],
+        ["If you could have any superpower, what would it be?",
+            {"being invisible", "flying", "breathing underwater", "time travel", "Invisibility", "Reading minds", "Teleporting", "Super speed", "Moving things with my mind", "Flying", "Super strength"}],
+        ["What is your favorite food?",
+            {"skittles", "ice cream", "Pizza", "chicken nuggets", "strawberries", "Pancakes", "Spaghetti", "gummy bears", "Bacon", "Chocolate covered pretzels"}],
+        ["What is your favorite pet?",
+            {"puppies", "Cat", "Hamster", "goldfish", "guinea pig", "Bunny", "Turtle", "Labradoodle", "My kitty"}],
+        ["What is the first thing you do after school?",
+            {"Do my homework", "eat", "hang out with friends", "Netflix", "Mario kart", "Play with my doggy", "play with friends", "Soccer practice"}]]
 else:
     male_names = {'Brandon', 'Tyler', 'Matt', 'Zach', 'Connor', 'Eli', 'Isaiah'}
     extra_male_name = 'Peter'
     female_names = {'Taylor', 'Clare', 'Emma', 'Jennifer', 'Renee', 'Maya', 'Alysa'}
     extra_female_name = 'Sarah'
-    male_portraits = {'vanderbilt-undergrad-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
-    female_portraits = {'vanderbilt-undergrad-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
+    male_portraits = {'vanderbilt-kid-eeg-m-{}.jpg'.format(i + 1) for i in range(7)}
+    female_portraits = {'vanderbilt-kid-eeg-f-{}.jpg'.format(i + 1) for i in range(7)}
     schools = {'Centre College', 'Baylor University', 'Northwestern University', 'Ohio State University', 'Southern Methodist University', 'Purdue University', 'University of Northern Colorado', 'Florida International University', 'Valdosta State University', 'DeVry University', 'Stony Brook University', 'University of Oregon', 'University of Missouri'}
     interests = {
-        'College football, exploring my city',
-        'Learning foreign languages and traveling',
-        'Reading good books, cooking',
-        'Visiting national parks, jogging, baking',
-        'Lacrosse, poetry, hanging with friends',
-        'business, astronomy, traveling',
-        'exploring new places, spending time with family and friends',
-        'sketching, hiking',
-        'social justice, public policy',
-        'yoga, soccer',
-        'volunteering, traveling',
-        'dogs',
-        'photography, French'}
+        'all sports',
+        'Video games',
+        'art and drawing',
+        'reading, writing',
+        'soccer',
+        'friends, movies',
+        'my dog',
+        'fortnite',
+        'piano, singing',
+        'Karate',
+        'super mario party',
+        'eating, playing PS4',
+        'slime, crafts'}
     polls = [
         ["What is your favorite movie?",
-            {"Pulp Fiction", "Titanic", "Avengers: Infinity War", "Harry potter and the deathly hallows (part 1 and 2)", "Forrest Gump", "A clockwork orange", "the matrix", "la la land", "Black swan", "Pitch Perfect", "The Lion King", "Star Wars the force awakens"}],
-        ["If money didn't matter, what would be your dream job?",
-            {"Broadway singer", "Chef", "Travel agent", "food blogger", "Event planner", "Children's book illustrator", "Antique shop owner", "Architect", "Astronaut", "Chocolatier", "advice columnist"}],
-        ["If you had a whole day to do whatever you wanted, what would you do?",
-            {"Sleep", "Go for a run and then hang out with friends", "Go to the airport and get on a random flight to somewhere I've never been before", "Go visit my parents", "Sleep late and watch Netflix", "Go to a coffee shop and read", "Go to the beach", "Do yoga in the park and then cook dinner with friends", "Go to brunch with my friends", "Go on a hike somewhere new"}],
-        ["What is your least favorite class?",
-            {"Chem", "Biology", "Macro economics", "Physics II", "Medieval literature", "Early American art history", "Statistics", "History of cinema", "Calculus"}],
-        ["If you could have dinner with any person, living or dead, who would it be?",
-            {"Barack Obama", "Nelson Mandela", "spike lee", "Stephen king", "John Lennon", "Beyonce", "Kanye west", "Mark Zuckerberg"}]]
+            {"how to train your dragon", "Dory", "wreck it ralph", "Coco", "Harry Potter!", "Moana", "diary of a wimpy kid", "Toy Story 3", "Wrinkle in Time", "Lego Movie", "Spiderman", "Greatest showman"}],
+        ["What do you want to be when you grow up?",
+            {"teacher", "SWAT", "president", "Doctor", "Firefighter", "police", "painter or artist", "Basketball player", "Famous rock star", "Astronaut", "Dancer"}],
+        ["What is your favorite subject in school?",
+            {"Math", "science", "art", "reading", "Music", "PE", "recess", "gym", "snack time", "Lunch"}],
+        ["If you could be any animal, what kind of animal would you be?",
+            {"tiger", "Elephant", "giraffe", "bunny", "Unicorn", "Cat", "Dinosaur", "Horse", "Wolf"}],
+        ["What is your favorite outdoor activity?",
+            {"biking", "soccer", "basketball", "Skateboarding", "Walking my dog", "Hide and seek", "campfires", "going to the park"}]]
 
 round_descriptions = [
     dict(place = 'Kauai',
