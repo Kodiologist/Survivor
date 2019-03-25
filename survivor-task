@@ -680,13 +680,13 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Age', 'Hometown', 'Interests'])))
 
+    rate_likabilities('pre')
+
     if par['fmri_mode']:
         ready_key = 'r'
         o.keypress_screen('fmri_setup',
             ready_key,
             o.text(0, 0, string = 'You may now enter the fMRI scanner.\n\nExperimenter, press the "{}" key when ready.'.format(ready_key)))
-
-    rate_likabilities('pre')
 
     o.instructions('voting_begins', html = True, string = "And on to the first round of voting. Who do you want to send home? And who do you want to continue with on to the next island? You will now vote to kick out or keep each player. (You must vote to kick out at least one player per round.) You have {voting_time_limit} seconds to vote. The player with the greatest percentage of votes to be sent home will be kicked off the island, with ties broken randomly.<br><br>Each time you vote, you will then find out how that player voted for you.".format(**globals()))
 
