@@ -12,6 +12,7 @@ from psychopy.visual.ratingscale import RatingScale
 from psychopy.core import CountdownTimer
 from random import random, lognormvariate, expovariate, sample
 from collections import Counter
+import itertools
 from cgi import escape
 from sys import argv
 
@@ -283,10 +284,12 @@ class VoteType(object):
     def __str__(self):
         return self.letter
 Reject = VoteType('R')
-Reject.key = button_box['left index'] if par['fmri_mode'] else 'f'
+Reject.keys = ([v for k, v in button_box.items() if k.startswith('left')]
+    if par['fmri_mode'] else ['f'])
 Neutral = VoteType('N')
 Accept = VoteType('A')
-Accept.key = button_box['right index'] if par['fmri_mode'] else 'j'
+Accept.keys = ([v for k, v in button_box.items() if k.startswith('right')]
+    if par['fmri_mode'] else ['j'])
 
 coplayers = dict(
 
@@ -502,7 +505,7 @@ def voting(nround):
 
         if par['fmri_mode']:
             o.wait_screen(5,
-                o.text(0, 0, color = 'white', string = "Use the buttons under your index fingers to vote. Voting will begin in a few seconds."))
+                o.text(0, 0, color = 'white', string = "Press any button to vote. Voting will begin in a few seconds."))
         else:
             o.keypress_screen('start',
                 {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
@@ -522,13 +525,15 @@ def voting(nround):
                             ['Age', 'Hometown', 'Interests']])))]
             voting_timer = CountdownTimer(voting_time_limit)
             o.keypress_screen(('subject_votes', p['id']),
-                {
-                   voting_timer: TriggerKey('Neutral', None if practice else
-                       trigger_code(p, 'subject_votes_neutral')),
-                   Reject.key: TriggerKey('Kick\nOut', None if practice else
-                       trigger_code(p, 'subject_votes_to_reject')),
-                   Accept.key: TriggerKey('Keep', None if practice else
-                       trigger_code(p, 'subject_votes_to_accept'))},
+                dict(itertools.chain(
+                    [(voting_timer, TriggerKey('Neutral', None if practice else
+                        trigger_code(p, 'subject_votes_neutral')))],
+                    itertools.product(Reject.keys,
+                        [TriggerKey('Kick\nOut', None if practice else
+                            trigger_code(p, 'subject_votes_to_reject'))]),
+                    itertools.product(Accept.keys,
+                        [TriggerKey('Keep', None if practice else
+                            trigger_code(p, 'subject_votes_to_accept'))]))),
                 o.text(0, -.5, color = 'white', wrap = 2, string =
                     'Vote on ' + p['name']),
                 o.text(-.25, -.7, color = 'white', string =
