@@ -40,8 +40,8 @@ extra_male_name = 'Ben'
 female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
 extra_female_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'barch-m-1.jpg', 'barch-m-2.jpg', 'klein-age15-m-2.jpg', 'klein-age15-m-5.jpg', 'klein-age15-m-6.jpg', 'm-adult-4.jpg', 'shankman-m-adult-3.jpg'}
-female_portraits = {'barch-f-1.jpg', 'barch-f-2.jpg', 'barch-f-3.jpg', 'f-adult-6.jpg', 'klein-age15-f-4.jpg', 'klein-age15-f-5.jpg', 'shankman-f-adult-2.jpg'}
+male_portraits = {'luby-m-1-79.jpg', 'luby-m-2-79.jpg', 'luby-m-3-79.jpg', 'luby-m-4-79.jpg', 'luby-m-5-79.jpg', 'luby-m-6-79.jpg', 'luby-m-7-79.jpg'}
+female_portraits = {'luby-f-2-79.jpg', 'luby-f-4-79.jpg', 'luby-f-5-79.jpg', 'luby-f-6-79.jpg', 'luby-f-7-79.jpg', 'luby-f-8-79.jpg', 'luby-f-9-79.jpg'}
 locations = {
     'Pasadena, CA',
     'Chicago, IL',
