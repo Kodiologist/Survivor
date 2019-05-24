@@ -508,8 +508,8 @@ def voting(nround):
                 o.text(0, 0, color = 'white', string = "Press any button to vote. Voting will begin in a few seconds."))
         else:
             o.keypress_screen('start',
-                {Accept.key: 'Keep', Reject.key: 'Kick\nOut'},
-                o.text(0, 0, color = 'white', string = "Position your index fingers over the \"{Reject.key}\" and \"{Accept.key}\" keys. Then, press either one to begin voting.".format(**globals())))
+                {Accept.keys[0]: 'Keep', Reject.keys[0]: 'Kick\nOut'},
+                o.text(0, 0, color = 'white', string = "Position your index fingers over the \"{}\" and \"{}\" keys. Then, press either one to begin voting.".format(Accept.keys[0], Reject.keys[0])))
 
         for i, p in enumerate(cps):
 
@@ -538,10 +538,10 @@ def voting(nround):
                     'Vote on ' + p['name']),
                 o.text(-.25, -.7, color = 'white', string =
                     '{} - Kick Out'.format(
-                        'left' if par['fmri_mode'] else Reject.key)),
+                        'left' if par['fmri_mode'] else Reject.keys[0])),
                 o.text(.25, -.7, color = 'white', string =
                     '{} - Keep'.format(
-                        'right' if par['fmri_mode'] else Accept.key)),
+                        'right' if par['fmri_mode'] else Accept.keys[0])),
                 *stimuli)
             o.wait_screen_till(voting_timer,
                 o.text(0, -.5, color = 'white', wrap = 2, string =
