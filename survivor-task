@@ -35,13 +35,13 @@ o.save('task_version', par['task_version'])
 # The uses of shuffled() and zip() in the code mean that each
 # subject will see random subsets.
 
-male_names = {'Ryan', 'Michael', 'Jake', 'Elijah', 'Corey', 'Travis'}
-extra_male_name = 'Ben'
-female_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
-extra_female_name = 'Marika'
+boy_names = {'Ryan', 'Michael', 'Jake', 'Elijah', 'Corey', 'Travis'}
+extra_boy_name = 'Ben'
+girl_names = {'Jen', 'Victoria', 'Emma', 'Emily', 'Gabby', 'Melanie'}
+extra_girl_name = 'Marika'
 portrait_dims = (144, 216)
-male_portraits = {'luby-m-1-79.jpg', 'luby-m-2-79.jpg', 'luby-m-3-79.jpg', 'luby-m-4-79.jpg', 'luby-m-5-79.jpg', 'luby-m-6-79.jpg', 'luby-m-7-79.jpg'}
-female_portraits = {'luby-f-2-79.jpg', 'luby-f-4-79.jpg', 'luby-f-5-79.jpg', 'luby-f-6-79.jpg', 'luby-f-7-79.jpg', 'luby-f-8-79.jpg', 'luby-f-9-79.jpg'}
+boy_portraits = {'luby-m-1-79.jpg', 'luby-m-2-79.jpg', 'luby-m-3-79.jpg', 'luby-m-4-79.jpg', 'luby-m-5-79.jpg', 'luby-m-6-79.jpg', 'luby-m-7-79.jpg'}
+girl_portraits = {'luby-f-2-79.jpg', 'luby-f-4-79.jpg', 'luby-f-5-79.jpg', 'luby-f-6-79.jpg', 'luby-f-7-79.jpg', 'luby-f-8-79.jpg', 'luby-f-9-79.jpg'}
 locations = {
     'Pasadena, CA',
     'Chicago, IL',
@@ -72,28 +72,28 @@ round_descriptions = [
     dict(place = 'Kauai',
         background = 'Hanalei,_Kauai_HI.jpg',
         fluff = "Welcome to Kauai, the geologically oldest of the Hawaiian Islands! You are getting closer to the Big Island of Hawaii. Let's play another round.",
-        question = 'What’s your least favorite thing to do (that you have to do anyway)?',
+        question = "What's your least favorite thing to do (that you have to do anyway)?",
         responses = ['Homework', 'math', 'go to school', 'Chores', 'clean my room', 'wash dishes', 'go to bed', 'help with laundry', 'getting a haircut', 'sit still in class', 'go to the Dentist', 'taking tests']),
     dict(place = 'Oahu',
         background = 'Sunset_next_to_Waikiki_Beach,_Oahu,_Hawai,_USA1.jpg',
         fluff = "Welcome to Oahu, the third-largest of the Hawaiian Islands! You are getting closer and closer to the Big Island. Let's play another round.",
-        question = 'If you could bring only one thing to a desert island, what would it be?',
+        question = "If you could bring only one thing to a desert island, what would it be?",
         responses = ['food', 'a computer to communicate with people', 'my family', 'A phone with service', 'a helicopter with a pilot', 'Dirt bike', 'house', 'lots of water', 'a soccer ball', 'signal flares', 'lots of books', 'my best friend']),
     dict(place = 'Molokai',
         background = 'Church_at_the_end_of_the_road.jpg',
         fluff = "Welcome to Molokai, an island built from two shield volcanoes and one step closer to the Big Island. Let's play again.",
-        question = 'What is your TV show or TV show character?',
-        responses = ['robin on Team Titans', 'scoobie doo', 'sponge bob', 'princess ariel', 'looney tunes', 'ninjago', 'mickey mouse', 'The 100', 'Pokemon', 'gumball', 'Avatar', 'spy kids']),
+        question = "What's your favorite TV show or TV show character?",
+        responses = ['robin on Team Titans', 'scoobie doo', 'sponge bob', 'princess ariel', 'looney tunes', "ninjago", 'mickey mouse', 'The 100', 'Pokemon', 'gumball', "Avatar", 'spy kids']),
     dict(place = 'Lanai',
         background = 'Full_moon_setting_over_Lanai.jpg',
         fluff = "Welcome to Lanai, a comma-shaped island that was once covered with pineapple plantations. You're the nearest you've come to the Big Island yet, but which of you will make it there? Let's play another round.",
-        question = 'What is your favorite food?',
+        question = "What's your favorite food?",
         responses = ['pizza', 'slushies', 'Tacos', 'Toasted ravioli', 'cheeseburger', 'ice cream', 'Nachos', 'hot dogs', 'fried chicken', 'Chocolate pudding', 'mac and cheese', 'waffles']),
     dict(place = 'Maui',
         background = 'Kipahulu_coast.jpg',
         fluff = "Welcome to Maui, the second-largest of the Hawaiian Islands! You're almost there! Let's play again to see who will make it to the Big Island of Hawaii.",
         question = "What's your favorite word?",
-        responses = ['grande', 'money', 'food', 'mom', 'sparkle', 'play', 'because', 'awesomesauce', 'yes', 'unicorn', 'fluffernutter', 'kitten'])]
+        responses = ['grande', "money", 'food', 'mom', 'sparkle', 'play', 'because', 'awesomesauce', 'yes', 'unicorn', 'fluffernutter', 'kitten'])]
 
 round_wait = 2
 
@@ -110,16 +110,16 @@ events = dict(
     accepting_subject_gets_reject_vote   = 0b00000101,
     rejecting_subject_gets_accept_vote   = 0b00000110,
     rejecting_subject_gets_reject_vote   = 0b00000111);
-# Bit 3: Encodes coplayer gender (0 male, 1 female).
+# Bit 3: Encodes coplayer gender (0 boy, 1 girl).
 # Bits 4–6: Encodes the coplayer involved in the event. These
-#   ID numbers are gender-specific (e.g., male coplayer 3 and
-#   female coplayer 3 are different coplayers).
+#   ID numbers are gender-specific (e.g., boy coplayer 3 and
+#   girl coplayer 3 are different coplayers).
 # Bit 7: Always 0, avoiding confusion with codes 255 and 256
 #   (which are more control codes).
 def trigger_code(coplayer, event):
     return (
         (coplayer['trigger_id'] << 4) |
-        (coplayer['female'] << 3) |
+        (coplayer['girl'] << 3) |
         events[event])
 
 # ------------------------------------------------------------
@@ -215,23 +215,23 @@ o.save('coplayer_kickout_order', [p['id'] for p in kickout_order])
 # Make the coplayers evenly split by gender within the expendable
 # and non-expendable groups.
 for i, p in enumerate(shuffled([p for p in coplayers if p['expendable']])):
-    p['female'] = bool(i % 2)
+    p['girl'] = bool(i % 2)
 for i, p in enumerate(shuffled([p for p in coplayers if not p['expendable']])):
-    p['female'] = bool(i % 2)
+    p['girl'] = bool(i % 2)
   # Because there's an odd number of non-expendable coplayers,
-  # we're left with one more male than we have females. Later,
-  # if we learn that the subject is male, we'll make one of
-  # the male non-expendables female.
+  # we're left with one more boy than we have girls. Later,
+  # if we learn that the subject is boy, we'll make one of
+  # the boy non-expendables girl.
 
-def pronoun_nom(p): return 'she' if p['female'] else 'he'
-def pronoun_obj(p): return 'her' if p['female'] else 'him'
-def pronoun_gen(p): return 'her' if p['female'] else 'his'
+def pronoun_nom(p): return 'she' if p['girl'] else 'he'
+def pronoun_obj(p): return 'her' if p['girl'] else 'him'
+def pronoun_gen(p): return 'her' if p['girl'] else 'his'
 
 # Assign names and portraits.
-males = zip(shuffled(male_names), shuffled(male_portraits))
-females = zip(shuffled(female_names), shuffled(female_portraits))
+boys = zip(shuffled(boy_names), shuffled(boy_portraits))
+girls = zip(shuffled(girl_names), shuffled(girl_portraits))
 for p in coplayers:
-    p['name'], p['portrait'] = females.pop() if p['female'] else males.pop()
+    p['name'], p['portrait'] = girls.pop() if p['girl'] else boys.pop()
 
 portrait_stim_cache = {}
 def portrait_stim(x, y, p, border_color = 'black'):
@@ -294,11 +294,11 @@ def voting(nround):
     if practice:
         cps = [
             dict(id = 'practice_a',
-                 name = 'Player A', female = False,
+                 name = 'Player A', girl = False,
                  portrait = 'example-male.png',
                  vote = True),
             dict(id = 'practice_b',
-                 name = 'Player B', female = True,
+                 name = 'Player B', girl = True,
                  portrait = 'example-female.png',
                  vote = False)]
     else:
@@ -324,7 +324,7 @@ def voting(nround):
                 # Show everything the subject knows about this
                 # coplayer, except for observed voting behavior.
                 p['name'] + "<br><br>" +
-                '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+                '<b>{}</b><br>'.format('Girl' if p['girl'] else 'Boy') +
                 ('' if practice else '<br>'.join(
                     ['<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Hometown', 'Interests']] +
@@ -411,16 +411,16 @@ with background('Hawaje-NoRedLine.jpg'):
     with o.dkey_prefix('profile'):
 
         o.button_screen('gender',
-           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you male or female?', vAlign = 'top'),
-           o.button(-.25, -.7, 'Male'),
-           o.button(.25, -.7, 'Female'))
-        if o.data['profile']['gender'] == 'Male':
-            # Make a male non-expendable female so that there's
-            # of equal number of male and female players.
-            transgal = choice([p for p in coplayers if not p['female']])
-            transgal['female'] = True
-            transgal['name'], = female_names - {p['name'] for p in coplayers if p['female']}
-            transgal['portrait'] = choice(female_portraits - {p['portrait'] for p in coplayers if p['female']})
+           o.text(0, .8, 'Now you can fill out your profile.\n\nAre you boy or girl?', vAlign = 'top'),
+           o.button(-.25, -.7, 'Boy'),
+           o.button(.25, -.7, 'Girl'))
+        if o.data['profile']['gender'] == 'Boy':
+            # Make a boy non-expendable girl so that there's
+            # of equal number of boy and girl players.
+            transgal = choice([p for p in coplayers if not p['girl']])
+            transgal['girl'] = True
+            transgal['name'], = girl_names - {p['name'] for p in coplayers if p['girl']}
+            transgal['portrait'] = choice(girl_portraits - {p['portrait'] for p in coplayers if p['girl']})
 
         o.text_entry_screen('name', 'What is your first name?')
         subject_name = o.data['profile']['name']
@@ -435,7 +435,7 @@ with background('Hawaje-NoRedLine.jpg'):
         try:
             p = next(p for p in coplayers if
                 p['name'].lower() == subject_name.lower())
-            p['name'] = extra_female_name if p['female'] else extra_male_name
+            p['name'] = extra_girl_name if p['girl'] else extra_boy_name
         except StopIteration:
             pass
 
@@ -458,8 +458,8 @@ with background('Hawaje-NoRedLine.jpg'):
 # codes.
 seen_genders = [0, 0]
 for p in coplayers:
-    p['trigger_id'] = seen_genders[p['female']]
-    seen_genders[p['female']] += 1
+    p['trigger_id'] = seen_genders[p['girl']]
+    seen_genders[p['girl']] += 1
 
 # ------------------------------------------------------------
 # * Round 0
@@ -478,7 +478,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
             portrait_stim(0, .5, p),
             o.html(0, 0,
                 p['name'] + "<br><br>" +
-                '<b>{}</b><br>'.format('Female' if p['female'] else 'Male') +
+                '<b>{}</b><br>'.format('Girl' if p['girl'] else 'Boy') +
                 '<br>'.join(
                     '<b>{}:</b> {}'.format(k, escape(p['fluff'][k])) for k in
                         ['Hometown', 'Interests'])))
@@ -552,8 +552,8 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
     prompt_color = 'white',
     scale_levels = scale_levels,
     questions = [
-        {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."},
-        {'id': ('other', 1), 'text': 'It bothered me to vote off other players.'},
+{'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."}, #reverse
+{'id': ('other', 1), 'text': 'It bothered me to vote off other players.'}, #reverse
         {'id': ('self-esteem', 2), 'text': 'My self-esteem was high.'},
         {'id': ('task disengagement', 5), 'text': 'I really wanted to stay in the game.'},
         {'id': ('self-esteem', 3), 'text': 'I felt liked.'},
@@ -562,14 +562,14 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('preoccupation with exclusion', 1), 'text': 'I wondered "Why did they vote me off?"'},
         {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
         {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
-        {'id': ('belonging', 2), 'text': 'I felt rejected.'},
+{'id': ('belonging', 2), 'text': 'I felt rejected.'}, #reverse
         {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
         {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
-        {'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'},
+{'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'}, #reverse
         {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
         {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
         {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
-        {'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."}])
+{'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."}]) #reverse
 
 # "I prefer not to answer" values are set to "NA".
 for rs in o.data['postgame_questionnaire'].values():
