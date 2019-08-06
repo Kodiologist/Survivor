@@ -552,24 +552,22 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
     prompt_color = 'white',
     scale_levels = scale_levels,
     questions = [
-{'id': ('belonging', 1), 'text': "I felt I didn't fit in with the others."}, #reverse
-{'id': ('other', 1), 'text': 'It bothered me to vote off other players.'}, #reverse
-        {'id': ('self-esteem', 2), 'text': 'My self-esteem was high.'},
-        {'id': ('task disengagement', 5), 'text': 'I really wanted to stay in the game.'},
-        {'id': ('self-esteem', 3), 'text': 'I felt liked.'},
-        {'id': ('self-esteem', 4), 'text': 'I felt unsure of myself.'},
-        {'id': ('belonging', 5), 'text': 'I felt the other players wanted me to continue on to the Big Island.'},
-        {'id': ('preoccupation with exclusion', 1), 'text': 'I wondered "Why did they vote me off?"'},
-        {'id': ('task disengagement', 2), 'text': 'After a while I lost interest in staying in the game.'},
-        {'id': ('survivor', 1), 'text': 'It bothered me to vote off other players.'},
-{'id': ('belonging', 2), 'text': 'I felt rejected.'}, #reverse
-        {'id': ('belonging', 4), 'text': 'I felt I belonged to the group.'},
-        {'id': ('survivor', 2), 'text': 'I wondered why other players voted me off.'},
-{'id': ('control', 4), 'text': 'I felt I was unable to influence the action of others.'}, #reverse
-        {'id': ('task disengagement', 3), 'text': "I would've liked to play this game again."},
-        {'id': ('control', 2), 'text': 'I felt I had control over the course of the game.'},
-        {'id': ('self-esteem', 1), 'text': 'I felt good about myself.'},
-{'id': ('meaningful existence', 2), 'text': "I felt I didn't matter."}]) #reverse
+        {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the other kids."},
+        {'id': ('task disengagement', 3), 'text': 'I really wanted to stay in the game.'},
+        {'id': ('self-esteem', 2), 'text': 'I felt liked.'},
+        {'id': ('self-esteem', 3), 'text': 'Playing this game made me feel bad about myself.'},
+        {'id': ('belonging', 4), 'text': 'I felt like the other players wanted me to continue on to the Big Island.'},
+        {'id': ('task disengagement', 1), 'text': 'After a while I got bored with the game.'},
+        {'id': ('survivor', 1), 'text': "I didn't like voting off other players."},
+        {'id': ('belonging', 2), 'text': 'I felt rejected.'},
+        {'id': ('belonging', 3), 'text': 'I felt like I belonged to the group.'},
+        {'id': ('survivor', 2), 'text': 'I was wondereing why other players voted me off the game.'},
+        {'id': ('control', 2), 'text': "I felt like I couldn't change other kids' minds about me."},
+        {'id': ('task disengagement', 2), 'text': "I would've liked to play this game again."},
+        {'id': ('control', 1), 'text': 'I felt like I could control the game.'},
+        {'id': ('self-esteem', 1), 'text': 'Playing the game made me feel good about myself.'},
+        {'id': ('meaningful existence', 2), 'text': "I felt like I didn't matter in the game."}])
+
 
 # "I prefer not to answer" values are set to "NA".
 for rs in o.data['postgame_questionnaire'].values():
