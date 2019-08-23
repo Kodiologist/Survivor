@@ -552,7 +552,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
     prompt_color = 'white',
     scale_levels = scale_levels,
     questions = [
-        {'id': ('belonging', 1), 'text': "I felt I didn't fit in with the other kids."},
+        {'id': ('belonging', 1), 'text': "I felt like I fit in with the other kids."},
         {'id': ('task disengagement', 3), 'text': 'I really wanted to stay in the game.'},
         {'id': ('self-esteem', 2), 'text': 'I felt liked.'},
         {'id': ('self-esteem', 3), 'text': 'Playing this game made me feel bad about myself.'},
@@ -562,7 +562,7 @@ o.questionnaire_screen('postgame_questionnaire', 'In the below questionnaire, pi
         {'id': ('belonging', 2), 'text': 'I felt rejected.'},
         {'id': ('belonging', 3), 'text': 'I felt like I belonged to the group.'},
         {'id': ('survivor', 2), 'text': 'I was wondereing why other players voted me off the game.'},
-        {'id': ('control', 2), 'text': "I felt like I couldn't change other kids' minds about me."},
+        {'id': ('control', 2), 'text': "I felt like I could change other kids' minds about me."},
         {'id': ('task disengagement', 2), 'text': "I would've liked to play this game again."},
         {'id': ('control', 1), 'text': 'I felt like I could control the game.'},
         {'id': ('self-esteem', 1), 'text': 'Playing the game made me feel good about myself.'},
