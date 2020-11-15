@@ -159,6 +159,13 @@ blank_background = o.hiding(background_imagestim, big_canvas)
 def lag(duration):
     message(duration, u'Waiting for all players to finish…')
 
+def write(write_point):
+    # Don't use o.save in case we're inside a `dkey_prefix`.
+    o.data['write_point'] = write_point
+    p = par['output_path_fmt'].format(**o.data)
+    o.write(p)
+    print 'Data written to', p
+
 # ------------------------------------------------------------
 # * Coplayers
 # ------------------------------------------------------------
@@ -460,6 +467,8 @@ for p in coplayers:
     p['trigger_id'] = seen_genders[p['female']]
     seen_genders[p['female']] += 1
 
+write('intro')
+
 # ------------------------------------------------------------
 # * Round 0
 # ------------------------------------------------------------
@@ -499,6 +508,7 @@ with o.dkey_prefix(('round', 0)), background('Niihau_sep_2007.jpg'):
         o.instructions('done', 'Now for the first round of real voting.')
 
     voting(0)
+    write('voting-round-0')
 
 # ------------------------------------------------------------
 # * All other rounds
@@ -532,6 +542,7 @@ for i, r in enumerate(round_descriptions):
                 wrap = 1.4, vAlign = 'top'))
 
         voting(nround)
+        write('voting-round-' + str(nround))
 
 # ------------------------------------------------------------
 # * A winner is you!
@@ -580,8 +591,8 @@ for rs in o.data['postgame_questionnaire'].values():
 # * Done!
 # ------------------------------------------------------------
 
-o.done(par['output_path_fmt'].format(**o.data))
-print '### Data written to', par['output_path_fmt'].format(**o.data)
+o.done()
+write('done')
 
 o.wait_screen(1,
     o.text(0, 0, color = 'white', string = 'Done!\n\nPlease let the experimenter know you are done.'))
